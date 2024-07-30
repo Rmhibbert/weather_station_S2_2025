@@ -2,17 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const https = require('https');
 const fs = require('fs');
-const { Pool } = require('pg');
-require('dotenv').config(); // Load environment variables from .env file
+const { PrismaClient } = require('@prisma/client');
+require('dotenv').config();
 
-// Database connection setup
-const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
-});
+const prisma = new PrismaClient();
 
 const app = express();
 app.use(bodyParser.json());
@@ -48,12 +41,12 @@ app.post('/ttn-webhook', authenticate, async (req, res) => {
     // Debug: Log query parameters
     console.log('Inserting Data:', { deviceId, sensorData });
 
-    // Insert data into the database
-    await pool.query(
-      `INSERT INTO sensor_data (device_id, sensor_data)
-       VALUES ($1, $2)`,
-      [deviceId, sensorData]
-    );
+    await prisma.sensorData.create({
+      data: {
+        deviceId: deviceId,
+        sensorData: sensorData,
+      },
+    });
     console.log('Data inserted successfully');
     res.status(200).json({ status: 'success' });
   } catch (err) {
