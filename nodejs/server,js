@@ -1,0 +1,76 @@
+const express = require('express');
+const bodyParser = require('body-parser');
+const https = require('https');
+const fs = require('fs');
+const { Pool } = require('pg');
+require('dotenv').config(); // Load environment variables from .env file
+
+// Database connection setup
+const pool = new Pool({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+});
+
+const app = express();
+app.use(bodyParser.json());
+
+// Get the API key from the environment variable
+const API_KEY = process.env.DOWNLINK_API_KEY;
+
+const authenticate = (req, res, next) => {
+  const apiKey = req.headers['x-downlink-apikey'];
+  if (apiKey && apiKey === API_KEY) {
+    next();
+  } else {
+    res.status(403).json({ status: 'error', message: 'Forbidden: Invalid API Key' });
+  }
+};
+
+app.post('/ttn-webhook', authenticate, async (req, res) => {
+  const data = req.body;
+  const deviceId = data.end_device_ids.device_id; // Extract device_id
+  const decodedPayload = data.uplink_message.decoded_payload.data; // Corrected path to access the data
+
+  // Create a JSON object to store all sensor data
+  const sensorData = {
+    temperature: decodedPayload.temperature,
+    humidity: decodedPayload.humidity,
+    wind_speed: decodedPayload.wind_speed,
+    wind_direction: decodedPayload.wind_direction,
+    air_pressure: decodedPayload.air_pressure,
+    // Add more fields as needed
+  };
+
+  try {
+    // Debug: Log query parameters
+    console.log('Inserting Data:', { deviceId, sensorData });
+
+    // Insert data into the database
+    await pool.query(
+      `INSERT INTO sensor_data (device_id, sensor_data)
+       VALUES ($1, $2)`,
+      [deviceId, sensorData]
+    );
+    console.log('Data inserted successfully');
+    res.status(200).json({ status: 'success' });
+  } catch (err) {
+    console.error('Error inserting data into database:', err);
+    res.status(500).json({ status: 'error', message: 'Database insertion failed' });
+  }
+});
+
+// SSL/TLS configuration
+const options = {
+  key: fs.readFileSync('/usr/local/hestia/data/users/admin/ssl/kierenblack.nz.key'), // Path to your private key
+  cert: fs.readFileSync('/usr/local/hestia/data/users/admin/ssl/kierenblack.nz.pem'), // Path to your full chain certificate
+  ca: fs.readFileSync('/usr/local/hestia/data/users/admin/ssl/kierenblack.nz.ca') // Path to your CA certificate
+};
+
+const PORT = process.env.PORT || 5000;
+
+https.createServer(options, app).listen(PORT, () => {
+  console.log(`HTTPS Server running on port ${PORT}`);
+});
