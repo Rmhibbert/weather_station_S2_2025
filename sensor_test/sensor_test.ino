@@ -1,47 +1,33 @@
 /*******************************************************************************
- * Copyright (c) 2015 Thomas Telkamp and Matthijs Kooijman
- * Copyright (c) 2018 Terry Moore, MCCI
- *
- * Permission is hereby granted, free of charge, to anyone
- * obtaining a copy of this document and accompanying files,
- * to do whatever they want with them without any restriction,
- * including, but not limited to, copying, modification and redistribution.
- * NO WARRANTY OF ANY KIND IS PROVIDED.
- *
- * This example sends a valid LoRaWAN packet with payload "Hello,
- * world!", using frequency and encryption settings matching those of
- * the The Things Network.
- *
- * This uses OTAA (Over-the-air activation), where where a DevEUI and
- * application key is configured, which are used in an over-the-air
- * activation procedure where a DevAddr and session keys are
- * assigned/generated for use with all further communication.
- *
- * Note: LoRaWAN per sub-band duty-cycle limitation is enforced (1% in
- * g1, 0.1% in g2), but not the TTN fair usage policy (which is probably
- * violated by this sketch when left running for longer)!
+* The Things Network - Sensor Data Example
+* 
+* Example of sending a valid LoRaWAN packet with DHT22 temperature and
+* humidity data to The Things Networ using a Feather M0 LoRa.
+* 
 
- * To use this sketch, first register your application and device with
- * the things network, to set or generate an AppEUI, DevEUI and AppKey.
- * Multiple devices can use the same AppEUI, but each device has its own
- * DevEUI and AppKey.
- *
- * Do not forget to define the radio type correctly in
- * arduino-lmic/project_config/lmic_project_config.h or from your BOARDS.txt.
- *
- *******************************************************************************/
-
+* Learn Guide: https://learn.adafruit.com/the-things-network-for-feather
+* 
+* Copyright (c) 2015 Thomas Telkamp and Matthijs Kooijman
+* Copyright (c) 2018 Terry Moore, MCCI
+* Copyright (c) 2018 Brent Rubell, Adafruit Industries
+* 
+* Permission is hereby granted, free of charge, to anyone
+* obtaining a copy of this document and accompanying files,
+* to do whatever they want with them without any restriction,
+* including, but not limited to, copying, modification and redistribution.
+* NO WARRANTY OF ANY KIND IS PROVIDED.
+*******************************************************************************/
 #include <lmic.h>
 #include <hal/hal.h>
 #include <SPI.h>
 
-//
-// For normal use, we require that you edit the sketch to replace FILLMEIN
-// with values assigned by the TTN console. However, for regression tests,
-// we want to be able to compile these scripts. The regression tests define
-// COMPILE_REGRESSION_TEST, and in that case we define FILLMEIN to a non-
-// working but innocuous value.
-//
+// include the DHT22 Sensor Library
+#include "DHT.h"
+
+// DHT digital pin and sensor type
+#define DHTPIN 10
+#define DHTTYPE DHT22
+
 #ifdef COMPILE_REGRESSION_TEST
 # define FILLMEIN 0
 #else
@@ -66,9 +52,6 @@ void os_getDevEui (u1_t* buf) { memcpy_P(buf, DEVEUI, 8);}
 static const u1_t PROGMEM APPKEY[16] = { 0xA9, 0x2C, 0xB7, 0x16, 0x17, 0x68, 0xED, 0x2C, 0x5F, 0xE1, 0xDE, 0x49, 0x0D, 0xC0, 0xAF, 0xB9 };
 void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}
 
-static uint8_t mydata[] = "Hello, world!";
-static osjob_t sendjob;
-
 // Schedule TX every this many seconds (might become longer due to duty
 // cycle limitations).
 const unsigned TX_INTERVAL = 60;
@@ -84,7 +67,8 @@ const lmic_pinmap lmic_pins = {
     .spi_freq = 1000000,
 };
 
-
+static uint8_t mydata[] = "Hello, world!";
+static osjob_t sendjob;
 void printHex2(unsigned v) {
     v &= 0xff;
     if (v < 16)
@@ -138,9 +122,7 @@ void onEvent (ev_t ev) {
               }
               Serial.println();
             }
-            // Disable link check validation (automatically enabled
-            // during join, but because slow data rates change max TX
-	    // size, we don't use it in this example.
+
             LMIC_setLinkCheckMode(0);
             break;
         /*
@@ -224,7 +206,6 @@ void do_send(osjob_t* j){
     }
     // Next TX is scheduled after TX_COMPLETE event.
 }
-
 void setup() {
     Serial.begin(9600);
     Serial.println(F("Starting"));
