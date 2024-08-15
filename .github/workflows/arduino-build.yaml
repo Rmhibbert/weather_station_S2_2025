@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - sc-test-sensor  # Target branch
+  workflow_dispatch:  # Allow manual triggers
 
 jobs:
   build:
@@ -15,13 +16,11 @@ jobs:
 
     - name: Set up Arduino CLI
       uses: docker://arduino/arduino-cli:latest
-      entrypoint: /bin/bash
-      args: |
-        -c "
+      with:
+        args: |
           arduino-cli config init &&
           arduino-cli core update-index &&
           arduino-cli core install arduino:avr
-        "
 
     - name: Replace Secret Placeholder
       run: |
@@ -29,7 +28,7 @@ jobs:
 
     - name: Build Arduino Sketch
       run: |
-        arduino-cli compile --fqbn arduino:avr:uno Cloudy-with-a-Chance-of-LoRa/feather_sensors/sensor_f6
+        docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace arduino/arduino-cli:latest arduino-cli compile --fqbn arduino:avr:uno Cloudy-with-a-Chance-of-LoRa/feather_sensors/sensor_f6
 
     - name: List Serial Ports
       run: |
@@ -37,4 +36,4 @@ jobs:
 
     - name: Upload to Arduino
       run: |
-        arduino-cli upload -p /dev/ttyACM0 --fqbn arduino:avr:uno Cloudy-with-a-Chance-of-LoRa/feather_sensors/sensor_f6
+        docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace arduino/arduino-cli:latest arduino-cli upload -p /dev/ttyACM0 --fqbn arduino:avr:uno Cloudy-with-a-Chance-of-LoRa/feather_sensors/sensor_f6
