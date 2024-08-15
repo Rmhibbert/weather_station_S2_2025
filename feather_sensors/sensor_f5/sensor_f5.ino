@@ -1,27 +1,8 @@
-/*******************************************************************************
-* The Things Network - Sensor Data Example
-* 
-* Example of sending a valid LoRaWAN packet with DHT22 temperature and
-* humidity data to The Things Networ using a Feather M0 LoRa.
-* 
-
-* Learn Guide: https://learn.adafruit.com/the-things-network-for-feather
-* 
-* Copyright (c) 2015 Thomas Telkamp and Matthijs Kooijman
-* Copyright (c) 2018 Terry Moore, MCCI
-* Copyright (c) 2018 Brent Rubell, Adafruit Industries
-* 
-* Permission is hereby granted, free of charge, to anyone
-* obtaining a copy of this document and accompanying files,
-* to do whatever they want with them without any restriction,
-* including, but not limited to, copying, modification and redistribution.
-* NO WARRANTY OF ANY KIND IS PROVIDED.
-*******************************************************************************/
 #include <lmic.h>
 #include <hal/hal.h>
 #include <SPI.h>
+#include "Secrets.h"
 
-// include the DHT22 Sensor Library
 #include "DHT.h"
 
 // DHT digital pin and sensor type
@@ -34,23 +15,6 @@
 # warning "You must replace the values marked FILLMEIN with real values from the TTN control panel!"
 # define FILLMEIN (#dont edit this, edit the lines that use FILLMEIN)
 #endif
-
-// This EUI must be in little-endian format, so least-significant-byte
-// first. When copying an EUI from ttnctl output, this means to reverse
-// the bytes. For TTN issued EUIs the last bytes should be 0xD5, 0xB3,
-// 0x70.
-static const u1_t PROGMEM APPEUI[8]={ 0xF5, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-void os_getArtEui (u1_t* buf) { memcpy_P(buf, APPEUI, 8);}
-
-// This should also be in little endian format, see above.
-static const u1_t PROGMEM DEVEUI[8]={ 0xF4, 0x9A, 0x06, 0xD0, 0x7E, 0xD5, 0xB3, 0x70 };
-void os_getDevEui (u1_t* buf) { memcpy_P(buf, DEVEUI, 8);}
-
-// This key should be in big endian format (or, since it is not really a
-// number but a block of memory, endianness does not really apply). In
-// practice, a key taken from ttnctl can be copied as-is.
-static const u1_t PROGMEM APPKEY[16] = { 0xD1, 0xC8, 0x67, 0x8C, 0xF9, 0x7A, 0xAF, 0xDB, 0xF9, 0x44, 0x53, 0xAF, 0xC8, 0xF0, 0x57, 0x46 };
-void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}
 
 // Schedule TX every this many seconds (might become longer due to duty
 // cycle limitations).
