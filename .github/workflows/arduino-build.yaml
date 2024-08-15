@@ -1,4 +1,4 @@
-name: Replace Secret Placeholder
+name: Build and Upload Arduino
 
 on:
   push:
@@ -7,13 +7,15 @@ on:
   workflow_dispatch:
 
 jobs:
-  update-secrets:
+  build:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Replace Secret Placeholder
+    - name: List Directory Structure
       run: |
-        sed -i 's/FEATHER_PLACEHOLDER/${{ secrets.FEATHER_F6 }}/g' Cloudy-with-a-Chance-of-LoRa/feather_sensors/sensor_f6/Secrets.h
+        ls -R
+        # List specific directory to verify file location
+        ls Cloudy-with-a-Chance-of-LoRa/feather_sensors/sensor_f6
