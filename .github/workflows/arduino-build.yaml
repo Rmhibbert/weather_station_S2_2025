@@ -16,18 +16,12 @@ jobs:
     - name: Set up Arduino CLI
       uses: docker://arduino/arduino-cli:latest
       entrypoint: /bin/bash
-        args: |
-          -c "
-            arduino-cli config init &&
-            arduino-cli core update-index &&
-            arduino-cli core install arduino:avr
-          "
-
-    - name: Configure Arduino CLI
-      run: |
-        arduino-cli config init
-        arduino-cli core update-index
-        arduino-cli core install arduino:avr
+      args: |
+        -c "
+          arduino-cli config init &&
+          arduino-cli core update-index &&
+          arduino-cli core install arduino:avr
+        "
 
     - name: Replace Secret Placeholder
       run: |
@@ -36,6 +30,10 @@ jobs:
     - name: Build Arduino Sketch
       run: |
         arduino-cli compile --fqbn arduino:avr:uno Cloudy-with-a-Chance-of-LoRa/feather_sensors/sensor_f6
+
+    - name: List Serial Ports
+      run: |
+        ls /dev/tty*
 
     - name: Upload to Arduino
       run: |
