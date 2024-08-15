@@ -1,0 +1,37 @@
+name: Build and Upload Arduino
+
+on:
+  push:
+    branches:
+      - sc-test-sensor  # Target branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Arduino CLI
+      uses: arduino/arduino-cli-action@v1
+      with:
+        arduino-cli-version: '0.24.0'
+
+    - name: Configure Arduino CLI
+      run: |
+        arduino-cli config init
+        arduino-cli core update-index
+        arduino-cli core install arduino:avr
+
+    - name: Replace Secret Placeholder
+      run: |
+        sed -i 's/FEATHER_PLACEHOLDER/${{ secrets.FEATHER_F6 }}/g' Cloudy-with-a-Chance-of-LoRa/feather_sensors/sensor_f6/Secrets.h
+
+    - name: Build Arduino Sketch
+      run: |
+        arduino-cli compile --fqbn arduino:avr:uno Cloudy-with-a-Chance-of-LoRa/feather_sensors/sensor_f6
+
+    - name: Upload to Arduino
+      run: |
+        arduino-cli upload -p /dev/ttyACM0 --fqbn arduino:avr:uno Cloudy-with-a-Chance-of-LoRa/feather_sensors/sensor_f6
