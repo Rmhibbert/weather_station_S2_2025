@@ -14,10 +14,22 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up Arduino CLI
+    - name: Install Arduino CLI
       run: |
-        sudo apt update
-        sudo apt install -y arduino-cli
+        # Download the latest Arduino CLI release
+        wget https://downloads.arduino.cc/arduino-cli/arduino-cli_latest_Linux_amd64.tar.gz
+        
+        # Extract the downloaded tarball
+        tar -xvf arduino-cli_latest_Linux_amd64.tar.gz
+        
+        # Move the binary to /usr/local/bin for global access
+        sudo mv arduino-cli /usr/local/bin/
+        
+        # Verify the installation
+        arduino-cli version
+
+    - name: Configure Arduino CLI
+      run: |
         arduino-cli config init
         arduino-cli core update-index
         arduino-cli core install arduino:avr
