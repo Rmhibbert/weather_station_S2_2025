@@ -12,9 +12,6 @@ app.use(
   })
 )
 
-app.get('/', (request, response) => {
-    response.json({ info: 'Node.js, Express, and Postgres API' })
-})
 
 app.get('/data', async (req, res) => {
     try {
@@ -26,6 +23,27 @@ app.get('/data', async (req, res) => {
     }
   });
   
+  app.post('/receive-data', async (req, res) => {
+    try {
+      const device_id = req.body.end_device_ids.device_id;
+      const humidity = req.body.uplink_message.decoded_payload.humidity;
+      const temperature = req.body.uplink_message.decoded_payload.temperature;
+
+      if (!device_id || typeof temperature !== 'number' || typeof humidity !== 'number') {
+        return res.status(400).send('Invalid data');
+      }
+  
+      await pool.query(
+        'INSERT INTO sensor_data (device_id, temperature, humidity) VALUES ($1, $2, $3)',
+        [device_id, temperature, humidity]
+      );
+  
+      res.status(200).send('Data received');
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Server Error');
+    }
+  });
 
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)

@@ -1,12 +1,12 @@
 const { Pool } = require('pg');
+require('dotenv').config();
 
-// Create a new pool instance
 const pool = new Pool({
-  user: 'postgres',      // Replace with your PostgreSQL username
-  host: 'localhost',         // Replace with your PostgreSQL host, 'localhost' for local
-  database: 'postgres',  // Replace with your PostgreSQL database name
-  password: 'P@ssw0rd',  // Replace with your PostgreSQL password
-  port: 5432,                // Default PostgreSQL port
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
 });
 
 // Export the pool instance
