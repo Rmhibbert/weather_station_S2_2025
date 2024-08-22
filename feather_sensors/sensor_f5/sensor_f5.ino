@@ -20,6 +20,18 @@
 // cycle limitations).
 const unsigned TX_INTERVAL = 60;
 
+void os_getArtEui(uint8_t* buf) {
+  memcpy_P(buf, APPEUI, 8);
+}
+
+void os_getDevEui(uint8_t* buf) {
+  memcpy_P(buf, DEVEUI, 8);
+}
+
+void os_getDevKey(uint8_t* buf) {
+  memcpy_P(buf, APPKEY, 16);
+}
+
 // Pin mapping
 const lmic_pinmap lmic_pins = {
     .nss = 8,
