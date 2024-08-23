@@ -12,6 +12,13 @@ app.use(
   })
 )
 
+app.get("/", async (req, res) => {
+  try {
+    res.json({data: "test"})
+  } catch (error) {
+    
+  }
+})
 
 app.get('/data', async (req, res) => {
     try {
