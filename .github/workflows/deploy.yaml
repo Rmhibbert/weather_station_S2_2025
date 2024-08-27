@@ -13,9 +13,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Docker Build
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-      
+
       - name: Build Docker image
         run: |
           docker build -t cloudy-with-a-chance-of-lora:latest .
@@ -25,23 +25,19 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      
-      - name: Push Docker image
+
+      - name: Push Docker image to Docker Hub
         run: |
           docker tag cloudy-with-a-chance-of-lora:latest bitiot/cloudy-with-a-chance-of-lora:latest
           docker push bitiot/cloudy-with-a-chance-of-lora:latest
 
-
       - name: Deploy to server
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
             docker pull bitiot/cloudy-with-a-chance-of-lora:latest && \
             docker stop my-running-container || true && \
             docker rm my-running-container || true && \
             docker run -d --name my-running-container -p 3000:3000 bitiot/cloudy-with-a-chance-of-lora:latest"
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        # Use ssh-agent to load private key
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
