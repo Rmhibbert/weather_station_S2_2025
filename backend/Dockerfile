@@ -1,15 +1,29 @@
 # Use an official base image
 FROM ubuntu:latest
 
-# Install Git (and any other required tools)
-RUN apt-get update && apt-get install -y git
+# Set environment variables
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Clone the repository
-RUN git clone https://github.com/OtagoPolytechnic/Cloudy-with-a-Chance-of-LoRa.git .
+# Install required tools
+RUN apt-get update && \
+    apt-get install -y \
+    git \
+    nodejs \
+    npm && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-# Install NPM dependencies 
-RUN npm i 
+# Set the working directory
+WORKDIR /app
 
+# Clone the repository if it does not already exist
+RUN git clone https://github.com/OtagoPolytechnic/Cloudy-with-a-Chance-of-LoRa.git . || echo "Repository already cloned"
+
+# Install NPM dependencies
+RUN npm install || echo "Failed to install NPM dependencies"
+
+# Expose port (if your application runs on a specific port)
+EXPOSE 3000
 
 # Command to run when the container starts
 CMD ["bash"]
