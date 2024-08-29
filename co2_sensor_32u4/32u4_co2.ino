@@ -55,6 +55,9 @@ void setup() {
   Serial1.begin(9600);
 
   myMHZ19.begin(Serial1);    // Initialize the sensor with hardware serial port 1
+  
+  delay(20000000); // Warmup delay before calibration
+  
   myMHZ19.autoCalibration();  // Turn auto calibration ON (use false to turn it OF
   myMHZ19.setRange(5000);
 
