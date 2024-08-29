@@ -54,7 +54,6 @@ void setup() {
 
   Serial1.begin(9600);
 
-  //mySerial.begin(9600);
   myMHZ19.begin(Serial1);    // Initialize the sensor with hardware serial port 1
   myMHZ19.autoCalibration();  // Turn auto calibration ON (use false to turn it OF
   myMHZ19.setRange(5000);
@@ -77,8 +76,7 @@ void setup() {
 }
 
 void loop() {
-  Serial.println("Starting Loop");
-
+  
   // Read the temperature from the DHT22
   float temperature = myMHZ19.getTemperature();  // Request Temperature (Celsius)
   Serial.print("Temperature: ");
@@ -112,8 +110,6 @@ void loop() {
   }
   Serial.println();
 
-  Serial.println("4");
-
   //identify destination port
   uint8_t framePort = 2;
 
@@ -137,7 +133,7 @@ void loop() {
 
   //sending interval 5 minutes
   //delay(300000);
-  delay(30000);
+  delay(60000); // 1 minute
 }
 
 uint16_t encodeFixedPoint(float value) {
