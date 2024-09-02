@@ -3,3 +3,4 @@ torchvision==0.15.1
 Flask==2.0.1
 Pillow==8.2.0
 Werkzeug==2.0.3
+gradio
