@@ -2,7 +2,7 @@
 const Temp = () => {
     return(
         <>
-            <h1>Temporary component</h1>
+            <h1>Website in progress</h1>
         </>
     )
 }
