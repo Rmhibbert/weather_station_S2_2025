@@ -4,7 +4,7 @@
 We are using the LoRaWan/The Things Network to create a weather station that transmits data. 
 
 Team members:\
-Kieran Black\
+Kieren Black\
 Jackson Williamson\
 Bejamin Campbell-Nelson\
 Samantha Craig\
