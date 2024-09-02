@@ -24,19 +24,19 @@ def load_model(model_path, num_classes):
     return model
 
 # Preprocess the input image
-def preprocess_image(image):
+def preprocess_image(image_path):
     transform = transforms.Compose([
         transforms.Resize(224),
         transforms.CenterCrop(224),
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ])
-    image = Image.open(image).convert("RGB")
+    image = Image.open(image_path).convert("RGB")
     return transform(image).unsqueeze(0)  # Add batch dimension
 
 # Function to make a prediction
-def predict(image, model, class_names):
-    image_tensor = preprocess_image(image)
+def predict(image_path, model, class_names):
+    image_tensor = preprocess_image(image_path)
     with torch.no_grad():
         outputs = model(image_tensor)
         probabilities = F.softmax(outputs, dim=1)
@@ -45,18 +45,19 @@ def predict(image, model, class_names):
         return class_names[predicted.item()], confidence
 
 # Load the model
-model_path = "Cloud AI Model/VisionTransformer_with_crop_final_model.pth"  # Replace with your model path
+model_path = "VisionTransformer_with_crop_final_model.pth"  # Replace with your model path
 class_names = ['AC','As','Cb','Cc','Ci','Cs','Ct','Cu','Ns','Sc','St']  # Replace with your actual class names
 model = load_model(model_path, num_classes=len(class_names))
 
 # Gradio interface
-def classify_image(image):
-    predicted_class, confidence = predict(image, model, class_names)
-    return f"Prediction: {predicted_class} (Confidence: {confidence:.2f})"
+def classify_image(image_path):
+    predicted_class, confidence = predict(image_path, model, class_names)
+    return f"Prediction: {predicted_class}\nConfidence: {confidence:.2f}"
+
 
 gr.Interface(
     fn=classify_image,
-    inputs=gr.inputs.Image(type="file"),
+    inputs=gr.Image(type="filepath"),
     outputs="text",
     title="Vision Transformer Image Classification"
 ).launch()
