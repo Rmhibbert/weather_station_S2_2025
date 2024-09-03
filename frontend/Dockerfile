@@ -1,12 +1,12 @@
-# backend/Dockerfile
+# frontend/Dockerfile
 # Use an official Node.js runtime as a parent image
 FROM node:20.13.1
 
-# Working directory in the container
+# Set the working directory in the container
 WORKDIR /Cloudy-with-a-Chance-of-LoRa/backend
 
 # Copy the package.json and package-lock.json files
-COPY backend/package*.json ./
+COPY frontend/package*.json ./
 
 # Install NVM and Node.js
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash && \
@@ -17,7 +17,13 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | b
     nvm alias default 20.13.1
 
 # Copy the rest of the application code
-COPY backend/ .
+COPY frontend/ .
 
-# Run the application
-CMD ["npm", "run", "start"]
+# Build the frontend application
+RUN npm run build
+
+# Install a lightweight HTTP server to serve the build
+RUN npm install -g serve
+
+# Serve the build directory
+CMD ["serve", "-s", "build", "-l", "42335"]
