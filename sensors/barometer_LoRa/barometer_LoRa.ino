@@ -11,9 +11,20 @@
 #define LORA_DIO0 26
 
 // LoRaWAN settings
-const char *appEui = "0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00";       // Replace with your App EUI
-const char *appKey = "0xA9, 0x2C, 0xB7, 0x16, 0x17, 0x68, 0xED, 0x2C, 0x5F, 0xE1, 0xDE, 0x49, 0x0D, 0xC0, 0xAF, 0xB9";       // Replace with your App Key
+static const PROGMEM u1_t NWKSKEY[16] = { 0x4E, 0x2E, 0x30, 0x9B, 0x7C, 0x06, 0xD2, 0x03, 0xCB, 0x50, 0x29, 0x10, 0x69, 0xDC, 0x57, 0xEA };
+
+// LoRaWAN AppSKey, application session key
+static const u1_t PROGMEM APPSKEY[16] = { 0x18, 0xBD, 0x18, 0x86, 0x36, 0x48, 0x87, 0x68, 0xA6, 0xC5, 0xE6, 0x78, 0x95, 0xEC, 0x36, 0x77 };
+
+static const u4_t DEVADDR = 0x260DAB75 ; 
+
 const long frequency = 915E6;  // Australia frequency
+
+void os_getArtEui (u1_t* buf) { }
+void os_getDevEui (u1_t* buf) { }
+void os_getDevKey (u1_t* buf) { }
+
+static osjob_t sendjob;
 
 void setup() {
   Wire.begin();    // begin Wire(I2C)
@@ -24,7 +35,10 @@ void setup() {
   SPL_init(); // Setup initial SPL chip registers - default i2c address 0x76  
 
   // Initialize LoRa
-  LoRa.setPins(LORA_SS, LORA_RST, LORA_DIO0);  // Set the LoRa shield pins
+  LoRa.setPins(LORA_SS, LORA_RST, LORA_DIO0);  // Set the LoRa shield pins, must be set before begin
+
+  LoRa.begin(frequency); //Intialise the LoRa module
+
   if (!LoRa.begin(frequency)) {
     Serial.println("Starting LoRa failed!");
     while (1);
