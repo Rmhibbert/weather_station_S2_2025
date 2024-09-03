@@ -1,6 +1,6 @@
-torch==2.0.0
-torchvision==0.15.1
-Flask==2.0.1
-Pillow==8.2.0
-Werkzeug==2.0.3
+torch
+torchvision
+Flask
+Pillow
+Werkzeug
 gradio
