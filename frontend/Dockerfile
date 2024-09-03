@@ -25,5 +25,8 @@ RUN npm run build
 # Install a lightweight HTTP server to serve the build
 RUN npm install -g serve
 
+EXPOSE 80
+EXPOSE 443
+
 # Serve the build directory
 CMD ["serve", "-s", "build", "-l", "42335"]

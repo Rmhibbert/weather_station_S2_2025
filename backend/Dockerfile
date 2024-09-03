@@ -19,5 +19,7 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | b
 # Copy the rest of the application code
 COPY backend/ .
 
+EXPOSE 3000
+
 # Run the application
 CMD ["npm", "run", "start"]
