@@ -6,7 +6,7 @@ FROM node:20.13.1
 WORKDIR /Cloudy-with-a-Chance-of-LoRa/backend
 
 # Copy the package.json and package-lock.json files
-COPY backend/package*.json ./
+COPY /package*.json ./
 
 # Install NVM and Node.js
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash && \
@@ -17,7 +17,7 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | b
     nvm alias default 20.13.1
 
 # Copy the rest of the application code
-COPY backend/ .
+COPY . .
 
 EXPOSE 3000
 

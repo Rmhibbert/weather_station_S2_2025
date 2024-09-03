@@ -3,10 +3,10 @@
 FROM node:20.13.1
 
 # Set the working directory in the container
-WORKDIR /Cloudy-with-a-Chance-of-LoRa/backend
+WORKDIR /Cloudy-with-a-Chance-of-LoRa/frontend
 
 # Copy the package.json and package-lock.json files
-COPY frontend/package*.json ./
+COPY /package*.json ./
 
 # Install NVM and Node.js
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash && \
@@ -17,7 +17,7 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | b
     nvm alias default 20.13.1
 
 # Copy the rest of the application code
-COPY frontend/ .
+COPY . .
 
 # Build the frontend application
 RUN npm run build
