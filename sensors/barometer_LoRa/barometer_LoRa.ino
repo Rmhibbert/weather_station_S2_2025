@@ -1,78 +1,94 @@
 #include <SPL06-007.h>
 #include <Wire.h>
-#include <SPI.h>
-#include <LoRa.h>
 
-#define LORA_SCK 5    
-#define LORA_MISO 19 
-#define LORA_MOSI 27  
-#define LORA_SS 18  
-#define LORA_RST 14 
-#define LORA_DIO0 26
+#include <SPI.h>
+#include <lmic.h>
+#include <hal/hal.h>
 
 // LoRaWAN settings
-static const PROGMEM u1_t NWKSKEY[16] = { 0x4E, 0x2E, 0x30, 0x9B, 0x7C, 0x06, 0xD2, 0x03, 0xCB, 0x50, 0x29, 0x10, 0x69, 0xDC, 0x57, 0xEA };
+static const u1_t PROGMEM APPEUI[8]={ 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+void os_getArtEui (u1_t* buf) { memcpy_P(buf, APPEUI, 8);}
 
-// LoRaWAN AppSKey, application session key
-static const u1_t PROGMEM APPSKEY[16] = { 0x18, 0xBD, 0x18, 0x86, 0x36, 0x48, 0x87, 0x68, 0xA6, 0xC5, 0xE6, 0x78, 0x95, 0xEC, 0x36, 0x77 };
+static const u1_t PROGMEM DEVEUI[8]={ 0x34, 0x96, 0x06, 0xD0, 0x7E, 0xD5, 0xB3, 0x70 };
+void os_getDevEui (u1_t* buf) { memcpy_P(buf, DEVEUI, 8);}
 
-static const u4_t DEVADDR = 0x260DAB75 ; 
+static const u1_t PROGMEM APPKEY[16] = { 0xA9, 0x2C, 0xB7, 0x16, 0x17, 0x68, 0xED, 0x2C, 0x5F, 0xE1, 0xDE, 0x49, 0x0D, 0xC0, 0xAF, 0xB9 };
+void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}
 
-const long frequency = 915E6;  // Australia frequency
-
-void os_getArtEui (u1_t* buf) { }
-void os_getDevEui (u1_t* buf) { }
-void os_getDevKey (u1_t* buf) { }
-
+char payload[64];  
 static osjob_t sendjob;
 
+const unsigned TX_INTERVAL = 60;
+
+// Pin mapping for Dragino Shield
+const lmic_pinmap lmic_pins = {
+    .nss = 10,
+    .rxtx = LMIC_UNUSED_PIN,
+    .rst = 9,
+    .dio = {2, 6, 7},
+};
+
 void setup() {
-  Wire.begin();    // begin Wire(I2C)
-  Serial.begin(9600); // begin Serial
+    Wire.begin();
+    Serial.begin(9600);
+    Serial.println(F("Starting"));
 
-  Serial.println("\nGoertek-SPL06-007 Demo\n");
+    // LMIC init
+    os_init();
+    // Reset the MAC state. Session and pending data transfers will be discarded.
+    LMIC_reset();
 
-  SPL_init(); // Setup initial SPL chip registers - default i2c address 0x76  
+    SPL_init();
+    // Start job (sending automatically starts OTAA too)
+    do_send(&sendjob);
+}
 
-  // Initialize LoRa
-  LoRa.setPins(LORA_SS, LORA_RST, LORA_DIO0);  // Set the LoRa shield pins, must be set before begin
+void onEvent (ev_t ev) {
+    Serial.print(os_getTime());
+    Serial.print(": ");
+    switch(ev) {
+        case EV_JOINED:
+            Serial.println(F("EV_JOINED"));
+            LMIC_setLinkCheckMode(0);
+            break;
+        case EV_TXCOMPLETE:
+            Serial.println(F("EV_TXCOMPLETE (includes waiting for RX windows)"));
+            if (LMIC.txrxFlags & TXRX_ACK)
+              Serial.println(F("Received ack"));
+            if (LMIC.dataLen) {
+              Serial.print(F("Received "));
+              Serial.print(LMIC.dataLen);
+              Serial.println(F(" bytes of payload"));
+            }
+            os_setTimedCallback(&sendjob, os_getTime() + sec2osticks(TX_INTERVAL), do_send);
+            break;
+        default:
+            Serial.print(F("Unknown event: "));
+            Serial.println((unsigned) ev);
+            break;
+    }
+}
 
-  LoRa.begin(frequency); //Intialise the LoRa module
-
-  if (!LoRa.begin(frequency)) {
-    Serial.println("Starting LoRa failed!");
-    while (1);
-  }
-
-  Serial.println("LoRa Initializing OK!");
+void do_send(osjob_t* j){
+    // Check if there is not a current TX/RX job running
+    if (LMIC.opmode & OP_TXRXPEND) {
+        Serial.println(F("OP_TXRXPEND, not sending"));
+    } else {
+        // Read sensor data
+        double temperature = get_temp_c();
+        double pressure = get_pressure();
+        double altitude = get_altitude(pressure, 1011.3); // Sea level pressure as 1011.3 mb
+        
+        // Format payload
+        snprintf(payload, sizeof(payload), "T:%.2f P:%.2f A:%.2f", temperature, pressure, altitude);
+        
+        // Prepare upstream data transmission at the next possible time
+        LMIC_setTxData2(1, (uint8_t*)payload, strlen(payload), 0);
+        Serial.println(F("Packet queued"));
+    }
+    // Next TX is scheduled after TX_COMPLETE event.
 }
 
 void loop() {
-  // ---- Sensor Data ----------------
-  String sensorData = "";
-
-  sensorData += "ID: ";
-  sensorData += String(get_spl_id()) + "; ";
-
-  sensorData += "Temperature: ";
-  sensorData += String(get_temp_c(), 1) + "C; ";
-
-  sensorData += "Pressure: ";
-  sensorData += String(get_pressure(), 2) + " mb; ";
-
-  sensorData += "Altitude: ";
-  sensorData += String(get_altitude(get_pressure(), 1011.3), 1) + " m; ";
-
-  // Send data
-  sendToTTN(sensorData);
-
-  delay(2000); // Delay between readings
-}
-
-void sendToTTN(String data) {
-  LoRa.beginPacket();
-  LoRa.print(data);
-  LoRa.endPacket();
-  
-  Serial.println("Data sent: " + data);
+    os_runloop_once();
 }
