@@ -6,13 +6,13 @@
 #include <hal/hal.h>
 
 // LoRaWAN settings
-static const u1_t PROGMEM APPEUI[8]={ 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+static const u1_t PROGMEM APPEUI[8]={ /*Fill me in*/ };
 void os_getArtEui (u1_t* buf) { memcpy_P(buf, APPEUI, 8);}
 
-static const u1_t PROGMEM DEVEUI[8]={ 0x34, 0x96, 0x06, 0xD0, 0x7E, 0xD5, 0xB3, 0x70 };
+static const u1_t PROGMEM DEVEUI[8]={ /*Fill me in*/ };
 void os_getDevEui (u1_t* buf) { memcpy_P(buf, DEVEUI, 8);}
 
-static const u1_t PROGMEM APPKEY[16] = { 0xA9, 0x2C, 0xB7, 0x16, 0x17, 0x68, 0xED, 0x2C, 0x5F, 0xE1, 0xDE, 0x49, 0x0D, 0xC0, 0xAF, 0xB9 };
+static const u1_t PROGMEM APPKEY[16] = { /*Fill me in*/ };
 void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}
 
 char payload[64];  
@@ -48,43 +48,49 @@ void onEvent (ev_t ev) {
     Serial.print(": ");
     switch(ev) {
         case EV_JOINED:
-            Serial.println(F("EV_JOINED"));
+            //Serial.println(F("EV_JOINED"));
             LMIC_setLinkCheckMode(0);
             break;
         case EV_TXCOMPLETE:
-            Serial.println(F("EV_TXCOMPLETE (includes waiting for RX windows)"));
+            //Serial.println(F("EV_TXCOMPLETE (includes waiting for RX windows)"));
             if (LMIC.txrxFlags & TXRX_ACK)
-              Serial.println(F("Received ack"));
+              //Serial.println(F("Received ack"));
             if (LMIC.dataLen) {
-              Serial.print(F("Received "));
-              Serial.print(LMIC.dataLen);
-              Serial.println(F(" bytes of payload"));
+              //Serial.print(F("Received "));
+              //Serial.print(LMIC.dataLen);
+              //Serial.println(F(" bytes of payload"));
             }
             os_setTimedCallback(&sendjob, os_getTime() + sec2osticks(TX_INTERVAL), do_send);
             break;
         default:
-            Serial.print(F("Unknown event: "));
-            Serial.println((unsigned) ev);
+            //Serial.print(F("Unknown event: "));
+            //Serial.println((unsigned) ev);
             break;
     }
 }
-
-void do_send(osjob_t* j){
+void do_send(osjob_t* j) {
     // Check if there is not a current TX/RX job running
     if (LMIC.opmode & OP_TXRXPEND) {
-        Serial.println(F("OP_TXRXPEND, not sending"));
+        //Serial.println(F("OP_TXRXPEND, not sending"));
     } else {
         // Read sensor data
         double temperature = get_temp_c();
         double pressure = get_pressure();
-        double altitude = get_altitude(pressure, 1011.3); // Sea level pressure as 1011.3 mb
-        
-        // Format payload
-        snprintf(payload, sizeof(payload), "T:%.2f P:%.2f A:%.2f", temperature, pressure, altitude);
+        double altitude = get_altitude(get_pressure(), 1011.3); // Sea level pressure as 1011.3 mb
+
+        // Check if sensor readings are valid
+        if (isnan(temperature) || isnan(pressure) || isnan(altitude)) {
+            //Serial.println(F("Error reading sensor data"));
+            snprintf(payload, sizeof(payload), "Error");
+        } else {
+            // Format payload 
+            // Payload decoder is on GitHub
+            snprintf(payload, sizeof(payload), "T:%.2f P:%.2f A:%.2f", temperature, pressure, altitude);
+        }
         
         // Prepare upstream data transmission at the next possible time
         LMIC_setTxData2(1, (uint8_t*)payload, strlen(payload), 0);
-        Serial.println(F("Packet queued"));
+        //Serial.println(F("Packet queued"));
     }
     // Next TX is scheduled after TX_COMPLETE event.
 }

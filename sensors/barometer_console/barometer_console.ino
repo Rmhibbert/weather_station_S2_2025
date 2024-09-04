@@ -107,5 +107,5 @@ void loop() {
   Serial.print("Altitude: ");
   Serial.print(get_altitude_f(get_pressure(), local_pressure), 1); // Convert from meters to feet
   Serial.println(" ft");
-  delay(2000); // Delay between readings
+  delay(10000); // Delay between readings
 }
