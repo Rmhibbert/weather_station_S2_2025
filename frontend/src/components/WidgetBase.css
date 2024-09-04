@@ -1,0 +1,11 @@
+.widget {
+    background-color: grey;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  
