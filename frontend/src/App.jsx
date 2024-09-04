@@ -6,7 +6,8 @@ function App() {
 
   return (
     <>
-        <h1>Cloudy with a chance of Lora</h1>
+        <h1>Cloudy with a chance of LoRa</h1>
+        <h1>website coming soon</h1>
     </>
   )
 }
