@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Header from './components/Header/Header';
 import Temperature from './components/Temperature/Temperature';
 import AirPressure from './components/AirPressure/AirPressure';
 import Webcam from './components/Webcam/Webcam';
@@ -14,12 +15,31 @@ function App() {
 
   return (
     <div className="app-container">
+      <Header />
       <div className="widgets">
         <Temperature temperature={temperature} />
         <AirPressure airPressure={airPressure} />
         <Humidity humidity={humidity} />
         <Wind wind={wind} />
         <Webcam />
+        <Temperature temperature={temperature} />
+        <AirPressure airPressure={airPressure} />
+        <Humidity humidity={humidity} />
+        <Wind wind={wind} />
+        <Temperature temperature={temperature} />
+        <AirPressure airPressure={airPressure} />
+        <Humidity humidity={humidity} />
+        <Wind wind={wind} />
+        <Webcam />
+        <Temperature temperature={temperature} />
+        <AirPressure airPressure={airPressure} />
+        <Humidity humidity={humidity} />
+        <Wind wind={wind} />
+        <Webcam />
+        <Temperature temperature={temperature} />
+        <AirPressure airPressure={airPressure} />
+        <Humidity humidity={humidity} />
+        <Wind wind={wind} />
         <Temperature temperature={temperature} />
         <AirPressure airPressure={airPressure} />
         <Humidity humidity={humidity} />
