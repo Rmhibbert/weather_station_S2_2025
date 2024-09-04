@@ -20,6 +20,11 @@ function App() {
         <Humidity humidity={humidity} />
         <Wind wind={wind} />
         <Webcam />
+        <Temperature temperature={temperature} />
+        <AirPressure airPressure={airPressure} />
+        <Humidity humidity={humidity} />
+        <Wind wind={wind} />
+        <Webcam />
       </div>
     </div>
   );

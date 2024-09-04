@@ -7,6 +7,7 @@
   min-width: 100vw;
   background: url('./assets/background-image.jpg') ;
   background-size: 100vw 100vh;
+  background-attachment: fixed;
   color: white;
 }
 
