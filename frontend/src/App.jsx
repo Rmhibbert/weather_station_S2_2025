@@ -1,15 +1,27 @@
 import { useState } from 'react'
+import Temperature from './components/Temperature/Temperature';
+import AirPressure from './components/AirPressure/AirPressure';
+import Webcam from './components/Webcam/Webcam';
+import Humidity from './components/Humidity/Humidity';
+import Wind from './components/Wind/Wind';
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [temperature] = useState('20°C'); 
+  const [airPressure] = useState('1013 hPa');
+  const [humidity] = useState('123');
+  const [wind] = useState('fast')
+ 
 
   return (
-    <>
-        <h1>Cloudy with a chance of LoRa</h1>
-        <h1>website coming soon</h1>
-    </>
-  )
+    <div className="App">
+      <Temperature temperature={temperature} />
+      <AirPressure airPressure={airPressure} />
+      <Humidity humidity={humidity} />
+      <Wind wind={wind} />
+      <Webcam />
+    </div>
+  );
 }
 
 export default App
