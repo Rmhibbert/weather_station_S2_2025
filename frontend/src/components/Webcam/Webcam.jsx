@@ -6,7 +6,7 @@ const Webcam = () => {
   return (
     <div className="widget webcam">
       <div className="placeholder-content">
-        <p>Webcam Feed Placeholder</p>
+        <h2>Webcam Feed Placeholder</h2>
       </div>
     </div>
   );
