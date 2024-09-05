@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Header from './components/Header/Header';
 import Widget from './components/widget'
 import './App.css';
 import Webcam from './components/Webcam/Webcam'
@@ -9,7 +8,6 @@ function App() {
 
   return (
     <div className="app-container">
-      <Header />
       <div className="widgets">
       <Widget name={'Temperature'} data={data}/>
       <Widget name={'Air Pressure'} data={data}/>
