@@ -1,11 +1,8 @@
 import { useState } from 'react';
 import Header from './components/Header/Header';
-import Temperature from './components/Temperature/Temperature';
-import AirPressure from './components/AirPressure/AirPressure';
-import Webcam from './components/Webcam/Webcam';
-import Humidity from './components/Humidity/Humidity';
-import Wind from './components/Wind/Wind';
+import Widget from './components/widget'
 import './App.css';
+import Webcam from './components/Webcam/Webcam'
 
 function App() {
   const [temperature] = useState('20°C'); 
@@ -17,34 +14,12 @@ function App() {
     <div className="app-container">
       <Header />
       <div className="widgets">
-        <Temperature temperature={temperature} />
-        <AirPressure airPressure={airPressure} />
-        <Humidity humidity={humidity} />
-        <Wind wind={wind} />
-        <Webcam />
-        <Temperature temperature={temperature} />
-        <AirPressure airPressure={airPressure} />
-        <Humidity humidity={humidity} />
-        <Wind wind={wind} />
-        <Temperature temperature={temperature} />
-        <AirPressure airPressure={airPressure} />
-        <Humidity humidity={humidity} />
-        <Wind wind={wind} />
-        <Webcam />
-        <Temperature temperature={temperature} />
-        <AirPressure airPressure={airPressure} />
-        <Humidity humidity={humidity} />
-        <Wind wind={wind} />
-        <Webcam />
-        <Temperature temperature={temperature} />
-        <AirPressure airPressure={airPressure} />
-        <Humidity humidity={humidity} />
-        <Wind wind={wind} />
-        <Temperature temperature={temperature} />
-        <AirPressure airPressure={airPressure} />
-        <Humidity humidity={humidity} />
-        <Wind wind={wind} />
-        <Webcam />
+      <Widget name={'Temperature'} data={temperature}/>
+      <Widget name={'AirPressure'} data={airPressure}/>
+      <Widget name={'Humidity'} data={humidity}/>
+      <Widget name={'Wind'} data={wind}/>
+      <Webcam />
+    
       </div>
     </div>
   );

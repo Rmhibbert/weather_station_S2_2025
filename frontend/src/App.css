@@ -5,7 +5,8 @@
   align-items: center;
   min-height: 100vh;
   min-width: 100vw;
-  background: url('./assets/background-image.jpg') ;
+  /* background: url('./assets/background-image.jpg') ;*/
+  background-color: #87CEEB;
   background-size: 100vw 100vh;
   background-attachment: fixed;
   color: white;
