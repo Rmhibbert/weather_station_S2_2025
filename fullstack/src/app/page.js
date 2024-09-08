@@ -1,9 +1,10 @@
-import styles from "./page.module.css";
-
+import Container from "@/components/container";
+import "./page.css";
 export default function Home() {
+
   return (
-    <div className={styles.page}>
-      <h1>Fullstack</h1>
+    <div className="app-container">
+      <Container />
     </div>
   );
 }
