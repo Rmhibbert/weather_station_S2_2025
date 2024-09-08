@@ -15,7 +15,7 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | b
     nvm install 20.13.1 && \
     nvm use 20.13.1 && \
     nvm alias default 20.13.1
-
+    
 # Copy the rest of the application code
 COPY . .
 
@@ -28,5 +28,4 @@ RUN npm install -g serve
 EXPOSE 80
 EXPOSE 443
 
-# Serve the build directory
 CMD ["serve", "-s", "build", "-l", "42335"]
