@@ -32,8 +32,9 @@ export const POST = async (request) => {
 
 export const GET = async () => {
     try {
-        return new Response(JSON.stringify({ message: 'Data received' }), {
-            headers: { 'Content-Type': 'application/json' },
+        const data = await db.any('SELECT * FROM sensor_pressure');
+
+        return new Response(JSON.stringify(data), {
             status: 200
         });
     } catch (err) {
