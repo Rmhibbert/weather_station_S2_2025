@@ -101,7 +101,7 @@ void loop() {
 
   //sending interval 5 minutes
   //delay(300000);
-  delay(5000); // 1 minute
+  delay(30000); // 1 minute
 }
 
 void requestEvent() {
