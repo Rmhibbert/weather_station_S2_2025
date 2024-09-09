@@ -120,7 +120,7 @@ void do_send(osjob_t* j) {
     float temperature = get_temp_c();
     float pressure = get_pressure();
 
-    temperature = (temperature + temperatureR) / 2;
+    if (CO2R != 0) temperature = (temperature + temperatureR) / 2;
 
     Serial.print("Temp: ");
     Serial.println(temperature);
