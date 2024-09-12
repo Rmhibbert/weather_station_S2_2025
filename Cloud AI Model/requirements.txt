@@ -1,0 +1,6 @@
+torch
+torchvision
+Flask
+Pillow
+Werkzeug
+gradio
