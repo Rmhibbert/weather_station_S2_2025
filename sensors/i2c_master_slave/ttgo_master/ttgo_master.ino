@@ -25,7 +25,7 @@ unsigned char payload[5];
 unsigned char payloadR[5];
 static osjob_t sendjob;
 
-const unsigned TX_INTERVAL = 10;
+const unsigned TX_INTERVAL = 200;
 
 // State variable to track which payload to send
 int payloadState = 0;  // 0 = temperature/pressure, 1 = temperature/CO2

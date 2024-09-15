@@ -70,18 +70,18 @@ void loop() {
     rainfall = rainPulseCount * 0.2794;
 
     // Print sensor values to the serial monitor
-    Serial.print("Temperature: ");
-    Serial.print(temperature);
-    Serial.println(" *C");
-    Serial.print("CO2: ");
-    Serial.print(CO2);
-    Serial.println(" ppm");
-    Serial.print("Wind Speed: ");
-    Serial.print(windSpeed);
-    Serial.println(" m/s");
-    Serial.print("Total Rainfall: ");
-    Serial.print(rainfall);
-    Serial.println(" mm");
+    // Serial.print("Temperature: ");
+    // Serial.print(temperature);
+    // Serial.println(" *C");
+    // Serial.print("CO2: ");
+    // Serial.print(CO2);
+    // Serial.println(" ppm");
+    // Serial.print("Wind Speed: ");
+    // Serial.print(windSpeed);
+    // Serial.println(" m/s");
+    // Serial.print("Total Rainfall: ");
+    // Serial.print(rainfall);
+    // Serial.println(" mm");
 
     // Encode all sensor data
     uint16_t payloadTemp = encodeFixedPoint(temperature);
@@ -101,12 +101,12 @@ void loop() {
     payload[8] = 0;  // Reserved or checksum byte (optional)
 
     // Print payload for debugging
-    Serial.print("Payload: ");
-    for (int i = 0; i < sizeof(payload); i++) {
-      Serial.print(payload[i], HEX);
-      Serial.print(" ");
-    }
-    Serial.println();
+  //   Serial.print("Payload: ");
+  //   for (int i = 0; i < sizeof(payload); i++) {
+  //     Serial.print(payload[i], HEX);
+  //     Serial.print(" ");
+  //   }
+  //   Serial.println();
   }
 
   // Daily reset of rainfall
