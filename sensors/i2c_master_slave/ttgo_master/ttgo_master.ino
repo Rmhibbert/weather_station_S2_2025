@@ -5,6 +5,9 @@
 #include <lmic.h>
 #include <hal/hal.h>
 
+#include "esp_system.h"  // For watchdog timer
+#include <esp_task_wdt.h>
+
 // LoRaWAN settings
 static const u1_t PROGMEM APPEUI[8] = { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02 };
 void os_getArtEui(u1_t* buf) {
@@ -45,12 +48,6 @@ void setup() {
 
   Wire.requestFrom(0x08, 9);  // Request 2 bytes from the slave
   Wire.readBytes(payloadR, 9);
-  Serial.print("Received Data: ");
-  for (int i = 0; i < 9; i++) {
-    Serial.print(payloadR[i], HEX);
-    Serial.print(" ");
-  }
-  Serial.println();
 
   // Decode the first two bytes as temperature
   float temperature = decodeTemperature(payloadR[0], payloadR[1]);
@@ -58,18 +55,29 @@ void setup() {
   // Decode the next two bytes as CO2
   float CO2 = decodeCO2(payloadR[2], payloadR[3]);
 
-  Serial.print("Decoded Temperature: ");
-  Serial.println(temperature);
-
-  Serial.print("Decoded CO2: ");
-  Serial.println(CO2);
-
   // LMIC init
   os_init();
   // Reset the MAC state. Session and pending data transfers will be discarded.
   LMIC_reset();
 
   SPL_init();
+
+  // Configure the watchdog timer
+  esp_task_wdt_config_t wdt_config = {
+      .timeout_ms = 10000  // Timeout of 10 seconds in milliseconds
+  };
+
+  // Initialize the watchdog timer with the config structure
+  esp_err_t result = esp_task_wdt_init(&wdt_config);
+  if (result == ESP_OK) {
+    Serial.println("Watchdog initialized");
+  } else {
+    Serial.println("Failed to initialize watchdog");
+  }
+
+  // Add the current task (loop) to the watchdog
+  esp_task_wdt_add(NULL);
+
   // Start job (sending automatically starts OTAA too)
   do_send(&sendjob);
 }
@@ -82,9 +90,17 @@ void onEvent(ev_t ev) {
       LMIC_setLinkCheckMode(0);
       break;
 
+    case EV_JOIN_FAILED:
+      Serial.println(F("Join failed, retrying..."));
+      LMIC_reset();
+      do_send(&sendjob);  // Retry joining
+      break;
+
     case EV_TXCOMPLETE:
       if (LMIC.txrxFlags & TXRX_ACK)
         Serial.println(F("Received ack"));
+
+      LMIC_clrTxData();  // Clear pending TX data after transmission
 
       // Transmission is complete, now switch to the other payload
       if (payloadState == 0) {
@@ -171,7 +187,11 @@ void do_send(osjob_t* j) {
 }
 
 void loop() {
+
   os_runloop_once();
+
+  // Feed the watchdog timer to prevent reset
+  esp_task_wdt_reset();
 }
 
 uint16_t encodeFixedPoint100(float value) {
