@@ -5,10 +5,10 @@
     align-items: center;
     min-height: 100vh;
     min-width: 100vw;
-    background-color: #87CEEB;
+    background-color: #38598b;
     background-size: 100vw 100vh;
     background-attachment: fixed;
-    color: white;
+    color: #34495e;
   }
   
   .widgets {
