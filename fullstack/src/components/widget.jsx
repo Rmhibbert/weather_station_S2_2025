@@ -1,19 +1,45 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 
-const Widget = ({ name, data, GraphComponent }) => {
+// Sensor Mapping
+const sensorMapping = {
+  temperature: { unit: "°C", label: "Temperature" },
+  pressure: { unit: "hPa", label: "Air Pressure" },
+  humidity: { unit: "%", label: "Humidity" },
+  windSpeed: { unit: "km/h", label: "Wind Speed" },
+};
+
+const Widget = ({ data, GraphComponent }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
 
+  // Get the most recent data point 
+  const latestData = Array.isArray(data) && data.length > 0 ? data[data.length - 1] : null;
+
+  // Determine the type of sensor data we have and return the correct value and unit
+  const renderLatestData = () => {
+    if (!latestData) return "No Data available"; 
+
+    // Check each key in the latest data to find the corresponding sensor value
+    for (const key in latestData) {
+      if (sensorMapping[key]) {
+        const { unit } = sensorMapping[key];
+        const value = latestData[key];
+        return `${value} ${unit}`;
+      }
+    }
+
+    return "Unknown sensor"; 
+  };
+
   return (
     <div className={`widget ${isExpanded ? 'expanded' : ''} relative rounded-lg`}>
-      <h2>{name}</h2>
 
-      {/* Display a summary of the data, or just a placeholder like "Data available" */}
-      <p>{Array.isArray(data) ? `Data available (${data.length} entries)` : data}</p>
+      {/* Display the most recent data or an error */}
+      <p>{renderLatestData()}</p>
 
       <Button
         onClick={toggleExpand}
@@ -33,6 +59,4 @@ const Widget = ({ name, data, GraphComponent }) => {
 };
 
 export default Widget;
-
-
 
