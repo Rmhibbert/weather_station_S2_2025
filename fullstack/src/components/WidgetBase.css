@@ -1,5 +1,4 @@
 .widget {
-  flex: 1; 
   min-width: 300px;
   padding: 50px;
   background: rgba(255, 255, 255, 0.1);
@@ -8,12 +7,16 @@
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
   box-sizing: border-box; 
-  transition: all 0.3s ease; 
+  flex: 1 1 calc(33% - 40px); /* Make widgets take 1/3rd of the container minus the gap */
+  max-width: calc(33% - 40px); /* Ensure max-width matches the flex-basis */
+  transition: all 0.9s ease-in-out;
 }
 
 .widget.expanded {
-  flex: 1 1 600px; 
-  transition: all 0.7s ease;
+  flex: 1 1 100%; /* Expand the widget to full width when expanded */
+  max-width: 100%;
+  max-width: 100%;
+  transition: all 0.9s ease-in-out;
 }
 
   
