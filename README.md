@@ -3,6 +3,8 @@
 
 We are using the LoRaWan/The Things Network to create a weather station that transmits data. 
 
+Our website is located at: https://weather.op-bit.nz/
+
 Team members:\
 Kieren Black\
 Jackson Williamson\
