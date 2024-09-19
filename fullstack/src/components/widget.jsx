@@ -34,16 +34,11 @@ const Widget = ({ name, data, GraphComponent }) => {
   };
 
   return (
-    <div
-      className={`widget ${isExpanded ? "expanded" : ""} relative rounded-lg`}
-    >
+    <div className={`widget ${isExpanded ? "expanded" : ""} relative rounded-lg`}>
       <p>{name}:</p>
       <p> {renderLatestData()}</p>
 
-      <Button
-        onClick={toggleExpand}
-        className="bg-[#34495e] hover:bg-[#2c3e50] text-white font-bold py-4 px-6 rounded-lg absolute top-4 right-4"
-      >
+      <Button onClick={toggleExpand} className="bg-[#34495e] hover:bg-[#2c3e50] text-white font-bold py-4 px-6 rounded-lg absolute top-4 right-4">
         {isExpanded ? "Less" : "More"}
       </Button>
 
@@ -57,4 +52,3 @@ const Widget = ({ name, data, GraphComponent }) => {
 };
 
 export default Widget;
-
