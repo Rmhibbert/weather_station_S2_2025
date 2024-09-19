@@ -35,6 +35,7 @@ const Container = () => {
             <Widget name={'Humidity'} data={'coming soon'} GraphComponent={null} />
             <Widget name={'Wind'} data={'coming soon'} GraphComponent={null} />
             <Webcam />
+            <Widget name={'Dust'} data={'coming soon'} GraphComponent={null} />
         </div>
         </div>
     );

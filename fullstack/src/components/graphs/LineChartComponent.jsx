@@ -1,17 +1,22 @@
 import React from "react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'; 
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const LineChartComponent = ({ data }) => {
   return (
     <div style={{ height: '300px', width: '100%', marginTop: '20px' }}>
       <ResponsiveContainer>
         <LineChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="day" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Line type="monotone" dataKey="temperature" stroke="#113f67" activeDot={{ r: 8 }} />
+          <CartesianGrid stroke="#9ecfe3" strokeDasharray="5 5" /> 
+          <XAxis dataKey="day" stroke="#113f67" />
+          <YAxis stroke="#113f67" allowDecimals={false} padding={{ top: 10 }} />
+          <Tooltip 
+            cursor={{ fill: 'transparent' }} 
+            contentStyle={{ backgroundColor: '#ffffff', borderColor: '#113f67', borderRadius: '8px', padding: '5px' }} 
+            itemStyle={{ color: '#113f67' }} 
+            labelFormatter={() => ''} 
+          />
+          <Legend wrapperStyle={{ color: '#113f67' }} /> 
+          <Line type="monotone" dataKey="temperature" stroke="#113f67" strokeWidth={2} dot={{ fill: '#113f67', r: 5 }} /> 
         </LineChart>
       </ResponsiveContainer>
     </div>
@@ -19,3 +24,4 @@ const LineChartComponent = ({ data }) => {
 };
 
 export default LineChartComponent;
+
