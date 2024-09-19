@@ -18,12 +18,12 @@ export const POST = async (request) => {
          * Since the webhook will send all data we will seperate the data
          * into different tables based on there data type
          */
-        const device_id = data.data.uplink_message.f_port;
-        const humidity = data.data.uplink_message.decoded_payload.humidity;
-        const temperature = data.data.uplink_message.decoded_payload.temperature;
-        const pressure = data.data.uplink_message.decoded_payload.pressure;
-        const altitude = data.data.uplink_message.decoded_payload.altitude;
-        const dust = data.data.uplink_message.decoded_payload.dustDensity;
+        const device_id = data.uplink_message.f_port;
+        const humidity = data.uplink_message.decoded_payload.humidity;
+        const temperature = data.uplink_message.decoded_payload.temperature;
+        const pressure = data.uplink_message.decoded_payload.pressure;
+        const altitude = data.uplink_message.decoded_payload.altitude;
+        const dust = data.uplink_message.decoded_payload.dustDensity;
 
         if (!device_id){
             return new Response(JSON.stringify({ message: 'Device ID is required' }), {

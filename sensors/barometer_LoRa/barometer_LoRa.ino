@@ -50,27 +50,15 @@ void setup() {
 }
 
 void onEvent(ev_t ev) {
-  Serial.print(os_getTime());
-  Serial.print(": ");
   switch (ev) {
     case EV_JOINED:
-      //Serial.println(F("EV_JOINED"));
       LMIC_setLinkCheckMode(0);
       break;
     case EV_TXCOMPLETE:
-      //Serial.println(F("EV_TXCOMPLETE (includes waiting for RX windows)"));
       if (LMIC.txrxFlags & TXRX_ACK)
-        //Serial.println(F("Received ack"));
-        if (LMIC.dataLen) {
-          //Serial.print(F("Received "));
-          //Serial.print(LMIC.dataLen);
-          //Serial.println(F(" bytes of payload"));
-        }
       os_setTimedCallback(&sendjob, os_getTime() + sec2osticks(TX_INTERVAL), do_send);
       break;
     default:
-      //Serial.print(F("Unknown event: "));
-      //Serial.println((unsigned) ev);
       break;
   }
 }
@@ -83,10 +71,10 @@ void do_send(osjob_t* j) {
     float temperature = get_temp_c();
     float pressure = get_pressure();
 
-    Serial.print("Temp: ");
-    Serial.println(temperature);
-    Serial.print("Press: ");
-    Serial.println(pressure);
+    //Serial.print("Temp: ");
+    //Serial.println(temperature);
+    //Serial.print("Press: ");
+    //Serial.println(pressure);
     
     uint16_t payloadTemp = encodeFixedPoint100(temperature);
     uint16_t payloadPressure = encodeFixedPoint1(pressure);
@@ -105,7 +93,6 @@ void do_send(osjob_t* j) {
 
     // Prepare upstream data transmission at the next possible time
     LMIC_setTxData2(1, payload, sizeof(payload) - 1, 0);
-    //Serial.println(F("Packet queued"));
   }
   // Next TX is scheduled after TX_COMPLETE event.
 }
