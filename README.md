@@ -8,6 +8,6 @@ Our website is located at: https://weather.op-bit.nz/
 Team members:\
 Kieren Black\
 Jackson Williamson\
-Bejamin Campbell-Nelson\
+Benjamin Campbell-Nelson\
 Samantha Craig\
 Thomas McIver-Chave
