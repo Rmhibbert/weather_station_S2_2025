@@ -2,7 +2,6 @@
   min-width: 300px;
   padding: 50px;
   background: rgba(255, 255, 255, 0.1);
-  background-color: #e4f1fe;
   border-radius: 20px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
@@ -11,6 +10,7 @@
   max-width: calc(33% - 40px); 
   transition: all 0.9s ease-in-out;
   font-size: 30px;
+  opacity: 0.95;
 }
 
 .widget.expanded {

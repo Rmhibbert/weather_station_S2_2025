@@ -16,15 +16,12 @@ const Widget = ({ data, GraphComponent }) => {
     setIsExpanded(!isExpanded);
   };
 
-  // Get the most recent data point
   const latestData =
     Array.isArray(data) && data.length > 0 ? data[data.length - 1] : null;
-
-  // Determine the type of sensor data we have and return the correct value and unit
+ 
   const renderLatestData = () => {
     if (!latestData) return "No Data available";
 
-    // Check each key in the latest data to find the corresponding sensor value
     for (const key in latestData) {
       if (sensorMapping[key]) {
         const { unit } = sensorMapping[key];
@@ -40,7 +37,6 @@ const Widget = ({ data, GraphComponent }) => {
     <div
       className={`widget ${isExpanded ? "expanded" : ""} relative rounded-lg`}
     >
-      {/* Display the most recent data or an error */}
       <p>{renderLatestData()}</p>
 
       <Button
@@ -50,7 +46,6 @@ const Widget = ({ data, GraphComponent }) => {
         {isExpanded ? "Less" : "More"}
       </Button>
 
-      {/* Render the graph component when expanded */}
       {isExpanded && GraphComponent && (
         <div className="graph-container">
           <GraphComponent data={data} />
