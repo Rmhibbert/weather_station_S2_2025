@@ -11,7 +11,7 @@ const LineChartComponent = ({ data }) => {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="temperature" stroke="#8884d8" activeDot={{ r: 8 }} />
+          <Line type="monotone" dataKey="temperature" stroke="#113f67" activeDot={{ r: 8 }} />
         </LineChart>
       </ResponsiveContainer>
     </div>

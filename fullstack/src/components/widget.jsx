@@ -16,12 +16,13 @@ const Widget = ({ data, GraphComponent }) => {
     setIsExpanded(!isExpanded);
   };
 
-  // Get the most recent data point 
-  const latestData = Array.isArray(data) && data.length > 0 ? data[data.length - 1] : null;
+  // Get the most recent data point
+  const latestData =
+    Array.isArray(data) && data.length > 0 ? data[data.length - 1] : null;
 
   // Determine the type of sensor data we have and return the correct value and unit
   const renderLatestData = () => {
-    if (!latestData) return "No Data available"; 
+    if (!latestData) return "No Data available";
 
     // Check each key in the latest data to find the corresponding sensor value
     for (const key in latestData) {
@@ -32,12 +33,13 @@ const Widget = ({ data, GraphComponent }) => {
       }
     }
 
-    return "Unknown sensor"; 
+    return "Unknown sensor";
   };
 
   return (
-    <div className={`widget ${isExpanded ? 'expanded' : ''} relative rounded-lg`}>
-
+    <div
+      className={`widget ${isExpanded ? "expanded" : ""} relative rounded-lg`}
+    >
       {/* Display the most recent data or an error */}
       <p>{renderLatestData()}</p>
 
@@ -45,7 +47,7 @@ const Widget = ({ data, GraphComponent }) => {
         onClick={toggleExpand}
         className="bg-[#34495e] hover:bg-[#2c3e50] text-white font-bold py-2 px-4 rounded-lg absolute top-2 right-2"
       >
-        {isExpanded ? 'Less' : 'More'}
+        {isExpanded ? "Less" : "More"}
       </Button>
 
       {/* Render the graph component when expanded */}
@@ -59,4 +61,3 @@ const Widget = ({ data, GraphComponent }) => {
 };
 
 export default Widget;
-

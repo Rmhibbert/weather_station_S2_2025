@@ -11,7 +11,7 @@ const BarChartComponent = ({ data }) => {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="pressure" fill="#82ca9d" />
+          <Bar dataKey="pressure" fill="#113f67" />
         </BarChart>
       </ResponsiveContainer>
     </div>
