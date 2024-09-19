@@ -42,7 +42,7 @@ const Widget = ({ name, data, GraphComponent }) => {
 
       <Button
         onClick={toggleExpand}
-        className="bg-[#34495e] hover:bg-[#2c3e50] text-white font-bold py-2 px-4 rounded-lg absolute top-2 right-2"
+        className="bg-[#34495e] hover:bg-[#2c3e50] text-white font-bold py-4 px-6 rounded-lg absolute top-4 right-4"
       >
         {isExpanded ? "Less" : "More"}
       </Button>

@@ -8,14 +8,14 @@
   text-align: center;
   box-sizing: border-box; 
   font-size: 30px;
+  font-weight: bold;
   opacity: 0.80;
   background-color: #e4f1fe;
 }
 
 .widget.expanded {
   flex: 1 1 100%; 
-  max-width: 100%;
-  max-width: 100%;
+  max-width: 90%;
 }
 
   
