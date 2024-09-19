@@ -5,7 +5,7 @@
     align-items: center;
     min-height: 100vh;
     min-width: 100vw;
-    background-color: #8dc6ff;
+    background-color: #87CEEB;
     background-size: 100vw 100vh;
     background-attachment: fixed;
     color: #34495e;
@@ -18,7 +18,6 @@
     align-items: flex-start;
     gap: 20px;
     width: 100%;
-    max-width: 1400px;
     transition: all 0.7s ease;
   }
   
