@@ -9,7 +9,7 @@ const sensorMapping = {
   windSpeed: { unit: "km/h", label: "Wind Speed" },
 };
 
-const Widget = ({ data, GraphComponent }) => {
+const Widget = ({ name, data, GraphComponent }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleExpand = () => {
@@ -18,7 +18,7 @@ const Widget = ({ data, GraphComponent }) => {
 
   const latestData =
     Array.isArray(data) && data.length > 0 ? data[data.length - 1] : null;
- 
+
   const renderLatestData = () => {
     if (!latestData) return "No Data available";
 
@@ -37,7 +37,8 @@ const Widget = ({ data, GraphComponent }) => {
     <div
       className={`widget ${isExpanded ? "expanded" : ""} relative rounded-lg`}
     >
-      <p>{renderLatestData()}</p>
+      <p>{name}:</p>
+      <p> {renderLatestData()}</p>
 
       <Button
         onClick={toggleExpand}
@@ -56,3 +57,4 @@ const Widget = ({ data, GraphComponent }) => {
 };
 
 export default Widget;
+
