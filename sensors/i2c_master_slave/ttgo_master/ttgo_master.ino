@@ -34,7 +34,7 @@ const unsigned TX_INTERVAL = 200;
 // State variable to track which payload to send
 int payloadState = 0;  // 0 = temperature/pressure, 1 = temperature/CO2
 
-// Pin mapping for Dragino Shield
+// Pin mapping for TTGO
 const lmic_pinmap lmic_pins = {
   .nss = 18,
   .rxtx = LMIC_UNUSED_PIN,
