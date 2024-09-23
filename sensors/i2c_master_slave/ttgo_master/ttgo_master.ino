@@ -5,9 +5,6 @@
 #include <lmic.h>
 #include <hal/hal.h>
 
-#include "esp_system.h"  // For watchdog timer
-#include <esp_task_wdt.h>
-
 // LoRaWAN settings
 static const u1_t PROGMEM APPEUI[8] = { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02 };
 void os_getArtEui(u1_t* buf) {
@@ -23,6 +20,10 @@ static const u1_t PROGMEM APPKEY[16] = { 0x5D, 0xCA, 0x0D, 0x6F, 0x78, 0xE4, 0x1
 void os_getDevKey(u1_t* buf) {
   memcpy_P(buf, APPKEY, 16);
 }
+
+// Variables to track time
+unsigned long previousMillis = 0;
+const unsigned long interval = 86400000;  // 24 hours in milliseconds 86400000
 
 unsigned char payload[5];
 unsigned char payloadR[5];
@@ -62,22 +63,6 @@ void setup() {
 
   SPL_init();
 
-  // Configure the watchdog timer
-  esp_task_wdt_config_t wdt_config = {
-      .timeout_ms = 10000  // Timeout of 10 seconds in milliseconds
-  };
-
-  // Initialize the watchdog timer with the config structure
-  esp_err_t result = esp_task_wdt_init(&wdt_config);
-  if (result == ESP_OK) {
-    Serial.println("Watchdog initialized");
-  } else {
-    Serial.println("Failed to initialize watchdog");
-  }
-
-  // Add the current task (loop) to the watchdog
-  esp_task_wdt_add(NULL);
-
   // Start job (sending automatically starts OTAA too)
   do_send(&sendjob);
 }
@@ -99,8 +84,6 @@ void onEvent(ev_t ev) {
     case EV_TXCOMPLETE:
       if (LMIC.txrxFlags & TXRX_ACK)
         Serial.println(F("Received ack"));
-
-      LMIC_clrTxData();  // Clear pending TX data after transmission
 
       // Transmission is complete, now switch to the other payload
       if (payloadState == 0) {
@@ -188,10 +171,18 @@ void do_send(osjob_t* j) {
 
 void loop() {
 
-  os_runloop_once();
+  unsigned long currentMillis = millis();
 
-  // Feed the watchdog timer to prevent reset
-  esp_task_wdt_reset();
+  // Check if 24 hours have passed
+  if (currentMillis - previousMillis >= interval) {
+    previousMillis = currentMillis;
+
+    Serial.println("Restarting ESP32 after 24 hours...");
+    // Restart the ESP32
+    ESP.restart();
+  }
+
+  os_runloop_once();
 }
 
 uint16_t encodeFixedPoint100(float value) {
