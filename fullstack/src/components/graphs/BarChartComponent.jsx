@@ -1,7 +1,7 @@
 import React from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const BarChartComponent = ({ data }) => {
+const BarChartComponent = ({ data, datakey }) => {
   return (
     <div style={{ height: '300px', width: '100%', marginTop: '20px' }}>
       <ResponsiveContainer>
@@ -18,8 +18,7 @@ const BarChartComponent = ({ data }) => {
             itemStyle={{ color: '#113f67' }} 
             labelFormatter={() => ''} 
           />
-          <Legend />
-          <Bar dataKey="pressure" fill="#113f67" />
+          <Bar dataKey={datakey} fill="#113f67" />
         </BarChart>
       </ResponsiveContainer>
     </div>

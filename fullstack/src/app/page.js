@@ -31,8 +31,8 @@ export default function Home() {
   return (
     <div className="app-container">
       <div className="widgets">
-        <Widget name={'Temperature'} data={temperatureData} GraphComponent={LineChartComponent} />
-        <Widget name={'Air Pressure'} data={airPressureData} GraphComponent={BarChartComponent} />
+        <Widget name={'Temperature'} data={temperatureData} GraphComponent={LineChartComponent} datakey="temperature"/>
+        <Widget name={'Air Pressure'} data={airPressureData} GraphComponent={BarChartComponent} datakey="pressure"/>
         <Widget name={'Humidity'} data={'coming soon'} GraphComponent={null} />
         <Widget name={'Wind'} data={'coming soon'} GraphComponent={null} />
         <Webcam />

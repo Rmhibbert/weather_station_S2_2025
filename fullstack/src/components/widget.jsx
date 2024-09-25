@@ -9,7 +9,7 @@ const sensorMapping = {
   windSpeed: { unit: "km/h", label: "Wind Speed" },
 };
 
-const Widget = ({ name, data, GraphComponent }) => {
+const Widget = ({ name, data, GraphComponent, datakey }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleExpand = () => {
@@ -45,7 +45,7 @@ const Widget = ({ name, data, GraphComponent }) => {
 
       {isExpanded && GraphComponent && (
         <div className="graph-container">
-          <GraphComponent data={data} />
+          <GraphComponent data={data} datakey={datakey}/>
         </div>
       )}
     </div>
