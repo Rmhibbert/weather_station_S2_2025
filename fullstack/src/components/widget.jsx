@@ -35,17 +35,23 @@ const Widget = ({ name, data, GraphComponent, datakey }) => {
 
   return (
     <div className={`widget ${isExpanded ? "expanded" : ""} relative rounded-lg`}>
-      
-      <p>{name}</p>
-      <p> {renderLatestData()}</p>
+      <div className="flex justify-between items-start p-4">
+        <p>{name}</p>
+        <Button
+          onClick={toggleExpand}
+          className={`${
+            isExpanded ? "bg-[#34495e] border-2 border-white" : "bg-[hsla(0, 0%, 100%, .1)]"
+          } hover:bg-[#2c3e50] text-white font-bold py-2 px-4 rounded-3xl`}
+        >
+          {isExpanded ? "Less" : "More"}
+        </Button>
+      </div>
 
-      <Button onClick={toggleExpand} className="bg-[hsla(0, 0%, 100%, .1);] hover:bg-[#2c3e50] text-white font-bold py-4 px-6 rounded-3xl absolute top-4 right-4">
-        {isExpanded ? "Less" : "More"}
-      </Button>
+      <p className="px-4 pb-2"> {renderLatestData()}</p>
 
       {isExpanded && GraphComponent && (
-        <div className="graph-container">
-          <GraphComponent data={data} datakey={datakey}/>
+        <div className="graph-container px-4 pb-4">
+          <GraphComponent data={data} datakey={datakey} />
         </div>
       )}
     </div>
