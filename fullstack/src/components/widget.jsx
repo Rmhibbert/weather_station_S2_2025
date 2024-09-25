@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 const sensorMapping = {
   temperature: { unit: "°C", label: "Temperature" },
   pressure: { unit: "hPa", label: "Air Pressure" },
-  humidity: { unit: "%", label: "Humidity" },
+  humidity: { unit: "%" , label: "Humidity" },
   windSpeed: { unit: "km/h", label: "Wind Speed" },
 };
 
@@ -43,14 +43,14 @@ const Widget = ({ name, data, GraphComponent, datakey }) => {
           onClick={toggleExpand}
           disabled={!latestData} // Disable button if no data available
           className={`${
-            !latestData
-              ? "bg-gray-300 cursor-not-allowed" // Disabled state styles
-              : isExpanded
+            isExpanded
               ? "bg-[#34495e] border-2 border-white" // Expanded state styles
               : "bg-[hsla(0, 0%, 100%, .1)] hover:bg-[#2c3e50]" // Default state styles
           } text-white font-bold py-2 px-4 rounded-3xl`}
         >
-          {isExpanded ? "Less" : "More"}
+          <span className={`${!latestData ? "text-gray-400" : ""}`}>
+            {isExpanded ? "Less" : "More"}
+          </span>
         </Button>
       </div>
 
@@ -66,4 +66,5 @@ const Widget = ({ name, data, GraphComponent, datakey }) => {
 };
 
 export default Widget;
+
 
