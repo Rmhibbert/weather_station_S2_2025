@@ -36,7 +36,8 @@ const BarChartComponent = ({ data, datakey }) => {
             stroke="#113f67" 
             allowDecimals={false} 
             padding={{ top: 10 }} 
-            tick={{ fontSize: 12 }} 
+            tick={{ fontSize: 12 }}
+            domain={[0, 'auto']}
           />
           <Tooltip 
             cursor={{ fill: 'transparent' }} 
