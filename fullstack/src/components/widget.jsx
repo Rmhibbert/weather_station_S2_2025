@@ -13,7 +13,9 @@ const Widget = ({ name, data, GraphComponent, datakey }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleExpand = () => {
-    setIsExpanded(!isExpanded);
+    if (latestData) { // Only allow toggle if data exists
+      setIsExpanded(!isExpanded);
+    }
   };
 
   const latestData =
@@ -39,9 +41,14 @@ const Widget = ({ name, data, GraphComponent, datakey }) => {
         <p>{name}</p>
         <Button
           onClick={toggleExpand}
+          disabled={!latestData} // Disable button if no data available
           className={`${
-            isExpanded ? "bg-[#34495e] border-2 border-white" : "bg-[hsla(0, 0%, 100%, .1)]"
-          } hover:bg-[#2c3e50] text-white font-bold py-2 px-4 rounded-3xl`}
+            !latestData
+              ? "bg-gray-300 cursor-not-allowed" // Disabled state styles
+              : isExpanded
+              ? "bg-[#34495e] border-2 border-white" // Expanded state styles
+              : "bg-[hsla(0, 0%, 100%, .1)] hover:bg-[#2c3e50]" // Default state styles
+          } text-white font-bold py-2 px-4 rounded-3xl`}
         >
           {isExpanded ? "Less" : "More"}
         </Button>
@@ -59,3 +66,4 @@ const Widget = ({ name, data, GraphComponent, datakey }) => {
 };
 
 export default Widget;
+
