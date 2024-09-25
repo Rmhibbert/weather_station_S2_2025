@@ -30,7 +30,7 @@ const BarChartComponent = ({ data, datakey }) => {
           <XAxis 
             dataKey="day" 
             stroke="#113f67" 
-            tick={{ fontSize: isMobile ? 8 : 12 }} 
+            tick={{ fontSize: 12 }}  
           />
           <YAxis 
             stroke="#113f67" 

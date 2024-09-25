@@ -3,22 +3,24 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 
 // Function to calculate Y-axis domain and ticks
 const calculateYAxisConfig = (data, datakey) => {
-  const minValue = Math.min(...data.map(item => item[datakey]));
   const maxValue = Math.max(...data.map(item => item[datakey]));
-
+  
+  const minValue = 0; // Force the minimum value to be 0
   const range = maxValue - minValue;
-  const tickInterval = Math.ceil(range / 10); // Divides range into ewual intervals
+  
+  // Determine a sensible tick interval based on the range
+  const tickInterval = Math.ceil(range / 10); // Divides range into equal intervals
 
-  const adjustedMinValue = Math.floor(minValue / tickInterval) * tickInterval;
   const adjustedMaxValue = Math.ceil(maxValue / tickInterval) * tickInterval;
 
   const ticks = [];
-  for (let i = adjustedMinValue; i <= adjustedMaxValue; i += tickInterval) {
+  for (let i = minValue; i <= adjustedMaxValue; i += tickInterval) {
     ticks.push(i);
   }
 
-  return { domain: [adjustedMinValue, adjustedMaxValue], ticks };
+  return { domain: [minValue, adjustedMaxValue], ticks };
 };
+
 
 const LineChartComponent = ({ data, datakey }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
