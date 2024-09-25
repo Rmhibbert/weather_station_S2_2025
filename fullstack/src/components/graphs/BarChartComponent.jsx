@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { calculateYAxisConfig } from '../../app/utils/chartUtils'; 
 
 const BarChartComponent = ({ data, datakey }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -13,6 +14,9 @@ const BarChartComponent = ({ data, datakey }) => {
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  
+  const { domain, ticks } = calculateYAxisConfig(data, datakey);
 
   // Transform the data for mobile view only, use full day names otherwise
   const transformedData = isMobile
@@ -30,14 +34,15 @@ const BarChartComponent = ({ data, datakey }) => {
           <XAxis 
             dataKey="day" 
             stroke="#113f67" 
-            tick={{ fontSize: 12 }}  
+            tick={{ fontSize: isMobile ? 8 : 12 }} 
           />
           <YAxis 
             stroke="#113f67" 
             allowDecimals={false} 
             padding={{ top: 10 }} 
             tick={{ fontSize: 12 }}
-            domain={[0, 'auto']}
+            domain={domain} // Dynamic domain from the reusable function
+            ticks={ticks}   // Dynamic ticks from the reusable function
           />
           <Tooltip 
             cursor={{ fill: 'transparent' }} 
@@ -53,6 +58,7 @@ const BarChartComponent = ({ data, datakey }) => {
 };
 
 export default BarChartComponent;
+
 
 
 

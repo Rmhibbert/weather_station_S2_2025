@@ -1,26 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-
-// Function to calculate Y-axis domain and ticks
-const calculateYAxisConfig = (data, datakey) => {
-  const maxValue = Math.max(...data.map(item => item[datakey]));
-  
-  const minValue = 0; // Force the minimum value to be 0
-  const range = maxValue - minValue;
-  
-  // Determine a sensible tick interval based on the range
-  const tickInterval = Math.ceil(range / 10); // Divides range into equal intervals
-
-  const adjustedMaxValue = Math.ceil(maxValue / tickInterval) * tickInterval;
-
-  const ticks = [];
-  for (let i = minValue; i <= adjustedMaxValue; i += tickInterval) {
-    ticks.push(i);
-  }
-
-  return { domain: [minValue, adjustedMaxValue], ticks };
-};
-
+import { calculateYAxisConfig } from '../../app/utils/chartUtils'; 
 
 const LineChartComponent = ({ data, datakey }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -84,6 +64,7 @@ const LineChartComponent = ({ data, datakey }) => {
 };
 
 export default LineChartComponent;
+
 
 
 
