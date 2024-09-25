@@ -1,6 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
+// Function to calculate Y-axis domain and ticks
+const calculateYAxisConfig = (data, datakey) => {
+  const minValue = Math.min(...data.map(item => item[datakey]));
+  const maxValue = Math.max(...data.map(item => item[datakey]));
+
+  const range = maxValue - minValue;
+  const tickInterval = Math.ceil(range / 10); // Divides range into ewual intervals
+
+  const adjustedMinValue = Math.floor(minValue / tickInterval) * tickInterval;
+  const adjustedMaxValue = Math.ceil(maxValue / tickInterval) * tickInterval;
+
+  const ticks = [];
+  for (let i = adjustedMinValue; i <= adjustedMaxValue; i += tickInterval) {
+    ticks.push(i);
+  }
+
+  return { domain: [adjustedMinValue, adjustedMaxValue], ticks };
+};
+
 const LineChartComponent = ({ data, datakey }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
@@ -14,6 +33,9 @@ const LineChartComponent = ({ data, datakey }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Use the calculateYAxisConfig function to get the Y-axis config
+  const { domain, ticks } = calculateYAxisConfig(data, datakey);
+
   // Transform the data for mobile view only, use full day names otherwise
   const transformedData = isMobile
     ? data.map(item => ({ ...item, day: item.day.charAt(0) })) // 'M', 'T', 'W', etc. for mobile
@@ -24,7 +46,7 @@ const LineChartComponent = ({ data, datakey }) => {
       <ResponsiveContainer width="100%" height={300}>
         <LineChart 
           data={transformedData} 
-          margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+          margin={{ top: 10, right: 22, left: 0, bottom: 0 }}
         >
           <CartesianGrid stroke="#9ecfe3" strokeDasharray="5 5" /> 
           <XAxis 
@@ -36,8 +58,8 @@ const LineChartComponent = ({ data, datakey }) => {
             stroke="#113f67" 
             allowDecimals={false} 
             padding={{ top: 10 }} 
-            domain={[0, 35]} 
-            ticks={[0, 5, 10, 15, 20, 25, 30, 35]} 
+            domain={domain} // Dynamic domain from function
+            ticks={ticks}   // Dynamic ticks from function
             tick={{ fontSize: 12 }} 
           />
           <Tooltip 
@@ -60,6 +82,8 @@ const LineChartComponent = ({ data, datakey }) => {
 };
 
 export default LineChartComponent;
+
+
 
 
 
