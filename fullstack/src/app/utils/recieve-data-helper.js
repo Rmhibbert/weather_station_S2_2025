@@ -8,3 +8,13 @@ export const BarometricPressureData = async () => {
 
     return send;
 }
+
+export const DustData = async (device_id, dust) => {
+    const send = await db.one(
+        'INSERT INTO dust (device_id, dust) VALUES ($1, $2) RETURNING *',
+        [device_id, dust]
+    )
+
+    return send;
+}
+
