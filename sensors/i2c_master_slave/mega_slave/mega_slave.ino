@@ -20,6 +20,7 @@ const int windDegrees[16] = {0, 22, 45, 67, 90, 112, 135, 157, 180, 202, 225, 24
 
 // Known resistor value (from the voltage divider)
 const int knownResistor = 10000;  // Example: 10kΩ
+float rainfall = 0;   
 
 // Variables for wind and rain measurements
 volatile unsigned long lastWindPulseTime = 0;
@@ -27,7 +28,6 @@ volatile unsigned long currentWindPulseTime = 0;
 volatile unsigned long rainPulseCount = 0;
 volatile unsigned long windPulseCount = 0; // To count wind pulses for a time interval
 int windDirection = 0;  // Store wind direction in degrees (0–360)
-
 
 // Timing variables for daily rainfall reset and wind speed updates
 unsigned long previousWindUpdateMillis = 0;

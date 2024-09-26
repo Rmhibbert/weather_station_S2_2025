@@ -40,6 +40,7 @@ int payloadState = 0;  // 0 = temperature/pressure, 1 = temperature/CO2
 
 void setup() {
   delay(5000);
+
   Wire.begin();
   Serial.begin(9600);
   Serial.println(F("Starting"));
@@ -238,6 +239,7 @@ void onEvent(ev_t ev) {
 
 void do_send(osjob_t* j) {
   esp_task_wdt_reset();  // Reset the watchdog timer to prevent it from timing out
+
   // Check if there is not a current TX/RX job running
   if (LMIC.opmode & OP_TXRXPEND) {
     Serial.println(F("OP_TXRXPEND, not sending"));
