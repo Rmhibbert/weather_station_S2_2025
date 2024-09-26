@@ -59,12 +59,12 @@ export const POST = async (request) => {
         }
 
         if (co2){
-            const co2Results = await CO2Data(device_id, co2);
+            const co2Results = await CO2Data(device_id, co2_level);
             send.push(co2Results)
         }
 
         if (gas){
-            const gasResults = await GasData(device_id, gas);
+            const gasResults = await GasData(device_id, gas_level);
             send.push(gasResults)
         }
 
