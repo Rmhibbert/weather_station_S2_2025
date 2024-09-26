@@ -1,13 +1,12 @@
 /**
- * @api {get} /api/temp-data Get temperature data
- * @description This file is the route for the temp-data API
+ * @api {get} /api/barometric-pressure-data Get Barometric Pressure Data
  */
 import db from "@/db";
 
+
 export const GET = async () => {
     try {
-        const data = await db.any('SELECT * FROM temperature ORDER BY timestamp DESC LIMIT 2;');
-
+        const data = await db.any('select * FROM pressure ORDER BY timestamp DESC LIMIT 2');
         return new Response(JSON.stringify(data), {
             status: 200
         });
