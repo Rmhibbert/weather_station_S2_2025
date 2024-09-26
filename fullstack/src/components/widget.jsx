@@ -68,4 +68,3 @@ const Widget = ({ name, data, GraphComponent, datakey }) => {
 
 export default Widget;
 
-

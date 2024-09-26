@@ -1,4 +1,3 @@
-
 'use client';
 import Webcam from "@/components/Webcam/Webcam";
 import Widget from "@/components/widget";
@@ -41,4 +40,3 @@ export default function Home() {
     </div>
   );
 }
-

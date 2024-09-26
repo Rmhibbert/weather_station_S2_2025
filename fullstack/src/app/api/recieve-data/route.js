@@ -1,44 +1,62 @@
-import db from "@/db";
+/**
+ * @file This file is the route for the recieve-data API
+ * @module app/api/recieve-data
+ * @description This file is the route for the recieve-data API
+ * - The POST method is used to recieve data from the webhook
+ * - The data is then seperated into different tables based on the data type
+ * - The data is then sent to the database which have been functioned to keep code readable
+ * and will be found in the receive-data-helper.js utils file
+ */
+import { DustData } from "@/app/utils/recieve-data-helper";
 
 export const POST = async (request) => {
     try {
         const data = await request.json();
+        let send = []
 
-        const device_id = data.end_device_ids.device_id;
+        /**
+         * Since the webhook will send all data we will seperate the data
+         * into different tables based on there data type
+         */
+        const device_id = data.uplink_message.f_port;
         const humidity = data.uplink_message.decoded_payload.humidity;
         const temperature = data.uplink_message.decoded_payload.temperature;
         const pressure = data.uplink_message.decoded_payload.pressure;
         const altitude = data.uplink_message.decoded_payload.altitude;
+        const dust = data.uplink_message.decoded_payload.dustDensity;
 
-        console.log(device_id, pressure, altitude, temperature);
+        if (!device_id){
+            return new Response(JSON.stringify({ message: 'Device ID is required' }), {
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*', // Allow all origins
+                    'Access-Control-Allow-Methods': 'POST', // Allow POST method
+                },
+                status: 400
+            });
+        }
 
-        const send = await db.one(
-            'INSERT INTO sensor_pressure (device_id, pressure) VALUES ($1, $2) RETURNING *',
-            [device_id, pressure]
-        )
-
+        if (dust){
+            const dustResults = await DustData(device_id, dust);
+            send.push(dustResults)
+        }
 
         return new Response(JSON.stringify(send), {
-            status: 200
+            headers: { 
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*', // Allow all origins
+                'Access-Control-Allow-Methods': 'POST', // Allow POST method
+            },
+            status: 200,
         });
     } catch (err) {
-        console.error(err);
-        return new Response(JSON.stringify({ message: 'Server Error' }), {
-            headers: { 'Content-Type': 'application/json' },
+        return new Response(JSON.stringify({ message: err.message }), {
+            headers: { 
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*', // Allow all origins
+                'Access-Control-Allow-Methods': 'POST', // Allow POST method
+            },
             status: 500
         });
-    }
-}
-
-export const GET = async () => {
-    try {
-        const data = await db.any('SELECT * FROM sensor_pressure');
-
-        return new Response(JSON.stringify(data), {
-            status: 200
-        });
-    } catch (err) {
-        console.error(err);
-        response.status(500).send('Server Error');
     }
 }
