@@ -22,8 +22,8 @@ export const POST = async (request) => {
         const humidity = data.uplink_message.decoded_payload.humidity;
         const temperature = data.uplink_message.decoded_payload.temperature;
         const pressure = data.uplink_message.decoded_payload.pressure;
-        const co2 = data.uplink_message.decoded_payload.co2;
-        const gas = data.uplink_message.decoded_payload.gas;
+        const co2_level = data.uplink_message.decoded_payload.co2;
+        const gas_level = data.uplink_message.decoded_payload.gas;
         const altitude = data.uplink_message.decoded_payload.altitude;
         const dust = data.uplink_message.decoded_payload.dustDensity;
 
