@@ -7,6 +7,7 @@ const sensorMapping = {
   pressure: { unit: "hPa", label: "Air Pressure" },
   humidity: { unit: "%" , label: "Humidity" },
   windSpeed: { unit: "km/h", label: "Wind Speed" },
+  dust: { unit: "µg/m³", label: "Dust Reading" },
 };
 
 const Widget = ({ name, data, GraphComponent, datakey }) => {
