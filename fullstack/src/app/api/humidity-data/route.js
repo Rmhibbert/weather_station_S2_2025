@@ -1,13 +1,12 @@
 /**
- * @api {get} /api/dust-data Get dust data
- * @description This file is the route for the dust-data API
+ * @api {get} /api/dust-data get humidity data
+ * @description This file is the route for the Humidity-data API
  */
 import db from "@/db";
 
 export const GET = async () => {
     try {
-        const data = await db.any('select * FROM dust ORDER BY timestamp DESC LIMIT 2');
-
+        const data = await db.any('SELECT * FROM humidity ORDER BY timestamp DESC LIMIT 2');
         return new Response(JSON.stringify(data), {
             status: 200
         });
