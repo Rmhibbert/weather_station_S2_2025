@@ -29,7 +29,7 @@ unsigned long currentMilis = 0;
 unsigned long previousMillisWDT = 0;     // Store the last time the WDT was reset
 const unsigned long wdtInterval = 1000;  // 1 second interval
 
-unsigned char payload[5];
+unsigned char payload[11];
 unsigned char payloadR[11];
 static osjob_t sendjob;
 
@@ -44,6 +44,7 @@ void setup() {
   Wire.begin();
   Serial.begin(9600);
   Serial.println(F("Starting"));
+  SPL_init(); // Setup initial SPL chip registers
 
   // Define the WDT config
   const esp_task_wdt_config_t wdt_config = {
@@ -56,12 +57,8 @@ void setup() {
   esp_task_wdt_add(NULL);
 
   // Error handling for I2C request
-  if (Wire.requestFrom(0x08, 11) == 11) {
-    Wire.readBytes(payloadR, 11);
-    // Decode the first two bytes as temperature
-    float temperature = decodeTemperature(payloadR[0], payloadR[1]);
-    // Decode the next two bytes as CO2
-    float CO2 = decodeCO2(payloadR[2], payloadR[3]);
+  if (Wire.requestFrom(0x08, 8) == 8) {
+    Wire.readBytes(payloadR, 8);
   } else {
     Serial.println("Failed to read from I2C device");
   }
@@ -181,15 +178,6 @@ void onEvent(ev_t ev) {
         Serial.println(F(" bytes of payload"));
       }
 
-      // Transmission is complete, now switch to the other payload
-      if (payloadState == 0) {
-        payloadState = 1;  // Switch to temperature/CO2
-      } else if (payloadState == 1) {
-        payloadState = 2;  // Switch to temperature/pressure
-      } else if (payloadState == 2) {
-        payloadState = 0;
-      }
-
       // Schedule next transmission
       os_setTimedCallback(&sendjob, os_getTime() + sec2osticks(TX_INTERVAL), do_send);
       break;
@@ -245,74 +233,53 @@ void do_send(osjob_t* j) {
     Serial.println(F("OP_TXRXPEND, not sending"));
   } else {
     // Error handling for I2C request
-    if (Wire.requestFrom(0x08, 11) == 11) {
-      Wire.readBytes(payloadR, 11);
+    if (Wire.requestFrom(0x08, 7) == 7) {
+      Wire.readBytes(payloadR, 7);
       Serial.print("Received Data: ");
-      for (int i = 0; i < 11; i++) {
+      for (int i = 0; i < 7; i++) {
         Serial.print(payloadR[i], HEX);
         Serial.print(" ");
       }
       Serial.println();
 
-      // Decide which payload to send based on the payloadState
-      if (payloadState == 0) {
-        // Encode and send temperature and pressure
-        float temperaturePres = get_temp_c();
-        float pressure = get_pressure();
+      // Encode and send temperature and pressure
+      float temperature = get_temp_c();
+      float pressure = get_pressure();
 
-        uint16_t payloadTempPress = encodeFixedPoint100(temperaturePres);
-        uint16_t payloadPressure = encodeFixedPoint1(pressure);
+      Serial.println(temperature);
+      Serial.println(pressure);
+      uint16_t payloadTemp = encodeFixedPoint100(temperature);
+      uint16_t payloadPressure = encodeFixedPoint1(pressure);
 
-        payload[0] = lowByte(payloadTempPress);
-        payload[1] = highByte(payloadTempPress);
-        payload[2] = lowByte(payloadPressure);
-        payload[3] = highByte(payloadPressure);
+      // Encode and send wind data and rain
+      float WindSpeed = decodeTemperature(payloadR[0], payloadR[1]);
+      float Rain = decodeCO2(payloadR[2], payloadR[3]);
+      float WindDir = decodeCO2(payloadR[4], payloadR[5]);
 
-        LMIC_setTxData2(1, payload, 4, 0);  // Send on port 1
-        Serial.println(F("Sending temperature/pressure"));
+      uint16_t payloadWindSpeed = encodeFixedPoint100(WindSpeed);
+      uint16_t payloadRain = encodeFixedPoint1(Rain);
+      uint16_t payloadWindDir = encodeFixedPoint1(WindDir);
 
-      } else if (payloadState == 1) {
-        // Encode and send temperature and CO2
-        float temperatureR = decodeTemperature(payloadR[0], payloadR[1]);
-        float CO2R = decodeCO2(payloadR[2], payloadR[3]);
+      payload[0] = lowByte(payloadTemp);
+      payload[1] = highByte(payloadTemp);
+      payload[2] = lowByte(payloadPressure);
+      payload[3] = highByte(payloadPressure);
+      payload[4] = lowByte(payloadWindSpeed);
+      payload[5] = highByte(payloadWindSpeed);
+      payload[6] = lowByte(payloadRain);
+      payload[7] = highByte(payloadRain);
+      payload[8] = lowByte(payloadWindDir);
+      payload[9] = highByte(payloadWindDir);
 
-        uint16_t payloadTempCO2 = encodeFixedPoint100(temperatureR);
-        uint16_t payloadCO2 = encodeFixedPoint1(CO2R);
-
-        payload[0] = lowByte(payloadTempCO2);
-        payload[1] = highByte(payloadTempCO2);
-        payload[2] = lowByte(payloadCO2);
-        payload[3] = highByte(payloadCO2);
-
-        LMIC_setTxData2(2, payload, 4, 0);  // Send on port 3
-        Serial.println(F("Sending temperature/CO2"));
-      } else if (payloadState == 2) {
-        // Encode and send wind data and rain
-        float WindSpeed = decodeTemperature(payloadR[4], payloadR[5]);
-        float Rain = decodeCO2(payloadR[6], payloadR[7]);
-        float WindDir = decodeCO2(payloadR[8], payloadR[9]);
-
-        uint16_t payloadWindSpeed = encodeFixedPoint100(WindSpeed);
-        uint16_t payloadRain = encodeFixedPoint1(Rain);
-        uint16_t payloadWindDir = encodeFixedPoint1(WindDir);
-
-        payload[0] = lowByte(payloadWindSpeed);
-        payload[1] = highByte(payloadWindSpeed);
-        payload[2] = lowByte(payloadRain);
-        payload[3] = highByte(payloadRain);
-        payload[4] = lowByte(payloadWindDir);
-        payload[5] = highByte(payloadWindDir);
-
-        Serial.print("Payload Data: ");
-        for (int i = 0; i < 6; i++) {
-          Serial.print(payload[i], HEX);
-          Serial.print(" ");
-        }
-        Serial.println();
-
-        LMIC_setTxData2(3, payload, 6, 0);  // Send on port 3
-        Serial.println(F("Sending wind/rain"));
+      Serial.print("Payload Data: ");
+      for (int i = 0; i < 10; i++) {
+        Serial.print(payload[i], HEX);
+        Serial.print(" ");
       }
+      Serial.println();
+
+      LMIC_setTxData2(1, payload, 10, 0);  // Send on Fport 1
+      Serial.println(F("Sending wind/rain"));
       esp_task_wdt_reset();  // Reset WDT again after processing
     } else {
       Serial.println("Failed to read from I2C device");
