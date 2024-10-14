@@ -13,20 +13,19 @@ export const POST = async (request) => {
     try {
         const data = await request.json();
         let send = []
-
         /**
          * Since the webhook will send all data we will seperate the data
          * into different tables based on there data type
          */
-        const device_id = data.uplink_message.f_port;
-        const humidity = data.uplink_message.decoded_payload.humidity;
-        const temperature = data.uplink_message.decoded_payload.temperature;
-        const pressure = data.uplink_message.decoded_payload.pressure;
-        const co2_level = data.uplink_message.decoded_payload.co2;
-        const gas_level = data.uplink_message.decoded_payload.gas;
-        const altitude = data.uplink_message.decoded_payload.altitude;
-        const dust = data.uplink_message.decoded_payload.dustDensity;
-
+        const device_id = data.end_device_ids.device_id;
+        const humidity = data.uplink_message.decoded_payload.humidity ? data.uplink_message.decoded_payload.humidity : null;
+        const temperature = data.uplink_message.decoded_payload.temperature ? data.uplink_message.decoded_payload.temperature : null;
+        const pressure = data.uplink_message.decoded_payload.pressure ? data.uplink_message.decoded_payload.pressure : null;
+        const co2_level = data.uplink_message.decoded_payload.co2 ? data.uplink_message.decoded_payload.co2 : null;
+        const gas_level = data.uplink_message.decoded_payload.gas ? data.uplink_message.decoded_payload.gas : null;
+        const altitude = data.uplink_message.decoded_payload.altitude ? data.uplink_message.decoded_payload.altitude : null;
+        const dust = data.uplink_message.decoded_payload.dustDensity ? data.uplink_message.decoded_payload.dustDensity : null;
+        
         if (!device_id){
             return new Response(JSON.stringify({ message: 'Device ID is required' }), {
                 headers: { 
@@ -58,12 +57,12 @@ export const POST = async (request) => {
             send.push(pressureResults)
         }
 
-        if (co2){
+        if (co2_level){
             const co2Results = await CO2Data(device_id, co2_level);
             send.push(co2Results)
         }
 
-        if (gas){
+        if (gas_level){
             const gasResults = await GasData(device_id, gas_level);
             send.push(gasResults)
         }
