@@ -15,7 +15,7 @@ float rainfall = 0;
 const int windVanePin = A0;  // Analog pin connected to wind vane voltage divider
 
 // Resistance values from the wind vane (in ohms) corresponding to wind directions
-const int windDirections[16] = {33, 6570, 8200, 891, 1000, 688, 2200, 1410, 3900, 3140, 16000, 14120, 120000, 42120, 64900, 21880};
+const unsigned long windDirections[16] = {33000, 6570, 8200, 891, 1000, 688, 2200, 1410, 3900, 3140, 16000, 14120, 85000, 42120, 62000, 21880};
 const int windDegrees[16] = {0, 22, 45, 67, 90, 112, 135, 157, 180, 202, 225, 247, 270, 292, 315, 337};  // Corresponding degrees
 
 // Known resistor value (from the voltage divider)
@@ -32,7 +32,7 @@ int windDirection = 0;  // Store wind direction in degrees (0–360)
 // Timing variables for daily rainfall reset and wind speed updates
 unsigned long previousWindUpdateMillis = 0;
 unsigned long previousRainResetMillis = 0;
-const unsigned long windUpdateInterval = 1000;  // 10 seconds in milliseconds
+const unsigned long windUpdateInterval = 5000;  // 10 seconds in milliseconds
 const unsigned long rainResetInterval = 86400000;  // 24 hours in milliseconds
 
 // Payload array to hold all sensor data
@@ -53,6 +53,7 @@ void setup() {
   // Initialize interrupts for wind speed and rainfall sensors
   pinMode(2, INPUT_PULLUP);  // Wind sensor on D2
   pinMode(3, INPUT_PULLUP);  // Rain sensor on D3
+  pinMode(A0, INPUT);
   attachInterrupt(digitalPinToInterrupt(2), windISR, RISING); // Wind sensor on D2/INT4
   attachInterrupt(digitalPinToInterrupt(3), rainISR, RISING); // Rain sensor on D3/INT5
 
@@ -142,26 +143,46 @@ void rainISR() {
 
 int getWindDirection() {
   int rawValue = analogRead(windVanePin);  // Read the analog voltage
-  float voltage = (rawValue / 4095.0) * 3.3;  // Convert raw value to voltage (assuming 3.3V reference)
+  Serial.print("Raw dire: ");
+  Serial.println(rawValue);
+  
+  // Convert raw value to voltage (assuming 5V reference)
+  float voltage = (rawValue / 1024.0) * 5;
+  Serial.print("Voltage: ");
+  Serial.println(voltage);
   
   // Calculate resistance of wind vane using the voltage divider formula
-  float windResistance = (knownResistor * voltage) / (3.3 - voltage);
+  float windResistance = (knownResistor * voltage) / (5 - voltage);
+  Serial.print("Wind Res: ");
+  Serial.println(windResistance);
 
-  // Find the closest wind direction based on resistance
-  int closestDirection = 0;
-  float minDifference = abs(windResistance - windDirections[0]);
-  Serial.print("minDifference: ");
-  Serial.println(minDifference);
+  // Define a tolerance to allow for measurement inaccuracies (e.g., 10%)
+  const float tolerance = 0.1;  // Adjust this value if needed (10% tolerance)
 
-  for (int i = 1; i < 16; i++) {
-    float difference = abs(windResistance - windDirections[i]);
-    if (difference < minDifference) {
-      minDifference = difference;
-      closestDirection = i;
+  // Find the closest wind direction based on resistance within the tolerance range
+  for (int i = 0; i < 16; i++) {
+    float lowerBound = windDirections[i] * (1.0 - tolerance);
+    float upperBound = windDirections[i] * (1.0 + tolerance);
+
+    // Serial.print("Checking direction ");
+    // Serial.print(windDegrees[i]);
+    // Serial.print(" with resistance ");
+    // Serial.print(windDirections[i]);
+    // Serial.print(" (");
+    // Serial.print(lowerBound);
+    // Serial.print(" - ");
+    // Serial.print(upperBound);
+    // Serial.println(")");
+
+    // Check if the wind resistance falls within the tolerance range
+    if (windResistance >= lowerBound && windResistance <= upperBound) {
+      Serial.print("Matched direction: ");
+      Serial.println(windDegrees[i]);
+      return windDegrees[i];  // Return the corresponding wind direction in degrees
     }
   }
-  Serial.print("closest dire: ");
-  Serial.println(windDegrees[closestDirection]);
 
-  return windDegrees[closestDirection];  // Return the corresponding wind direction in degrees
+  // If no match is found, return an error or handle it (e.g., -1)
+  Serial.println("No matching direction found.");
+  return -1;
 }
