@@ -1,14 +1,8 @@
 #include <SPI.h>
-#include "MHZ19.h"
 #include <Wire.h>
-
-#define BAUDRATE 9600
-
-MHZ19 myMHZ19;
 
 // Variables for temperature, CO2, wind speed, and rainfall
 float temperature = 0;
-float CO2 = 0;
 float windSpeed = 0;  
 float rainfall = 0; 
 
@@ -28,7 +22,6 @@ volatile unsigned long rainPulseCount = 0;
 volatile unsigned long windPulseCount = 0; // To count wind pulses for a time interval
 int windDirection = 0;  // Store wind direction in degrees (0–360)
 
-
 // Timing variables for daily rainfall reset and wind speed updates
 unsigned long previousWindUpdateMillis = 0;
 unsigned long previousRainResetMillis = 0;
@@ -36,16 +29,11 @@ const unsigned long windUpdateInterval = 5000;  // 10 seconds in milliseconds
 const unsigned long rainResetInterval = 86400000;  // 24 hours in milliseconds
 
 // Payload array to hold all sensor data
-unsigned char payload[11];  
+unsigned char payload[7];  
 
 void setup() {
   Serial.begin(9600);  // Display on serial monitor
-  while (!Serial)
-    ;
-
-  Serial1.begin(9600);
-  myMHZ19.begin(Serial1);    // Initialize the sensor with hardware serial port 1
-  Serial1.begin(9600);
+  while (!Serial);
 
   Wire.begin(0x08);
   Wire.onRequest(requestEvent);
@@ -57,10 +45,6 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(2), windISR, RISING); // Wind sensor on D2/INT4
   attachInterrupt(digitalPinToInterrupt(3), rainISR, RISING); // Rain sensor on D3/INT5
 
-  // Set up CO2 sensor
-  myMHZ19.autoCalibration();  // Turn auto calibration ON (use false to turn it OFF)
-  myMHZ19.setRange(5000);     // Set CO2 range to 5000 ppm
-
   Serial.println("Sensors initialized.");
 }
 
@@ -69,9 +53,6 @@ void loop() {
 
   // Check if it's time to update wind speed and send data (every 10 seconds)
   if (currentMillis - previousWindUpdateMillis >= windUpdateInterval) {
-    // Read the temperature and CO2 from the sensor
-    temperature = myMHZ19.getTemperature();
-    CO2 = myMHZ19.getCO2(true);
 
     // Wind speed calculation
     windSpeed = windPulseCount * 2.4 / 10.0;  // Convert pulses to m/s (assuming 2.4 m/s for 1 pulse per second)
@@ -85,24 +66,18 @@ void loop() {
     windDirection = getWindDirection();
 
     // Encode all sensor data
-    uint16_t payloadTemp = encodeFixedPoint(temperature);
-    uint16_t payloadCO2 = encodeFixedPointCO2(CO2);
     uint16_t payloadWind = encodeFixedPoint(windSpeed);
     uint16_t payloadRain = encodeFixedPointCO2(rainfall);
     uint16_t payloadWindDir = encodeFixedPointCO2(windDirection);
 
     // Convert to bytes and fill the payload
-    payload[0] = lowByte(payloadTemp);
-    payload[1] = highByte(payloadTemp);
-    payload[2] = lowByte(payloadCO2);
-    payload[3] = highByte(payloadCO2);
-    payload[4] = lowByte(payloadWind);
-    payload[5] = highByte(payloadWind);
-    payload[6] = lowByte(payloadRain);
-    payload[7] = highByte(payloadRain);
-    payload[8] = lowByte(payloadWindDir);  // Wind direction (low byte)
-    payload[9] = highByte(payloadWindDir);  // Wind direction (high byte)
-    payload[10] = 0;  // Reserved or checksum byte (optional)
+    payload[0] = lowByte(payloadWind);
+    payload[1] = highByte(payloadWind);
+    payload[2] = lowByte(payloadRain);
+    payload[3] = highByte(payloadRain);
+    payload[4] = lowByte(payloadWindDir);  // Wind direction (low byte)
+    payload[5] = highByte(payloadWindDir);  // Wind direction (high byte)
+    payload[6] = 0;  // Reserved or checksum byte (optional)
 
   }
 
