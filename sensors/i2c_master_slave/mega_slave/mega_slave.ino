@@ -25,7 +25,7 @@ int windDirection = 0;  // Store wind direction in degrees (0–360)
 // Timing variables for daily rainfall reset and wind speed updates
 unsigned long previousWindUpdateMillis = 0;
 unsigned long previousRainResetMillis = 0;
-const unsigned long windUpdateInterval = 5000;  // 10 seconds in milliseconds
+const unsigned long windUpdateInterval = 1000;  // 10 seconds in milliseconds
 const unsigned long rainResetInterval = 86400000;  // 24 hours in milliseconds
 
 // Payload array to hold all sensor data
@@ -58,6 +58,7 @@ void loop() {
     windSpeed = windPulseCount * 2.4 / 10.0;  // Convert pulses to m/s (assuming 2.4 m/s for 1 pulse per second)
     windPulseCount = 0;  // Reset wind pulse count after each update
     previousWindUpdateMillis = currentMillis;  // Update the last wind update time
+    Serial.println(windSpeed);
 
     // Rainfall calculation (each pulse represents 0.2794 mm of rainfall)
     rainfall = rainPulseCount * 0.2794;
