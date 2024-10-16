@@ -40,3 +40,34 @@ export default function Home() {
     </div>
   );
 }
+
+export async function getServerSideProps() {
+  try {
+      const temperatureResponse = await fetch('http://localhost:3000/api/recieve-data/temperature');
+      const humidityResponse = await fetch('http://localhost:3000/api/recieve-data/humidity');
+      const pressureResponse = await fetch('http://localhost:3000/api/recieve-data/pressure');
+
+      if (!temperatureResponse.ok || !humidityResponse.ok || !pressureResponse.ok) {
+          throw new Error('Failed to fetch data');
+      }
+
+      const temperatureData = await temperatureResponse.json();
+      const humidityData = await humidityResponse.json();
+      const pressureData = await pressureResponse.json();
+
+      return {
+          props: {
+              temperatureData,
+              humidityData,
+              pressureData,
+          },
+      };
+  } catch (error) {
+      console.error(error);
+      return {
+          props: {
+              error: error.message,
+          },
+      };
+  }
+}
