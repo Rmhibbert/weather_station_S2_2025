@@ -14,10 +14,6 @@ RUN npm install --only=production pg pg-promise dotenv \
 # Copy the rest of the application code
 COPY . .
 
-# Initialize Tailwind and Shadcn
-RUN npx tailwindcss init -p \
-    && npx shadcn@latest init
-
 # Build the fullstack application
 RUN npm run build
 
