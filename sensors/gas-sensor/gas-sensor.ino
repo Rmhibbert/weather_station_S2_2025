@@ -4,17 +4,17 @@
 #include <CCS811.h>
 
 // LoRaWAN settings
-static const u1_t PROGMEM APPEUI[8] = { 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+static const u1_t PROGMEM APPEUI[8] = { /*Fill me in*/ };
 void os_getArtEui(u1_t* buf) {
   memcpy_P(buf, APPEUI, 8);
 }
 
-static const u1_t PROGMEM DEVEUI[8] = { 0xF9, 0x98, 0x06, 0xD0, 0x7E, 0xD5, 0xB3, 0x70 };
+static const u1_t PROGMEM DEVEUI[8] = { /*Fill me in*/ };
 void os_getDevEui(u1_t* buf) {
   memcpy_P(buf, DEVEUI, 8);
 }
 
-static const u1_t PROGMEM APPKEY[16] = { 0x9C, 0x17, 0x6F, 0xAD, 0xE8, 0x0C, 0x68, 0x9D, 0xFC, 0xD3, 0x75, 0xBF, 0x0C, 0x95, 0x20, 0xBA };
+static const u1_t PROGMEM APPKEY[16] = { /*Fill me in*/ };
 void os_getDevKey(u1_t* buf) {
   memcpy_P(buf, APPKEY, 16);
 }
