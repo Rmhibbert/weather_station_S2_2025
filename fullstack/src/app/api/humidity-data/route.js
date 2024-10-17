@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 
 export const GET = async () => {
     try {
-        const data = await db.any('SELECT * FROM humidity ORDER BY timestamp DESC LIMIT 2');
+        const data = await db.any('SELECT * FROM humidity ORDER BY timestamp DESC LIMIT 1');
         return new Response(JSON.stringify(data), {
             status: 200
         });

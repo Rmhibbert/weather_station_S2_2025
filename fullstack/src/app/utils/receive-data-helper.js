@@ -47,3 +47,12 @@ export const GasData = async (device_id, gas_level) => {
     )
     return send;
 }
+
+
+export const WindData = async (device_id, wind_speed, wind_direction) => {
+    const send = await db.one(
+        'INSERT INTO wind (device_id, wind_speed, wind_direction) VALUES ($1, $2, $3) RETURNING *',
+        [device_id, wind_speed, wind_direction]
+    )
+    return send;
+}
