@@ -23,7 +23,6 @@ export const POST = async (request) => {
         const pressure = data.uplink_message.decoded_payload.pressure ? data.uplink_message.decoded_payload.pressure : null;
         const co2_level = data.uplink_message.decoded_payload.co2 ? data.uplink_message.decoded_payload.co2 : null;
         const gas_level = data.uplink_message.decoded_payload.gas ? data.uplink_message.decoded_payload.gas : null;
-        const altitude = data.uplink_message.decoded_payload.altitude ? data.uplink_message.decoded_payload.altitude : null;
         const dust = data.uplink_message.decoded_payload.dustDensity ? data.uplink_message.decoded_payload.dustDensity : null;
         
         if (!device_id){

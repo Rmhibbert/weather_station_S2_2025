@@ -3,6 +3,7 @@
  */
 import db from "@/db";
 
+export const dynamic = 'force-dynamic';
 
 export const GET = async () => {
     try {
