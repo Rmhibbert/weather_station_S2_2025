@@ -11,7 +11,11 @@ export const GET = async () => {
         const data = await db.any('select * FROM dust ORDER BY timestamp DESC LIMIT 1');
 
         return new Response(JSON.stringify(data), {
-            status: 200
+            status: 200,
+            headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-store', // Prevent caching
+            },
         });
     } catch (err) {
         console.error(err);
