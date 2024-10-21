@@ -30,14 +30,14 @@ export default function Home() {
   return (
     <div className="app-container">
       <div className="widgets">
-        <Widget name={'Temperature'} data={temperatureData} GraphComponent={LineChartComponent} datakey="temperature"/>
-        <Widget name={'Air Pressure'} data={airPressureData} GraphComponent={BarChartComponent} datakey="pressure"/>
-        <Widget name={'Humidity'} data={'coming soon'} GraphComponent={null} />
-        <Widget name={'Wind'} data={'coming soon'} GraphComponent={null} />
-        <Widget name={'CO2'} data={'coming soon'} GraphComponent={null} />
-        <Widget name={'Gas'} data={'coming soon'} GraphComponent={null} />
-        <Widget name={'Dust'} data={'coming soon'} GraphComponent={null} />
-        <Webcam />
+      <Widget name={'Temperature'} data={temperatureData} GraphComponent={LineChartComponent} datakey="temperature" />
+      <Widget name={'Air Pressure'} data={airPressureData} GraphComponent={BarChartComponent} datakey="pressure" />
+      <Widget name={'Humidity'} data={'coming soon'} GraphComponent={null} datakey="humidity" />
+      <Widget name={'Wind'} data={'coming soon'} GraphComponent={null} datakey="windSpeed" />
+      <Widget name={'CO2'} data={'coming soon'} GraphComponent={null} datakey="co2" />
+      <Widget name={'Gas'} data={'coming soon'} GraphComponent={null} datakey="gas" />
+      <Widget name={'Dust'} data={'coming soon'} GraphComponent={null} datakey="dust" />
+      <Webcam />
       </div>
     </div>
   );
