@@ -5,10 +5,13 @@ import { Button } from "@/components/ui/button";
 const sensorMapping = {
   temperature: { unit: "°C", label: "Temperature" },
   pressure: { unit: "hPa", label: "Air Pressure" },
-  humidity: { unit: "%" , label: "Humidity" },
+  humidity: { unit: "%", label: "Humidity" },
   windSpeed: { unit: "km/h", label: "Wind Speed" },
   dust: { unit: "µg/m³", label: "Dust Reading" },
+  co2: { unit: "ppm", label: "CO2 Levels" },  // Assuming CO2 and gas is measured in ppm
+  gas: { unit: "ppm", label: "Gas Levels" },  
 };
+
 
 const Widget = ({ name, data, GraphComponent, datakey }) => {
   const [isExpanded, setIsExpanded] = useState(false);
