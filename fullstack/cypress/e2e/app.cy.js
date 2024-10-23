@@ -6,6 +6,6 @@ describe('Navigation', () => {
       cy.get('a[href*="More"]').click()
    
       // The new page should contain a graph
-      cy.get('h1').contains('graph-container px-4 pb-4')
+      cy.get('h1').contains('widget expanded relative rounded-lg')
     })
   })
