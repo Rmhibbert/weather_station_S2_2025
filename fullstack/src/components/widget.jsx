@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 
 // Sensor Mapping
@@ -13,7 +12,7 @@ const sensorMapping = {
   gas: { unit: "ppm", label: "Gas Levels" },
 };
 
-// Fetch data dynamically based on dataKey (temperature, pressure, etc.)
+// Fetch data dynamically based on the datakey
 const fetchSensorData = async (dataKey) => {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const response = await fetch(`${baseUrl}/api/${dataKey}-data`);
