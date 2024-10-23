@@ -5,39 +5,18 @@ import LineChartComponent from "@/components/graphs/LineChartComponent";
 import BarChartComponent from "@/components/graphs/BarChartComponent";
 import "./page.css";
 
-// Dummy data for the graphs
-const temperatureData = [
-  { day: 'Monday', temperature: 20 },
-  { day: 'Tuesday', temperature: 22 },
-  { day: 'Wednesday', temperature: 19 },
-  { day: 'Thursday', temperature: 24 },
-  { day: 'Friday', temperature: 25 },
-  { day: 'Saturday', temperature: 23 },
-  { day: 'Sunday', temperature: 21 },
-];
-
-const airPressureData = [
-  { day: 'Monday', pressure: 1000 },
-  { day: 'Tuesday', pressure: 1005 },
-  { day: 'Wednesday', pressure: 1010 },
-  { day: 'Thursday', pressure: 1008 },
-  { day: 'Friday', pressure: 1007 },
-  { day: 'Saturday', pressure: 2000 },
-  { day: 'Sunday', pressure: 1002 },
-];
-
 export default function Home() {
   return (
     <div className="app-container">
       <div className="widgets">
-      <Widget name={'Temperature'} data={temperatureData} GraphComponent={LineChartComponent} datakey="temperature" />
-      <Widget name={'Air Pressure'} data={airPressureData} GraphComponent={BarChartComponent} datakey="pressure" />
-      <Widget name={'Humidity'} data={'coming soon'} GraphComponent={null} datakey="humidity" />
-      <Widget name={'Wind'} data={'coming soon'} GraphComponent={null} datakey="windSpeed" />
-      <Widget name={'CO2'} data={'coming soon'} GraphComponent={null} datakey="co2" />
-      <Widget name={'Gas'} data={'coming soon'} GraphComponent={null} datakey="gas" />
-      <Widget name={'Dust'} data={'coming soon'} GraphComponent={null} datakey="dust" />
-      <Webcam />
+        <Widget name="Temperature" dataKey="temperature" GraphComponent={LineChartComponent} />
+        <Widget name="Air Pressure" dataKey="pressure" GraphComponent={BarChartComponent} />
+        <Widget name="Humidity" dataKey="humidity" GraphComponent={null} />
+        <Widget name="Wind" dataKey="windSpeed" GraphComponent={null} />
+        <Widget name="CO2" dataKey="co2" GraphComponent={null} />
+        <Widget name="Gas" dataKey="gas" GraphComponent={null} />
+        <Widget name="Dust" dataKey="dust" GraphComponent={null} />
+        <Webcam />
       </div>
     </div>
   );
