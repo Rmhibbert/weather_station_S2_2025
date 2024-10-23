@@ -55,8 +55,10 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
       case "temperature":
         value = latestData.avg_temperature;
         break;
-      case "windSpeed":
-        value = latestData.wind_speed;
+      case "wind":
+        // Ensure wind data is fetched correctly
+        console.log('Wind data:', latestData);  // Log to verify wind data structure
+        value = `${latestData.wind_speed} ${latestData.wind_direction}`;
         break;
       case "co2":
         value = latestData.co2_level;
@@ -68,8 +70,10 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
         value = latestData[dataKey];  // Fallback in case of a direct match
     }
   
-    return `${value} ${sensorMapping[dataKey]?.unit || ''}`;
+    return `${value}`;
   };
+  
+  
   
 
   return (
