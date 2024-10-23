@@ -75,27 +75,19 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
 
   return (
     <div
-      className={`widget ${isExpanded ? "expanded" : ""} relative rounded-lg`}
+      onClick={() => {
+        if (GraphComponent) {
+          toggleExpand();  // Only allow expansion if GraphComponent exists
+        }
+      }}
+      className={`widget ${isExpanded ? "expanded" : ""} relative rounded-lg ${GraphComponent ? "cursor-pointer" : ""}`} // Add cursor pointer only if clickable
     >
       <div className="flex justify-between items-start p-4">
         <p>{name}</p>
-        <Button
-          onClick={toggleExpand}
-          disabled={!data}
-          className={`${
-            isExpanded
-              ? "bg-[#34495e] border-2 border-white"
-              : "bg-[hsla(0, 0%, 100%, .1)] hover:bg-[#2c3e50]"
-          } text-white font-bold py-2 px-4 rounded-3xl`}
-        >
-          <span className={`${!data ? "text-gray-400" : ""}`}>
-            {isExpanded ? "Less" : "More"}
-          </span>
-        </Button>
       </div>
-
+  
       <p className="px-4 pb-2"> {renderLatestData()}</p>
-
+  
       {isExpanded && GraphComponent && (
         <div className="graph-container px-4 pb-4">
           <GraphComponent data={data} datakey={dataKey} />
@@ -103,6 +95,7 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
       )}
     </div>
   );
+  
 };
 
 export default Widget;
