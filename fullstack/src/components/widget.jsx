@@ -6,7 +6,7 @@ const sensorMapping = {
   temperature: { unit: "°C", label: "Temperature" },
   pressure: { unit: "hPa", label: "Air Pressure" },
   humidity: { unit: "%", label: "Humidity" },
-  windSpeed: { unit: "km/h", label: "Wind Speed" },
+  wind: { unit: "km/h", label: "Wind Speed" },
   dust: { unit: "µg/m³", label: "Dust Reading" },
   co2: { unit: "ppm", label: "CO2 Levels" },
   gas: { unit: "ppm", label: "Gas Levels" },
@@ -45,15 +45,13 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
     if (isLoading) return "Loading...";
     if (error) return "Error fetching data";
   
-    // Grab the right data based on datakey
     let value;
     switch (dataKey) {
       case "temperature":
         value = latestData.avg_temperature;
         break;
       case "wind":
-        value = `${latestData.wind_speed} ${latestData.wind_direction}`;
-        break;
+        return `${latestData.wind_speed} km/h ${latestData.wind_direction}`; 
       case "co2":
         value = latestData.co2_level;
         break;
@@ -61,16 +59,16 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
         value = latestData.gas_level;
         break;
       default:
-        value = latestData[dataKey];  // Fallback in case of a direct match
+        value = latestData[dataKey];
     }
-    
+  
     if (value == null) return "No Data Available";
-
-    // dynamically grab unit from sensormapping
-    const unit = sensorMapping[dataKey]?.unit || '';
+  
+    const unit = dataKey !== "wind" ? sensorMapping[dataKey]?.unit || '' : '';
   
     return `${value} ${unit}`;
   };
+  
   
 
   return (
