@@ -44,6 +44,7 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
   const renderLatestData = () => {
     if (isLoading) return "Loading...";
     if (error) return "Error fetching data";
+    if (!latestData) return "No Data Available"; 
   
     let value;
     switch (dataKey) {
