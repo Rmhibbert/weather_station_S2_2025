@@ -44,7 +44,6 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
   const renderLatestData = () => {
     if (isLoading) return "Loading...";
     if (error) return "Error fetching data";
-    if (!latestData) return "No Data available";
   
     // Grab the right data based on datakey
     let value;
@@ -64,7 +63,9 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
       default:
         value = latestData[dataKey];  // Fallback in case of a direct match
     }
-  
+    
+    if (value == null) return "No Data Available";
+
     // dynamically grab unit from sensormapping
     const unit = sensorMapping[dataKey]?.unit || '';
   
