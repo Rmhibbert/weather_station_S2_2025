@@ -22,7 +22,7 @@ export const POST = async (request) => {
         const temperature = data.uplink_message.decoded_payload.temperature ? data.uplink_message.decoded_payload.temperature : null;
         const pressure = data.uplink_message.decoded_payload.pressure ? data.uplink_message.decoded_payload.pressure : null;
         const co2_level = data.uplink_message.decoded_payload.co2 ? data.uplink_message.decoded_payload.co2 : null;
-        const gas_level = data.uplink_message.decoded_payload.gas ? data.uplink_message.decoded_payload.gas : null;
+        const gas_level = data.uplink_message.decoded_payload.tvoc ? data.uplink_message.decoded_payload.tvoc : null;
         const dust = data.uplink_message.decoded_payload.dustDensity ? data.uplink_message.decoded_payload.dustDensity : null;
         const wind_speed = data.uplink_message.decoded_payload.wind_speed ? data.uplink_message.decoded_payload.wind_speed : null;
         const wind_direction = data.uplink_message.decoded_payload.wind_direction ? data.uplink_message.decoded_payload.wind_direction : null;
