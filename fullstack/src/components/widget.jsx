@@ -41,6 +41,7 @@ const Widget = ({ name, data, GraphComponent, datakey }) => {
       <div className="flex justify-between items-start p-4">
         <p>{name}</p>
         <Button
+          data-cy="more-button"
           onClick={toggleExpand}
           disabled={!latestData} // Disable button if no data available
           className={`${

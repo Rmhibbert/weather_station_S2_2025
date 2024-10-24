@@ -3,9 +3,9 @@ describe('Navigation', () => {
       // Start from the home page
       cy.visit('http://localhost:3000/')
    
-      cy.get('a[href*="More"]').click()
+      cy.get('.more-button').click()
    
       // The new page should contain a graph
-      cy.get('h1').contains('widget expanded relative rounded-lg')
+      cy.get('.recharts-surface')
     })
   })
