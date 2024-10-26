@@ -20,7 +20,7 @@ export const GET = async (request) => {
 
         if (!authHeader) return new Response("Authentication Required")
         
-            const splitAuth = authHeader.split(" ")[1]
+        const splitAuth = authHeader.split(" ")[1]
 
         if (splitAuth !== process.env.PASSWORD) return new Response("You are not authorized to post")
 

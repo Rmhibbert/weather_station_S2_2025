@@ -44,7 +44,6 @@ export const POST = async (request) => {
 
         if (splitAuth !== process.env.PASSWORD) return new Response("You are not authorized to post")
 
-
         if (!device_id){
             return new Response(JSON.stringify({ message: 'Device ID is required' }), {
                 headers: { 

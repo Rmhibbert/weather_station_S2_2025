@@ -1,6 +1,6 @@
 
 const rateLimit = {}
-const TIME_WINDOW = 150 * 60 * 1000;
+const TIME_WINDOW = 15 * 60 * 1000;
 
 export const isRateLimited = (ip, MAX_REQUESTS) => {
     const now = Date.now()
