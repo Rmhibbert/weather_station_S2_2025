@@ -38,10 +38,12 @@ export const POST = async (request) => {
             { condition: wind_direction && wind_speed, fetchData: WindData }
         ];
 
+        if (!authHeader) return new Response("Authentication Required")
+        
         const splitAuth = authHeader.split(" ")[1]
-        if (splitAuth !== process.env.PASSWORD){
-            return new Response("You are not authorized to post")
-        }
+
+        if (splitAuth !== process.env.PASSWORD) return new Response("You are not authorized to post")
+
 
         if (!device_id){
             return new Response(JSON.stringify({ message: 'Device ID is required' }), {

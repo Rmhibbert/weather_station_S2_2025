@@ -12,10 +12,18 @@ export const dynamic = 'force-dynamic';
  */
 export const GET = async (request) => {
     try {
+        const authHeader = request.headers.get('authorization');
         const { searchParams } = new URL(request.url);
         const ip = request.headers.get('x-forwarded-for') || request.connection.remoteAddress;
         const MAX_REQUESTS = 10
         const type = searchParams.get('type');
+
+        if (!authHeader) return new Response("Authentication Required")
+        
+            const splitAuth = authHeader.split(" ")[1]
+
+        if (splitAuth !== process.env.PASSWORD) return new Response("You are not authorized to post")
+
 
         if (isRateLimited(ip, MAX_REQUESTS)) {
             return new Response('Too many requests', { status: 429 });
