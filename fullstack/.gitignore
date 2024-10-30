@@ -36,4 +36,4 @@ yarn-error.log*
 next-env.d.ts
 
 # Cypress pngs
-cypress/screenshots/*.png
+cypress/screenshots/**/*.png
