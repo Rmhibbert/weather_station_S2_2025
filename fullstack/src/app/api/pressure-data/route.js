@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
 export const GET = async (request) => {
     try {
         const ip = request.headers.get('x-forwarded-for') || request.connection.remoteAddress;
-        const MAX_REQUESTS = 50
+        const MAX_REQUESTS = 7*15
         
         if (isRateLimited(ip, MAX_REQUESTS)) {
             return new Response('Too many requests', { status: 429 });
