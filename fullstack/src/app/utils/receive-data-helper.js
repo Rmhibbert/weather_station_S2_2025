@@ -25,7 +25,6 @@ export const HumidityData = async (device_id, humidity) => {
 };
 
 export const TemperatureData = async (device_id, temperature) => {
-  console.log("test");
   const send = await db.one(
     "INSERT INTO temperature (device_id, temperature) VALUES ($1, $2) RETURNING *",
     [device_id, temperature],
@@ -42,8 +41,6 @@ export const CO2Data = async (device_id, co2_level) => {
 };
 
 export const GasData = async (device_id, gas_level) => {
-  console.log("GASMOTHERFUCKER", gas_level);
-
   const send = await db.one(
     "INSERT INTO gas (device_id, gas_level) VALUES ($1, $2) RETURNING *",
     [device_id, gas_level],
