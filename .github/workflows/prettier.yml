@@ -28,5 +28,5 @@ jobs:
         working-directory: ./fullstack
 
       - name: Run Prettier
-        run: npx prettier --check .
+        run: npm run format
         working-directory: ./fullstack
