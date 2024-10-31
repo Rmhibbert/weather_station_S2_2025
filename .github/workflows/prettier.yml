@@ -30,3 +30,15 @@ jobs:
       - name: Run Prettier
         run: npm run format
         working-directory: ./fullstack
+
+      - name: Run Prettier and commit changes
+        if: github.event_name == 'pull_request'
+        run: |
+          npm run format
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add .
+          git commit -m "chore: format code with Prettier"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
