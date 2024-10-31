@@ -1,4 +1,3 @@
-# frontend/Dockerfile
 # Use an official Node.js runtime as a parent image
 FROM node:20.13.1
 
@@ -8,8 +7,9 @@ WORKDIR /Cloudy-with-a-Chance-of-LoRa/fullstack
 # Copy the package.json and package-lock.json files
 COPY package*.json ./
 
-# Install required packages
-RUN npm install pg pg-promise dotenv
+# Install production and development dependencies
+RUN npm install --only=production pg pg-promise dotenv \
+    && npm install --save-dev tailwindcss postcss autoprefixer @vitejs/plugin-react-swc
 
 # Copy the rest of the application code
 COPY . .
@@ -17,7 +17,8 @@ COPY . .
 # Build the fullstack application
 RUN npm run build
 
-EXPOSE 80
-EXPOSE 443
+# Expose the port for the application (e.g., 3000)
+EXPOSE 3000
 
+# Start the application
 CMD ["npm", "run", "start"]
