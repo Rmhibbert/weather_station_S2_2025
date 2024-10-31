@@ -38,24 +38,24 @@ function Decoder(bytes, port) {
 #include <arduino_lmic_hal_boards.h>
 
 // LoRaWAN settings
-static const u1_t PROGMEM APPEUI[8] = { 0x01, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00, 0x01 };
+static const u1_t PROGMEM APPEUI[8] = { FILL ME IN };
 void os_getArtEui(u1_t* buf) {
   memcpy_P(buf, APPEUI, 8);
 }
 
-static const u1_t PROGMEM DEVEUI[8] = { 0xB3, 0xB3, 0x06, 0xD0, 0x7E, 0xD5, 0xB3, 0x70 };
+static const u1_t PROGMEM DEVEUI[8] = { FILL ME IN };
 void os_getDevEui(u1_t* buf) {
   memcpy_P(buf, DEVEUI, 8);
 }
 
-static const u1_t PROGMEM APPKEY[16] = { 0x67, 0x36, 0xA4, 0x74, 0xCF, 0x3C, 0x9F, 0x01, 0x70, 0x8A, 0x3B, 0xB1, 0x49, 0x6A, 0x5B, 0xCE };
+static const u1_t PROGMEM APPKEY[16] = { FILL ME IN };
 void os_getDevKey(u1_t* buf) {
   memcpy_P(buf, APPKEY, 16);
 }
 
 // Variables to track time
 unsigned long previousMillis = 0;
-const unsigned long resetInterval;  // 12 hours in milliseconds / 24 hours : 86400000
+const unsigned long resetInterval = 43200000;  // 12 hours in milliseconds / 24 hours : 86400000
 unsigned long currentMilis = 0;
 
 unsigned char payload[11];
