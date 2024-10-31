@@ -15,12 +15,12 @@ import {
   GasData,
   WindData,
   RainData,
-} from "@/app/utils/receive-data-helper";
-export const dynamic = "force-dynamic";
+} from '@/app/utils/receive-data-helper';
+export const dynamic = 'force-dynamic';
 
 export const POST = async (request) => {
   try {
-    const authHeader = request.headers.get("authorization");
+    const authHeader = request.headers.get('authorization');
     const data = await request.json();
     let send = [];
     /**
@@ -32,12 +32,12 @@ export const POST = async (request) => {
 
     if (!decodedPayload) {
       return new Response(
-        JSON.stringify({ message: "Decoded payload is required" }),
+        JSON.stringify({ message: 'Decoded payload is required' }),
         {
           headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "POST",
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST',
           },
           status: 400,
         },
@@ -55,8 +55,8 @@ export const POST = async (request) => {
     const wind_direction = decodedPayload.windDir ?? null;
     const rain_gauge = decodedPayload.rain_gauge ?? null;
 
-    console.log(device_id, "device");
-    console.log(temperature, "temp");
+    console.log(device_id, 'device');
+    console.log(temperature, 'temp');
 
     const sensorData = [
       { condition: dust, fetchData: DustData },
@@ -68,7 +68,7 @@ export const POST = async (request) => {
       { condition: rain_gauge, fetchData: RainData },
     ];
 
-    if (!authHeader) return new Response("Authentication Required");
+    if (!authHeader) return new Response('Authentication Required');
 
     // console.log(authHeader)
     // const splitAuth = authHeader.split(" ")[1]
@@ -78,12 +78,12 @@ export const POST = async (request) => {
 
     if (!device_id) {
       return new Response(
-        JSON.stringify({ message: "Device ID is required" }),
+        JSON.stringify({ message: 'Device ID is required' }),
         {
           headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*", // Allow all origins
-            "Access-Control-Allow-Methods": "POST", // Allow POST method
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*', // Allow all origins
+            'Access-Control-Allow-Methods': 'POST', // Allow POST method
           },
           status: 400,
         },
@@ -102,18 +102,18 @@ export const POST = async (request) => {
 
     return new Response(JSON.stringify(send), {
       headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*", // Allow all origins
-        "Access-Control-Allow-Methods": "POST", // Allow POST method
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*', // Allow all origins
+        'Access-Control-Allow-Methods': 'POST', // Allow POST method
       },
       status: 200,
     });
   } catch (err) {
     return new Response(JSON.stringify({ message: err.message }), {
       headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*", // Allow all origins
-        "Access-Control-Allow-Methods": "POST", // Allow POST method
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*', // Allow all origins
+        'Access-Control-Allow-Methods': 'POST', // Allow POST method
       },
       status: 500,
     });

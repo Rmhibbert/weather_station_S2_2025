@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   LineChart,
   Line,
@@ -7,8 +7,8 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-} from "recharts";
-import { calculateYAxisConfig } from "../../app/utils/chartUtils";
+} from 'recharts';
+import { calculateYAxisConfig } from '../../app/utils/chartUtils';
 
 const LineChartComponent = ({ data, datakey }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -18,9 +18,9 @@ const LineChartComponent = ({ data, datakey }) => {
       setIsMobile(window.innerWidth <= 768);
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
-    return () => window.removeEventListener("resize", handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // Use the calculateYAxisConfig function to get the Y-axis config
@@ -32,7 +32,7 @@ const LineChartComponent = ({ data, datakey }) => {
     : data; // Full day names for larger screens
 
   return (
-    <div style={{ height: "100%", width: "100%", marginTop: "10px" }}>
+    <div style={{ height: '100%', width: '100%', marginTop: '10px' }}>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart
           data={transformedData}
@@ -49,22 +49,22 @@ const LineChartComponent = ({ data, datakey }) => {
             tick={{ fontSize: 12 }}
           />
           <Tooltip
-            cursor={{ fill: "transparent" }}
+            cursor={{ fill: 'transparent' }}
             contentStyle={{
-              backgroundColor: "#ffffff",
-              borderColor: "#113f67",
-              borderRadius: "8px",
-              padding: "5px",
+              backgroundColor: '#ffffff',
+              borderColor: '#113f67',
+              borderRadius: '8px',
+              padding: '5px',
             }}
-            itemStyle={{ color: "#113f67" }}
-            labelFormatter={() => ""}
+            itemStyle={{ color: '#113f67' }}
+            labelFormatter={() => ''}
           />
           <Line
             type="monotone"
             dataKey={datakey}
             stroke="#113f67"
             strokeWidth={2}
-            dot={{ fill: "#113f67", r: 3 }}
+            dot={{ fill: '#113f67', r: 3 }}
           />
         </LineChart>
       </ResponsiveContainer>

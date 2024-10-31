@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   BarChart,
   Bar,
@@ -7,8 +7,8 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-} from "recharts";
-import { calculateYAxisConfig } from "../../app/utils/chartUtils";
+} from 'recharts';
+import { calculateYAxisConfig } from '../../app/utils/chartUtils';
 
 const BarChartComponent = ({ data, datakey }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -18,9 +18,9 @@ const BarChartComponent = ({ data, datakey }) => {
       setIsMobile(window.innerWidth <= 768);
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
-    return () => window.removeEventListener("resize", handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const { domain, ticks } = calculateYAxisConfig(data, datakey);
@@ -31,7 +31,7 @@ const BarChartComponent = ({ data, datakey }) => {
     : data; // Full day names for larger screens
 
   return (
-    <div style={{ height: "300px", width: "100%", marginTop: "20px" }}>
+    <div style={{ height: '300px', width: '100%', marginTop: '20px' }}>
       <ResponsiveContainer>
         <BarChart
           data={transformedData}
@@ -52,15 +52,15 @@ const BarChartComponent = ({ data, datakey }) => {
             ticks={ticks} // Dynamic ticks from the reusable function
           />
           <Tooltip
-            cursor={{ fill: "transparent" }}
+            cursor={{ fill: 'transparent' }}
             contentStyle={{
-              backgroundColor: "#ffffff",
-              borderColor: "#113f67",
-              borderRadius: "8px",
-              padding: "5px",
+              backgroundColor: '#ffffff',
+              borderColor: '#113f67',
+              borderRadius: '8px',
+              padding: '5px',
             }}
-            itemStyle={{ color: "#113f67" }}
-            labelFormatter={() => ""}
+            itemStyle={{ color: '#113f67' }}
+            labelFormatter={() => ''}
           />
           <Bar dataKey={datakey} fill="#113f67" />
         </BarChart>

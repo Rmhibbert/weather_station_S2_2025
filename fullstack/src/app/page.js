@@ -1,8 +1,8 @@
-"use client";
-import Widget from "@/components/widget";
-import LineChartComponent from "@/components/graphs/LineChartComponent";
-import BarChartComponent from "@/components/graphs/BarChartComponent";
-import "./page.css";
+'use client';
+import Widget from '@/components/widget';
+import LineChartComponent from '@/components/graphs/LineChartComponent';
+import BarChartComponent from '@/components/graphs/BarChartComponent';
+import './page.css';
 
 export default function Home() {
   return (
