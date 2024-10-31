@@ -1,5 +1,4 @@
 'use client';
-import Webcam from "@/components/Webcam/Webcam";
 import Widget from "@/components/widget";
 import LineChartComponent from "@/components/graphs/LineChartComponent";
 import BarChartComponent from "@/components/graphs/BarChartComponent";
@@ -11,12 +10,10 @@ export default function Home() {
       <div className="widgets">
         <Widget name="Temperature" dataKey="temperature" GraphComponent={null} />
         <Widget name="Air Pressure" dataKey="pressure" GraphComponent={null} />
-        <Widget name="Humidity" dataKey="humidity" GraphComponent={null} />
         <Widget name="Wind" dataKey="wind" GraphComponent={null} />
         <Widget name="CO2" dataKey="co2" GraphComponent={null} />
         <Widget name="Gas" dataKey="gas" GraphComponent={null} />
         <Widget name="Dust" dataKey="dust" GraphComponent={null} />
-        <Webcam />
       </div>
     </div>
   );

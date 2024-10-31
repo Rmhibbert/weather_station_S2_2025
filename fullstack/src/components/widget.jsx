@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import * as Tooltip from "@radix-ui/react-tooltip";
+import './WidgetBase.css';
 
 // Sensor Mapping
 const sensorMapping = {
   temperature: { unit: "°C", label: "Temperature" },
   pressure: { unit: "hPa", label: "Air Pressure" },
-  humidity: { unit: "%", label: "Humidity" },
   wind: { unit: "km/h", label: "Wind Speed" },
   dust: { unit: "µg/m³", label: "Dust Reading" },
   co2: { unit: "ppm", label: "CO2 Levels" },
@@ -16,7 +16,7 @@ const sensorMapping = {
 const tooltipMapping = {
   temperature: "Shows current ambient temperature in Celsius. Comfortable indoor range: 20-25°C; low or high values may affect comfort and efficiency.",
   pressure: "Displays air pressure in hectopascals (hPa). Standard at sea level is 1013 hPa; variations can indicate weather changes.",
-  humidity: "Measures relative humidity as a percentage. Ideal indoor levels: 30-50%, affecting comfort, air quality, and moisture levels.",
+
   wind: "Represents wind speed in km/h and direction. High speeds can influence ventilation and comfort in open areas.",
   dust: "Shows airborne dust concentration in µg/m³. Lower levels indicate better air quality; values above 50 µg/m³ may affect health.",
   co2: "Indicates CO₂ concentration in ppm. Levels below 1000 ppm are optimal indoors; higher levels suggest poor ventilation.",
