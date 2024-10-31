@@ -53,7 +53,7 @@ export const POST = async (request) => {
     const dust = decodedPayload.dustDensity ?? null;
     const wind_speed = decodedPayload.windSpeed ?? null;
     const wind_direction = decodedPayload.windDir ?? null;
-    const rain = decodedPayload.rain ?? null;
+    const rain_gauge = decodedPayload.rain_gauge ?? null;
 
     console.log(device_id, "device");
     console.log(temperature, "temp");
@@ -65,7 +65,7 @@ export const POST = async (request) => {
       { condition: co2_level, fetchData: CO2Data },
       { condition: gas_level, fetchData: GasData },
       { condition: wind_direction && wind_speed, fetchData: WindData },
-      { condition: rain, fetchData: RainData },
+      { condition: rain_gauge, fetchData: RainData },
     ];
 
     if (!authHeader) return new Response("Authentication Required");
@@ -90,7 +90,6 @@ export const POST = async (request) => {
       );
     }
 
-    console.log("1232323s");
     for (const { condition, fetchData } of sensorData) {
       if (condition) {
         const results = await fetchData(
@@ -100,8 +99,6 @@ export const POST = async (request) => {
         send.push(results);
       }
     }
-
-    console.log("done");
 
     return new Response(JSON.stringify(send), {
       headers: {

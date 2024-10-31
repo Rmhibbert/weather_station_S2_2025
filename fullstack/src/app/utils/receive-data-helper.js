@@ -56,10 +56,10 @@ export const WindData = async (device_id, wind_speed, wind_direction) => {
   return send;
 };
 
-export const RainData = async (device_id, rain) => {
+export const RainData = async (device_id, rain_gauge) => {
   const send = await db.one(
     "INSERT INTO rain_gauge (device_id, rain_gauge) VALUES ($1, $2) RETURNING *",
-    [device_id, rain],
+    [device_id, rain_gauge],
   );
   return send;
 };
