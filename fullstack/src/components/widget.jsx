@@ -37,6 +37,7 @@ const fetchSensorData = async (dataKey) => {
 
 const Widget = ({ name, dataKey, GraphComponent }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [openTooltip, setOpenTooltip] = useState(null);
 
   // Fetch the data using React Query
   const { data, error, isLoading } = useQuery({
@@ -81,6 +82,9 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
     return `${value} ${unit}`;
   };
   
+  const handleTooltipToggle = () => {
+    setOpenTooltip(prev => (prev === dataKey ? null : dataKey));
+  };
   
 
   return (
