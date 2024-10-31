@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import * as Tooltip from "@radix-ui/react-tooltip";
 
 // Sensor Mapping
 const sensorMapping = {
@@ -10,6 +11,16 @@ const sensorMapping = {
   dust: { unit: "µg/m³", label: "Dust Reading" },
   co2: { unit: "ppm", label: "CO2 Levels" },
   gas: { unit: "ppm", label: "Gas Levels" },
+};
+
+const tooltipMapping = {
+  temperature: "Shows current ambient temperature in Celsius. Comfortable indoor range: 20-25°C; low or high values may affect comfort and efficiency.",
+  pressure: "Displays air pressure in hectopascals (hPa). Standard at sea level is 1013 hPa; variations can indicate weather changes.",
+  humidity: "Measures relative humidity as a percentage. Ideal indoor levels: 30-50%, affecting comfort, air quality, and moisture levels.",
+  wind: "Represents wind speed in km/h and direction. High speeds can influence ventilation and comfort in open areas.",
+  dust: "Shows airborne dust concentration in µg/m³. Lower levels indicate better air quality; values above 50 µg/m³ may affect health.",
+  co2: "Indicates CO₂ concentration in ppm. Levels below 1000 ppm are optimal indoors; higher levels suggest poor ventilation.",
+  gas: "Reflects gas concentration in ppm. Elevated readings could signal indoor air quality issues or pollutant sources."
 };
 
 // Fetch data dynamically based on the datakey
@@ -81,10 +92,35 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
       }}
       className={`widget ${isExpanded ? "expanded" : ""} relative rounded-lg ${GraphComponent ? "cursor-pointer" : ""}`} // Add cursor pointer only if clickable
     >
-      <div className="flex justify-between items-start p-4">
-        <p>{name}</p>
+     <div className="flex justify-between items-start p-4">
+        <div className="flex items-center space-x-1">
+          <p>{name}</p>
+
+          {/* Tooltip using ShadCN */}
+          <Tooltip.Provider>
+            <Tooltip.Root>
+              <Tooltip.Trigger asChild>
+                <span
+                  className="inline-flex items-center justify-center w-4 h-4 text-white rounded-full text-xs cursor-pointer"
+                  style={{ backgroundColor: "hsla(0, 0%, 100%, .15)" }}
+                  aria-label="Info"
+                >
+                  i
+                </span>
+              </Tooltip.Trigger>
+              <Tooltip.Content
+                side="top"
+                align="center"
+                className="bg-gray-700 text-white text-xs p-2 rounded shadow-lg max-w-xs"
+              >
+                {tooltipMapping[dataKey]}
+                <Tooltip.Arrow className="fill-gray-700" />
+              </Tooltip.Content>
+            </Tooltip.Root>
+          </Tooltip.Provider>
+        </div>
       </div>
-  
+       
       <p className="px-4 pb-2"> {renderLatestData()}</p>
   
       {isExpanded && GraphComponent && (
