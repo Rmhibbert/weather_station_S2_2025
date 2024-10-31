@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import * as Tooltip from "@radix-ui/react-tooltip";
-import './WidgetBase.css';
+import "./WidgetBase.css";
 
 // Sensor Mapping
 const sensorMapping = {
@@ -14,12 +14,14 @@ const sensorMapping = {
 };
 
 const tooltipMapping = {
-  temperature: "Shows current ambient temperature in Celsius. Comfortable indoor range: 20-25°C; low or high values may affect comfort and efficiency.",
-  pressure: "Displays air pressure in hectopascals (hPa). Standard at sea level is 1013 hPa; variations can indicate weather changes.",
+  temperature:
+    "Shows current ambient temperature in Celsius. Comfortable indoor range: 20-25°C; low or high values may affect comfort and efficiency.",
+  pressure:
+    "Displays air pressure in hectopascals (hPa). Standard at sea level is 1013 hPa; variations can indicate weather changes.",
   wind: "Represents wind speed in km/h and direction. High speeds can influence ventilation and comfort in open areas.",
   dust: "Shows airborne dust concentration in µg/m³. Lower levels indicate better air quality; values above 50 µg/m³ may affect health.",
   co2: "Indicates CO₂ concentration in ppm. Levels below 1000 ppm are optimal indoors; higher levels suggest poor ventilation.",
-  gas: "Reflects gas concentration in ppm. Elevated readings could signal indoor air quality issues or pollutant sources."
+  gas: "Reflects gas concentration in ppm. Elevated readings could signal indoor air quality issues or pollutant sources.",
 };
 
 // Fetch data dynamically based on the datakey
@@ -55,8 +57,8 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
   const renderLatestData = () => {
     if (isLoading) return "Loading...";
     if (error) return "Error fetching data";
-    if (!latestData) return "No Data Available"; 
-  
+    if (!latestData) return "No Data Available";
+
     let value;
     switch (dataKey) {
       case "temperature":
@@ -74,13 +76,13 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
       default:
         value = latestData[dataKey];
     }
-  
+
     if (value == null) return "No Data Available";
-  
-    const unit = dataKey ? sensorMapping[dataKey]?.unit || '' : '';
+
+    const unit = dataKey ? sensorMapping[dataKey]?.unit || "" : "";
     return `${value} ${unit}`;
   };
-  
+
   const handleTooltipToggle = () => {
     setOpenTooltip((prev) => !prev);
   };
@@ -89,7 +91,7 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
     <div
       onClick={() => {
         if (GraphComponent) {
-          toggleExpand();  // Only allow expansion if GraphComponent exists
+          toggleExpand(); // Only allow expansion if GraphComponent exists
         }
       }}
       className={`widget ${isExpanded ? "expanded" : ""} relative rounded-lg ${GraphComponent ? "cursor-pointer" : ""}`} // Add cursor pointer only if clickable
@@ -124,9 +126,9 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
           </Tooltip.Provider>
         </div>
       </div>
-       
+
       <p className="px-4 pb-2"> {renderLatestData()}</p>
-  
+
       {isExpanded && GraphComponent && (
         <div className="graph-container px-4 pb-4">
           <GraphComponent data={data} datakey={dataKey} />
