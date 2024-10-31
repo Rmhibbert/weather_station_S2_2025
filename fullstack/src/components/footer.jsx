@@ -24,10 +24,10 @@ export default function Footer() {
         Harbour Terrace
       </p>
       <p style={{ margin: 0, fontWeight: "lighter" }}>
-        Developed by Sam, Kieren, Jackson, Tom and Ben
+        Developed by Samantha, Kieren, Jackson, Tom and Ben
       </p>
       <p style={{ margin: 0, fontWeight: "lighter" }}>
-        Check out our github page:
+        Check out our Github page:
       </p>
       <div style={{ marginTop: "0.5rem" }}>
         <a
