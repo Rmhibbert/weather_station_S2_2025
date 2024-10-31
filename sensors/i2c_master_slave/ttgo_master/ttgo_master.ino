@@ -67,7 +67,7 @@ const unsigned TX_INTERVAL = 600;
 int payloadState = 0;  // 0 = temperature/pressure, 1 = temperature/CO2
 
 void setup() {
-  delay(5000);
+  delay(5000);              //Wait for everything to be powered up before initializing anything
 
   Wire.begin();
   Serial.begin(9600);
@@ -101,6 +101,8 @@ void setup() {
   LMIC_setLinkCheckMode(0);
   LMIC_setDrTxpow(DR_SF7, 14);
   LMIC_selectSubBand(1);
+
+  delay(5000);                          // wait for the sensors to settle before starting anything
 
   // Start job (sending automatically starts OTAA too)
   do_send(&sendjob);
