@@ -8,10 +8,8 @@ on:
       - '**/*.json'
   push:
     branches:
-      - main
-      - 'feature/**'
-      - 'bugfix/**'
-
+      - staging
+      - main  
 jobs:
   prettier:
     runs-on: ubuntu-latest
@@ -27,19 +25,8 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: ./fullstack
 
       - name: Run Prettier
         run: npx prettier --check .
-
-      # Optional: Automatically fix formatting and push changes
-      - name: Run Prettier and commit changes
-        if: github.event_name == 'pull_request'
-        run: |
-          npx prettier --write .
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add .
-          git commit -m "chore: format code with Prettier"
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: ./fullstack
