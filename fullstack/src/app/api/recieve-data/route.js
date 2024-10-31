@@ -7,7 +7,8 @@
  * - The data is then sent to the database which have been functioned to keep code readable
  * and will be found in the receive-data-helper.js utils file
  */
-import { DustData, HumidityData, TemperatureData, PressureData, CO2Data, GasData, WindData } from "@/app/utils/receive-data-helper";
+import { DustData, TemperatureData, PressureData, CO2Data, GasData, WindData, RainData } from "@/app/utils/receive-data-helper";
+export const dynamic = 'force-dynamic';
 
 export const POST = async (request) => {
     try {
@@ -15,34 +16,54 @@ export const POST = async (request) => {
         const data = await request.json();
         let send = []
         /**
-         * Since the webhook will send all data we will seperate the data
+         * Since the webhook will send all data we will  the data
          * into different tables based on there data type
          */
+        
+        const decodedPayload = data.uplink_message?.decoded_payload;
+
+        if (!decodedPayload) {
+            return new Response(JSON.stringify({ message: 'Decoded payload is required' }), {
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'POST',
+                },
+                status: 400
+            });
+        }
+        
         const device_id = data.end_device_ids.device_id;
-        const humidity = data.uplink_message.decoded_payload.humidity ? data.uplink_message.decoded_payload.humidity : null;
-        const temperature = data.uplink_message.decoded_payload.temperature ? data.uplink_message.decoded_payload.temperature : null;
-        const pressure = data.uplink_message.decoded_payload.pressure ? data.uplink_message.decoded_payload.pressure : null;
-        const co2_level = data.uplink_message.decoded_payload.co2 ? data.uplink_message.decoded_payload.co2 : null;
-        const gas_level = data.uplink_message.decoded_payload.tvoc ? data.uplink_message.decoded_payload.tvoc : null;
-        const dust = data.uplink_message.decoded_payload.dustDensity ? data.uplink_message.decoded_payload.dustDensity : null;
-        const wind_speed = data.uplink_message.decoded_payload.wind_speed ? data.uplink_message.decoded_payload.wind_speed : null;
-        const wind_direction = data.uplink_message.decoded_payload.wind_direction ? data.uplink_message.decoded_payload.wind_direction : null;
+        console.log(decodedPayload)
+        const temperature = decodedPayload.temperature ?? null;
+        const pressure = decodedPayload.pressure ?? null;
+        const co2_level = decodedPayload.co2 ?? null;
+        const gas_level = decodedPayload.tvoc ?? null;
+        const dust = decodedPayload.dustDensity ?? null;
+        const wind_speed = decodedPayload.windSpeed ?? null;
+        const wind_direction = decodedPayload.windDir ?? null;
+        const rain = decodedPayload.rain ?? null;
+        
+        console.log(device_id, "device")
+        console.log(temperature, "temp")
 
         const sensorData = [
             { condition: dust, fetchData: DustData },
-            { condition: humidity, fetchData: HumidityData },
             { condition: temperature, fetchData: TemperatureData },
             { condition: pressure, fetchData: PressureData },
             { condition: co2_level, fetchData: CO2Data },
             { condition: gas_level, fetchData: GasData },
-            { condition: wind_direction && wind_speed, fetchData: WindData }
+            { condition: wind_direction && wind_speed, fetchData: WindData },
+            { condition: rain, fetchData: RainData}
         ];
 
         if (!authHeader) return new Response("Authentication Required")
         
-        const splitAuth = authHeader.split(" ")[1]
-
-        if (splitAuth !== process.env.PASSWORD) return new Response("You are not authorized to post")
+        // console.log(authHeader)
+        // const splitAuth = authHeader.split(" ")[1]
+        // console.log(splitAuth, "auth")
+        // console.log(process.env.PASSWORD, "emv")
+        // if (splitAuth !== process.env.PASSWORD) return new Response("You are not authorized to post")
 
         if (!device_id){
             return new Response(JSON.stringify({ message: 'Device ID is required' }), {
@@ -54,13 +75,17 @@ export const POST = async (request) => {
                 status: 400
             });
         }
-
+        
+        console.log("1232323s")
         for (const { condition, fetchData } of sensorData) {
             if (condition) {
                 const results = await fetchData(device_id, ...(Array.isArray(condition) ? condition : [condition]));
                 send.push(results);
             }
         }
+        
+        console.log("done")
+        
 
         return new Response(JSON.stringify(send), {
             headers: { 
