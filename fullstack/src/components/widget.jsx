@@ -36,7 +36,7 @@ const fetchSensorData = async (dataKey) => {
 
 const Widget = ({ name, dataKey, GraphComponent }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [openTooltip, setOpenTooltip] = useState(null);
+  const [openTooltip, setOpenTooltip] = useState(false);
 
   // Fetch the data using React Query
   const { data, error, isLoading } = useQuery({
@@ -82,9 +82,8 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
   };
   
   const handleTooltipToggle = () => {
-    setOpenTooltip(prev => (prev === dataKey ? null : dataKey));
+    setOpenTooltip((prev) => !prev);
   };
-  
 
   return (
     <div
@@ -95,18 +94,19 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
       }}
       className={`widget ${isExpanded ? "expanded" : ""} relative rounded-lg ${GraphComponent ? "cursor-pointer" : ""}`} // Add cursor pointer only if clickable
     >
-     <div className="flex justify-between items-start p-4">
+      <div className="flex justify-between items-start p-4">
         <div className="flex items-center space-x-1">
           <p>{name}</p>
 
-          {/* Tooltip using ShadCN */}
+          {/* Tooltip with hover and click functionality */}
           <Tooltip.Provider>
-          <Tooltip.Root open={openTooltip === dataKey}>
-              <Tooltip.Trigger asChild onClick={handleTooltipToggle}>
+            <Tooltip.Root open={openTooltip} onOpenChange={setOpenTooltip}>
+              <Tooltip.Trigger asChild>
                 <span
-                  className="inline-flex items-center justify-center w-4 h-4 text-white rounded-full text-xs cursor-pointer"
+                  className="inline-flex items-center justify-center w-6 h-6 text-white rounded-full text-lg cursor-pointer"
                   style={{ backgroundColor: "hsla(0, 0%, 100%, .15)" }}
                   aria-label="Info"
+                  onClick={handleTooltipToggle} // Add click functionality
                 >
                   i
                 </span>
@@ -115,7 +115,7 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
                 side="top"
                 align="center"
                 className="bg-gray-700 text-white text-xs p-2 rounded shadow-lg max-w-xs"
-                onPointerDownOutside={() => setOpenTooltip(null)} // Close when clicking outside
+                onPointerDownOutside={() => setOpenTooltip(false)} // Close when clicking outside
               >
                 {tooltipMapping[dataKey]}
                 <Tooltip.Arrow className="fill-gray-700" />
@@ -134,7 +134,6 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
       )}
     </div>
   );
-  
 };
 
 export default Widget;
