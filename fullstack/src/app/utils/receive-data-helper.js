@@ -61,7 +61,7 @@ export const WindData = async (device_id, wind_speed, wind_direction) => {
 
 export const RainData = async (device_id, rain) => {
   const send = await db.one(
-    "INSERT INTO gas (device_id, rain_gauge) VALUES ($1, $2) RETURNING *",
+    "INSERT INTO rain_gauge (device_id, rain_gauge) VALUES ($1, $2) RETURNING *",
     [device_id, rain],
   );
   return send;
