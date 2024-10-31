@@ -16,7 +16,6 @@ const sensorMapping = {
 const tooltipMapping = {
   temperature: "Shows current ambient temperature in Celsius. Comfortable indoor range: 20-25°C; low or high values may affect comfort and efficiency.",
   pressure: "Displays air pressure in hectopascals (hPa). Standard at sea level is 1013 hPa; variations can indicate weather changes.",
-
   wind: "Represents wind speed in km/h and direction. High speeds can influence ventilation and comfort in open areas.",
   dust: "Shows airborne dust concentration in µg/m³. Lower levels indicate better air quality; values above 50 µg/m³ may affect health.",
   co2: "Indicates CO₂ concentration in ppm. Levels below 1000 ppm are optimal indoors; higher levels suggest poor ventilation.",
@@ -102,8 +101,8 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
 
           {/* Tooltip using ShadCN */}
           <Tooltip.Provider>
-            <Tooltip.Root>
-              <Tooltip.Trigger asChild>
+          <Tooltip.Root open={openTooltip === dataKey}>
+              <Tooltip.Trigger asChild onClick={handleTooltipToggle}>
                 <span
                   className="inline-flex items-center justify-center w-4 h-4 text-white rounded-full text-xs cursor-pointer"
                   style={{ backgroundColor: "hsla(0, 0%, 100%, .15)" }}
@@ -116,6 +115,7 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
                 side="top"
                 align="center"
                 className="bg-gray-700 text-white text-xs p-2 rounded shadow-lg max-w-xs"
+                onPointerDownOutside={() => setOpenTooltip(null)} // Close when clicking outside
               >
                 {tooltipMapping[dataKey]}
                 <Tooltip.Arrow className="fill-gray-700" />
