@@ -1,5 +1,7 @@
 import localFont from "next/font/local";
 import "./globals.css";
+import ReactQueryProvider from "./utils/providers/ReactQueryProvider";
+import { TooltipProvider } from "@radix-ui/react-tooltip";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -24,7 +26,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
+        <ReactQueryProvider>
+        <TooltipProvider>{children}</TooltipProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   );
