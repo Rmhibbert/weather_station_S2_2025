@@ -1,3 +1,35 @@
+/*
+Payload formatter for TTN
+
+function Decoder(bytes, port) {
+  if (bytes.length !== 10) {
+    return null; // Invalid payload length
+  }
+
+  let decoded = {};
+
+    let tempRaw = (bytes[1] << 8) | bytes[0];
+    let pressRaw = (bytes[3] << 8) | bytes[2];
+    let windSpeedRaw = (bytes[5] << 8) | bytes[4];
+    let rainRaw = (bytes[7] << 8) | bytes[6];
+    let windDirRaw = (bytes[9] << 8) | bytes[8];
+
+    let temperature = (tempRaw & 0x8000) ? -(0x10000 - tempRaw) : tempRaw;
+    let pressure = (pressRaw & 0x8000) ? -(0x10000 - pressRaw) : pressRaw;
+    let windSpeed = (windSpeedRaw & 0x8000) ? -(0x10000 - windSpeedRaw) : windSpeedRaw;
+    let rain = (rainRaw & 0x8000) ? -(0x10000 - rainRaw) : rainRaw;
+    let windDir = (windDirRaw & 0x8000) ? -(0x10000 - windDirRaw) : windDirRaw;
+    
+    decoded.temperature = temperature / 100.0; // Assuming the temp is in hundredths of degrees
+    decoded.pressure = pressure; // Pressure in Pa or other unit
+    decoded.windSpeed = windSpeed / 100.0; // Assuming the wind is in hundredths of m/s
+    decoded.rain = rain; // rain in mm
+    decoded.windDir = windDir; // Assuming the temp is in hundredths of degrees
+
+  return decoded;
+}
+*/
+
 #include <SPL06-007.h>
 #include <Wire.h>
 #include <SPI.h>
