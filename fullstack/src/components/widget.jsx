@@ -63,7 +63,8 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
         value = latestData.avg_temperature;
         break;
       case "wind":
-        return `${latestData.wind_speed} km/h`; 
+        value = latestData.wind_speed;
+        break;
       case "co2":
         value = latestData.co2_level;
         break;
@@ -76,8 +77,7 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
   
     if (value == null) return "No Data Available";
   
-    const unit = dataKey !== "wind" ? sensorMapping[dataKey]?.unit || '' : '';
-  
+    const unit = dataKey ? sensorMapping[dataKey]?.unit || '' : '';
     return `${value} ${unit}`;
   };
   
