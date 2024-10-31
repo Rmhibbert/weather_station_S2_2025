@@ -63,7 +63,7 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
         value = latestData.avg_temperature;
         break;
       case "wind":
-        return `${latestData.wind_speed} km/h ${latestData.wind_direction}`; 
+        return `${latestData.wind_speed} km/h`; 
       case "co2":
         value = latestData.co2_level;
         break;
