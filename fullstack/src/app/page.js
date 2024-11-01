@@ -2,11 +2,16 @@
 import Widget from '@/components/widget';
 import LineChartComponent from '@/components/graphs/LineChartComponent';
 import BarChartComponent from '@/components/graphs/BarChartComponent';
+import Header from '../components/header';
+import Footer from '../components/footer';
 import './page.css';
 
 export default function Home() {
   return (
     <div className="app-container">
+      <Header />
+
+      {/* Widgets Section */}
       <div className="widgets">
         <Widget
           name="Temperature"
@@ -19,6 +24,8 @@ export default function Home() {
         <Widget name="Gas" dataKey="gas" GraphComponent={null} />
         <Widget name="Dust" dataKey="dust" GraphComponent={null} />
       </div>
+
+      <Footer />
     </div>
   );
 }
