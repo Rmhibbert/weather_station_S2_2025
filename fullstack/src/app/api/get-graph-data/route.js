@@ -35,7 +35,7 @@ export const GET = async (request) => {
       { table: 'co2', value: 'co2_level' },
       { table: 'gas', value: 'gas_level' },
     ];
-    const allowedValues = [7, 30];
+    const allowedValues = [1, 7, 30];
 
     if (!allowedValues.includes(Number(length))) {
       return new Response(
