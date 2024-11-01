@@ -60,8 +60,14 @@ export const GET = async (request) => {
         },
       );
     }
+    let query = ""
+    if (length == 1){
+        query = `SELECT * FROM get_hourly_avg_data('${table}', '${value}');`
+    } else {
+        query = `SELECT * FROM get_daily_avg_data('${table}', '${value}', ${length});`;
 
-    const query = `SELECT * FROM get_daily_avg_data('${table}', '${value}', ${length});`;
+    }
+    console.log(query)
 
     const data = await db.any(query);
 
