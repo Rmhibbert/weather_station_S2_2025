@@ -4,7 +4,7 @@ export default function Header() {
             <h1 className="text-4xl font-bold leading-snug">
                 Otago Polytechnic Weather Station
             </h1>
-            <div className="mt-4 w-4/5 mx-auto h-px bg-gray-300"></div>
+            <div className="mt-4 w-4/5 mx-auto h-px bg-white"></div>
         </header>
     );
 }
