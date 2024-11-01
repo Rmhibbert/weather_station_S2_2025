@@ -1,27 +1,10 @@
 export default function Header() {
     return (
-        <header className="page-header" style={{ 
-            padding: '1rem', 
-            color: '#f0f0f0',
-            textAlign: 'center',
-            marginBottom: '1rem',
-            top: 0,
-            zIndex: 1000,
-            width: '100%'
-        }}>
-            <h1 style={{ 
-                fontSize: '2rem', 
-                fontWeight: '700', 
-                lineHeight: 1.2
-            }}>
+        <header className="page-header p-4 text-center text-gray-100 mb-4 relative z-50 w-full">
+            <h1 className="text-4xl font-bold leading-snug">
                 Otago Polytechnic Weather Station
             </h1>
-            <div style={{
-                margin: '1rem auto 0',
-                width: '80%', 
-                height: '1px',
-                backgroundColor: 'rgba(240, 240, 240, 0.7)' 
-            }}></div>
+            <div className="mt-4 w-4/5 mx-auto h-px bg-gray-300"></div>
         </header>
     );
 }
