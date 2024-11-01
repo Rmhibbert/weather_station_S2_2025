@@ -52,7 +52,7 @@ export const POST = async (request) => {
     const dust = decodedPayload.dustDensity ?? null;
     const wind_speed = decodedPayload.windSpeed ?? null;
     const wind_direction = decodedPayload.windDir ?? null;
-    const rain_gauge = decodedPayload.rain_gauge ?? null;
+    const rain_gauge = decodedPayload.rain ?? null;
 
     const sensorData = [
       { condition: dust, fetchData: DustData },
