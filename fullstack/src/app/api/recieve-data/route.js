@@ -59,11 +59,9 @@ export const POST = async (request) => {
 
         if (!authHeader) return new Response("Authentication Required")
         
-        // console.log(authHeader)
-        // const splitAuth = authHeader.split(" ")[1]
-        // console.log(splitAuth, "auth")
-        // console.log(process.env.PASSWORD, "emv")
-        // if (splitAuth !== process.env.PASSWORD) return new Response("You are not authorized to post")
+        const splitAuth = authHeader.split(" ")[1]
+
+        if (splitAuth !== process.env.PASSWORD) return new Response("You are not authorized to post")
 
         if (!device_id){
             return new Response(JSON.stringify({ message: 'Device ID is required' }), {
@@ -82,10 +80,7 @@ export const POST = async (request) => {
                 const results = await fetchData(device_id, ...(Array.isArray(condition) ? condition : [condition]));
                 send.push(results);
             }
-        }
-        
-        console.log("done")
-        
+        }        
 
         return new Response(JSON.stringify(send), {
             headers: { 
