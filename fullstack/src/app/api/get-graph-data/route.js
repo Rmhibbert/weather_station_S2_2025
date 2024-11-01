@@ -35,7 +35,7 @@ export const GET = async (request) => {
       { table: 'co2', value: 'co2_level' },
       { table: 'gas', value: 'gas_level' },
     ];
-    const allowedValues = [7, 30];
+    const allowedValues = [1, 7, 30];
 
     if (!allowedValues.includes(Number(length))) {
       return new Response(
@@ -60,8 +60,13 @@ export const GET = async (request) => {
         },
       );
     }
-
-    const query = `SELECT * FROM get_daily_avg_data('${table}', '${value}', ${length});`;
+    let query = '';
+    if (length == 1) {
+      query = `SELECT * FROM get_hourly_avg_data('${table}', '${value}');`;
+    } else {
+      query = `SELECT * FROM get_daily_avg_data('${table}', '${value}', ${length});`;
+    }
+    console.log(query);
 
     const data = await db.any(query);
 

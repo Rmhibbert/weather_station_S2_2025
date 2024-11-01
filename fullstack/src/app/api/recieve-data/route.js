@@ -45,7 +45,6 @@ export const POST = async (request) => {
     }
 
     const device_id = data.end_device_ids.device_id;
-    console.log(decodedPayload);
     const temperature = decodedPayload.temperature ?? null;
     const pressure = decodedPayload.pressure ?? null;
     const co2_level = decodedPayload.co2 ?? null;
@@ -54,9 +53,6 @@ export const POST = async (request) => {
     const wind_speed = decodedPayload.windSpeed ?? null;
     const wind_direction = decodedPayload.windDir ?? null;
     const rain_gauge = decodedPayload.rain_gauge ?? null;
-
-    console.log(device_id, 'device');
-    console.log(temperature, 'temp');
 
     const sensorData = [
       { condition: dust, fetchData: DustData },
@@ -70,11 +66,34 @@ export const POST = async (request) => {
 
     if (!authHeader) return new Response('Authentication Required');
 
-    // console.log(authHeader)
-    // const splitAuth = authHeader.split(" ")[1]
-    // console.log(splitAuth, "auth")
-    // console.log(process.env.PASSWORD, "emv")
-    // if (splitAuth !== process.env.PASSWORD) return new Response("You are not authorized to post")
+    const splitAuth = authHeader.split(' ')[1];
+
+    if (splitAuth !== process.env.PASSWORD)
+      return new Response('You are not authorized to post');
+
+    if (!device_id) {
+      return new Response(
+        JSON.stringify({ message: 'Device ID is required' }),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*', // Allow all origins
+            'Access-Control-Allow-Methods': 'POST', // Allow POST method
+          },
+          status: 400,
+        },
+      );
+    }
+
+    for (const { condition, fetchData } of sensorData) {
+      if (condition) {
+        const results = await fetchData(
+          device_id,
+          ...(Array.isArray(condition) ? condition : [condition]),
+        );
+        send.push(results);
+      }
+    }
 
     if (!device_id) {
       return new Response(
