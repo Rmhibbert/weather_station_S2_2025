@@ -64,29 +64,36 @@ export const POST = async (request) => {
       { condition: rain_gauge, fetchData: RainData },
     ];
 
-        if (!authHeader) return new Response("Authentication Required")
-        
-        const splitAuth = authHeader.split(" ")[1]
+    if (!authHeader) return new Response('Authentication Required');
 
-        if (splitAuth !== process.env.PASSWORD) return new Response("You are not authorized to post")
+    const splitAuth = authHeader.split(' ')[1];
 
-        if (!device_id){
-            return new Response(JSON.stringify({ message: 'Device ID is required' }), {
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*', // Allow all origins
-                    'Access-Control-Allow-Methods': 'POST', // Allow POST method
-                },
-                status: 400
-            });
-        }
-        
-        for (const { condition, fetchData } of sensorData) {
-            if (condition) {
-                const results = await fetchData(device_id, ...(Array.isArray(condition) ? condition : [condition]));
-                send.push(results);
-            }
-        }        
+    if (splitAuth !== process.env.PASSWORD)
+      return new Response('You are not authorized to post');
+
+    if (!device_id) {
+      return new Response(
+        JSON.stringify({ message: 'Device ID is required' }),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*', // Allow all origins
+            'Access-Control-Allow-Methods': 'POST', // Allow POST method
+          },
+          status: 400,
+        },
+      );
+    }
+
+    for (const { condition, fetchData } of sensorData) {
+      if (condition) {
+        const results = await fetchData(
+          device_id,
+          ...(Array.isArray(condition) ? condition : [condition]),
+        );
+        send.push(results);
+      }
+    }
 
     if (!device_id) {
       return new Response(
