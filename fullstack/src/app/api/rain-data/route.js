@@ -18,7 +18,7 @@ export const GET = async (request) => {
     }
 
     const data = await db.any(
-      'select * FROM rain_gauge ORDER BY timestamp DESC LIMIT 1',
+      'select * FROM rainfall_measurement ORDER BY timestamp DESC LIMIT 1',
     );
     return new Response(JSON.stringify(data), {
       status: 200,
