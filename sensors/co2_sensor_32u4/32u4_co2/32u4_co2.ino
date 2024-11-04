@@ -25,14 +25,14 @@ float CO2 = 0;
 
 
 // Network Session Key (MSB)
-uint8_t NwkSkey[16] = { FILLMEIN };
+uint8_t NwkSkey[16] = { /*FILLMEIN*/ };
 
 // Application Session Key (MSB)
-uint8_t AppSkey[16] = { FILLMEIN };
+uint8_t AppSkey[16] = { /*FILLMEIN*/ };
 
 
 // Device Address (MSB)
-uint8_t DevAddr[4] = { FILLMEIN };
+uint8_t DevAddr[4] = { /*FILLMEIN*/ };
 
 
 /************************** Magic Begins Here ***********************************/
@@ -56,7 +56,7 @@ void setup() {
 
   myMHZ19.begin(Serial1);    // Initialize the sensor with hardware serial port 1
   
-  delay(20000000); // Warmup delay before calibration
+  // delay(20000000); // Warmup delay before calibration
   
   myMHZ19.autoCalibration();  // Turn auto calibration ON (use false to turn it OF
   myMHZ19.setRange(5000);
@@ -136,7 +136,7 @@ void loop() {
 
   //sending interval 5 minutes
   //delay(300000);
-  delay(60000); // 1 minute
+  delay(6000); // 1 minute
 }
 
 uint16_t encodeFixedPoint(float value) {
