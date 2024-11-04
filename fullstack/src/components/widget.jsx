@@ -11,6 +11,7 @@ const sensorMapping = {
   dust: { unit: 'µg/m³', label: 'Dust Reading' },
   co2: { unit: 'ppm', label: 'CO2 Levels' },
   gas: { unit: 'ppm', label: 'Gas Levels' },
+  rain: {unit: 'mm', label: "Rain Levels"},
 };
 
 const tooltipMapping = {
@@ -22,6 +23,8 @@ const tooltipMapping = {
   dust: 'Shows airborne dust concentration in micrograms per cubic meter. Lower levels indicate better air quality; values above 50 µg/m³ may affect health.',
   co2: 'Indicates CO₂ concentration in parts per million. Levels below 1000 ppm are optimal indoors; higher levels suggest poor ventilation.',
   gas: 'Reflects gas concentration in parts per million. Elevated readings could signal indoor air quality issues or pollutant sources.',
+  rain: 'Indicates the current rainfall level measured in millimeters per hour. Light rain is generally below 2.5 mm per hour'
+
 };
 
 // Fetch data dynamically based on the datakey
@@ -73,6 +76,9 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
       case 'gas':
         value = latestData.gas_level;
         break;
+        case 'rain':
+          value = latestData.rain_gauge;
+          break;
       default:
         value = latestData[dataKey];
     }
