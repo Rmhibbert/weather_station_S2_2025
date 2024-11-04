@@ -1,23 +1,30 @@
-/**
- * Function to calculate the Y-axis configuration for a chart
- * @param {Array} data - The dataset used for the chart
- * @param {String} datakey - The key used to extract the values from the data
- * @return {Object} - The Y-axis domain and ticks for the chart
- */
-export const calculateYAxisConfig = (data, datakey) => {
-  const maxValue = Math.max(...data.map((item) => item[datakey]));
+export function calculateYAxisConfig(data, dataKey) {
+  if (!data || data.length === 0) {
+    return { domain: [0, 10], ticks: [0, 2, 4, 6, 8, 10] }; // Fallback for empty data
+  }
 
-  const minValue = 0;
-  const range = maxValue - minValue;
+  // Extract the data values
+  const values = data.map((item) => item[dataKey]);
+  const maxValue = Math.max(...values);
 
-  const tickInterval = Math.ceil(range / 10); // Divides range into equal interval ticks
+  // Always start Y-axis at 0
+  const minY = 0;
 
-  const adjustedMaxValue = Math.ceil(maxValue / tickInterval) * tickInterval;
+  // Calculate a reasonable step size
+  const magnitude = Math.pow(10, Math.floor(Math.log10(maxValue)));
+  let stepSize = magnitude / 2; // Divide by 2 for better granularity
 
+  // Round up max value to the nearest multiple of step size
+  const maxY = Math.ceil(maxValue / stepSize) * stepSize;
+
+  // Generate ticks from 0 to maxY
   const ticks = [];
-  for (let i = minValue; i <= adjustedMaxValue; i += tickInterval) {
+  for (let i = minY; i <= maxY; i += stepSize) {
     ticks.push(i);
   }
 
-  return { domain: [minValue, adjustedMaxValue], ticks };
-};
+  return {
+    domain: [minY, maxY],
+    ticks: ticks,
+  };
+}
