@@ -17,11 +17,11 @@ const tooltipMapping = {
   temperature:
     'Shows current ambient temperature in Celsius. Comfortable indoor range: 20-25°C; low or high values may affect comfort and efficiency.',
   pressure:
-    'Displays air pressure in hectopascals (hPa). Standard at sea level is 1013 hPa; variations can indicate weather changes.',
-  wind: 'Represents wind speed in km/h and direction. High speeds can influence ventilation and comfort in open areas.',
-  dust: 'Shows airborne dust concentration in µg/m³. Lower levels indicate better air quality; values above 50 µg/m³ may affect health.',
-  co2: 'Indicates CO₂ concentration in ppm. Levels below 1000 ppm are optimal indoors; higher levels suggest poor ventilation.',
-  gas: 'Reflects gas concentration in ppm. Elevated readings could signal indoor air quality issues or pollutant sources.',
+    'Displays air pressure in hectopascals. Standard at sea level is 1013 hPa; variations can indicate weather changes.',
+  wind: 'Represents wind speed in kilometers per hour. High speeds can influence ventilation and comfort in open areas.',
+  dust: 'Shows airborne dust concentration in micrograms per cubic meter. Lower levels indicate better air quality; values above 50 µg/m³ may affect health.',
+  co2: 'Indicates CO₂ concentration in parts per million. Levels below 1000 ppm are optimal indoors; higher levels suggest poor ventilation.',
+  gas: 'Reflects gas concentration in parts per million. Elevated readings could signal indoor air quality issues or pollutant sources.',
 };
 
 // Fetch data dynamically based on the datakey
