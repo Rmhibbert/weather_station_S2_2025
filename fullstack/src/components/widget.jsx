@@ -11,7 +11,7 @@ const sensorMapping = {
   dust: { unit: 'µg/m³', label: 'Dust Reading' },
   co2: { unit: 'ppm', label: 'CO2 Levels' },
   gas: { unit: 'ppm', label: 'Gas Levels' },
-  rain: {unit: 'mm', label: "Rain Levels"},
+  rain: { unit: 'mm', label: 'Rain Levels' },
 };
 
 const tooltipMapping = {
@@ -23,35 +23,62 @@ const tooltipMapping = {
   dust: 'Shows airborne dust concentration in micrograms per cubic meter. Lower levels indicate better air quality; values above 50 µg/m³ may affect health.',
   co2: 'Indicates CO₂ concentration in parts per million. Levels below 1000 ppm are optimal indoors; higher levels suggest poor ventilation.',
   gas: 'Reflects gas concentration in parts per million. Elevated readings could signal indoor air quality issues or pollutant sources.',
-  rain: 'Indicates the current rainfall level measured in millimeters per hour. Light rain is generally below 2.5 mm per hour'
-
+  rain: 'Indicates the current rainfall level measured in millimeters per hour. Light rain is generally below 2.5 mm per hour',
 };
 
-// Fetch data dynamically based on the datakey
+// Fetch main widget data
 const fetchSensorData = async (dataKey) => {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const response = await fetch(`${baseUrl}/api/${dataKey}-data`);
-
   if (!response.ok) {
     throw new Error('Failed to fetch data');
   }
+  return response.json();
+};
 
+// Fetch graph data for expanded view
+const fetchGraphData = async (dataKey, length) => {
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const response = await fetch(`${baseUrl}/api/get-graph-data?table=${dataKey}&value=${dataKey}&length=${length}`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch graph data');
+  }
   return response.json();
 };
 
 const Widget = ({ name, dataKey, GraphComponent }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [graphData, setGraphData] = useState([]);
+  const [viewLength, setViewLength] = useState(1); // Default view is hourly
   const [openTooltip, setOpenTooltip] = useState(false);
 
-  // Fetch the data using React Query
+  // Fetch the main widget data using React Query
   const { data, error, isLoading } = useQuery({
     queryKey: [dataKey],
     queryFn: () => fetchSensorData(dataKey),
   });
 
-  const toggleExpand = () => {
-    if (data) {
-      setIsExpanded(!isExpanded);
+  const toggleExpand = async () => {
+    if (!isExpanded && data) {
+      setIsExpanded(true);
+      try {
+        const initialGraphData = await fetchGraphData(dataKey, viewLength);
+        setGraphData(initialGraphData);
+      } catch (err) {
+        console.error('Error fetching graph data:', err);
+      }
+    } else {
+      setIsExpanded(false);
+    }
+  };
+
+  const handleViewChange = async (length) => {
+    setViewLength(length);
+    try {
+      const updatedGraphData = await fetchGraphData(dataKey, length);
+      setGraphData(updatedGraphData);
+    } catch (err) {
+      console.error(`Error fetching ${length}-day data:`, err);
     }
   };
 
@@ -76,9 +103,9 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
       case 'gas':
         value = latestData.gas_level;
         break;
-        case 'rain':
-          value = latestData.rain_gauge;
-          break;
+      case 'rain':
+        value = latestData.rainfall_measurement;
+        break;
       default:
         value = latestData[dataKey];
     }
@@ -136,9 +163,16 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
       <p className="px-4 pb-2"> {renderLatestData()}</p>
 
       {isExpanded && GraphComponent && (
-        <div className="graph-container px-4 pb-4">
-          <GraphComponent data={data} datakey={dataKey} />
-        </div>
+        <>
+          <div className="button-group flex justify-center space-x-2 mb-2">
+            <button onClick={() => handleViewChange(1)} className={`btn ${viewLength === 1 ? 'active' : ''}`}>Hourly</button>
+            <button onClick={() => handleViewChange(7)} className={`btn ${viewLength === 7 ? 'active' : ''}`}>7 Days</button>
+            <button onClick={() => handleViewChange(30)} className={`btn ${viewLength === 30 ? 'active' : ''}`}>30 Days</button>
+          </div>
+          <div className="graph-container px-4 pb-4">
+            <GraphComponent data={graphData} datakey={dataKey} />
+          </div>
+        </>
       )}
     </div>
   );
