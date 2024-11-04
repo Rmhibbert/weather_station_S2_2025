@@ -10,7 +10,7 @@ import {
 } from 'recharts';
 import { calculateYAxisConfig } from '../../app/utils/chartUtils';
 
-const LineChartComponent = ({ data, datakey }) => {
+const LineChartComponent = ({ data, datakey, viewType }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
@@ -23,29 +23,25 @@ const LineChartComponent = ({ data, datakey }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Use the calculateYAxisConfig function to get the Y-axis config
+  // Get Y-axis configuration
   const { domain, ticks } = calculateYAxisConfig(data, datakey);
+  console.log('Y-axis config in LineChartComponent:', { domain, ticks });
 
-  // Transform the data for mobile view only, use full day names otherwise
-  const transformedData = isMobile
-    ? data.map((item) => ({ ...item, day: item.day.charAt(0) })) // 'M', 'T', 'W', etc. for mobile
-    : data; // Full day names for larger screens
+  // Determine the x-axis data key based on viewType (hourly, 7 days, or 30 days)
+  const xAxisDataKey = viewType === 'hourly' ? 'hour' : 'day';
 
   return (
     <div style={{ height: '100%', width: '100%', marginTop: '10px' }}>
       <ResponsiveContainer width="100%" height={300}>
-        <LineChart
-          data={transformedData}
-          margin={{ top: 10, right: 22, left: 0, bottom: 0 }}
-        >
+        <LineChart data={data} margin={{ top: 10, right: 22, left: 0, bottom: 0 }}>
           <CartesianGrid stroke="#9ecfe3" strokeDasharray="5 5" />
-          <XAxis dataKey="day" stroke="#113f67" tick={{ fontSize: 12 }} />
+          <XAxis dataKey={xAxisDataKey} stroke="#113f67" tick={{ fontSize: 12 }} />
           <YAxis
+            type="number"
+            domain={domain}
+            ticks={ticks}
             stroke="#113f67"
             allowDecimals={false}
-            padding={{ top: 10 }}
-            domain={domain} // Dynamic domain from function
-            ticks={ticks} // Dynamic ticks from function
             tick={{ fontSize: 12 }}
           />
           <Tooltip
@@ -61,7 +57,7 @@ const LineChartComponent = ({ data, datakey }) => {
           />
           <Line
             type="monotone"
-            dataKey={datakey}
+            dataKey="avg_value"
             stroke="#113f67"
             strokeWidth={2}
             dot={{ fill: '#113f67', r: 3 }}
