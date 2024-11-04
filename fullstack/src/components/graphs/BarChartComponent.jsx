@@ -10,7 +10,7 @@ import {
 } from 'recharts';
 import { calculateYAxisConfig } from '../../app/utils/chartUtils';
 
-const BarChartComponent = ({ data, datakey }) => {
+const BarChartComponent = ({ data, datakey, viewType }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
@@ -23,33 +23,37 @@ const BarChartComponent = ({ data, datakey }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Get Y-axis configuration
   const { domain, ticks } = calculateYAxisConfig(data, datakey);
+
+  // Determine the x-axis data key based on viewType (hourly, 7 days, or 30 days)
+  const xAxisDataKey = viewType === 'hourly' ? 'hour' : 'day';
 
   // Transform the data for mobile view only, use full day names otherwise
   const transformedData = isMobile
-    ? data.map((item) => ({ ...item, day: item.day.charAt(0) })) // 'M', 'T', 'W', etc. for mobile
+    ? data.map((item) => ({ ...item, [xAxisDataKey]: item[xAxisDataKey]?.charAt(0) })) // 'M', 'T', 'W', etc. for mobile
     : data; // Full day names for larger screens
 
   return (
-    <div style={{ height: '300px', width: '100%', marginTop: '20px' }}>
-      <ResponsiveContainer>
+    <div style={{ height: '100%', width: '100%', marginTop: '10px' }}>
+      <ResponsiveContainer width="100%" height={300}>
         <BarChart
           data={transformedData}
-          margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+          margin={{ top: 20, right: 22, left: 0, bottom: 5 }}
         >
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid stroke="white" strokeDasharray="5 5" />
           <XAxis
-            dataKey="day"
+            dataKey={xAxisDataKey}
             stroke="#113f67"
             tick={{ fontSize: isMobile ? 8 : 12 }}
           />
           <YAxis
+            type="number"
+            domain={domain}
+            ticks={ticks}
             stroke="#113f67"
             allowDecimals={false}
-            padding={{ top: 10 }}
             tick={{ fontSize: 12 }}
-            domain={domain} // Dynamic domain from the reusable function
-            ticks={ticks} // Dynamic ticks from the reusable function
           />
           <Tooltip
             cursor={{ fill: 'transparent' }}
