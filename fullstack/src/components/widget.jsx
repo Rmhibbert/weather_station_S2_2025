@@ -39,12 +39,42 @@ const fetchSensorData = async (dataKey) => {
 // Fetch graph data for expanded view
 const fetchGraphData = async (dataKey, length) => {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-  const response = await fetch(`${baseUrl}/api/get-graph-data?table=${dataKey}&value=${dataKey}&length=${length}`);
+  let table;
+  let value;
+
+  // Switch for special cases
+  switch (dataKey) {
+    case 'rain':
+      table = 'rainfall_measurement';
+      value = 'rainfall_mm';
+      break;
+    case 'co2':
+      table = 'co2';
+      value = 'co2_level';
+      break;
+    case 'gas':
+      table = 'gas';
+      value = 'gas_level';
+      break;
+    case 'wind':
+      table = 'wind';
+      value = 'wind_speed'; 
+      break;
+    default:
+      table = dataKey;
+      value = dataKey;
+      break;
+  }
+
+  // Construct the fetch URL with the correct table and value
+  const response = await fetch(`${baseUrl}/api/get-graph-data?table=${table}&value=${value}&length=${length}`);
   if (!response.ok) {
     throw new Error('Failed to fetch graph data');
   }
   return response.json();
 };
+
+
 
 const Widget = ({ name, dataKey, GraphComponent }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -104,7 +134,7 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
         value = latestData.gas_level;
         break;
       case 'rain':
-        value = latestData.rainfall_measurement;
+        value = latestData.rainfall_mm;
         break;
       default:
         value = latestData[dataKey];
@@ -124,7 +154,7 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
     <div
       onClick={() => {
         if (GraphComponent) {
-          toggleExpand(); // Only allow expansion if GraphComponent exists
+          toggleExpand(); // Toggle widget on click
         }
       }}
       className={`widget ${isExpanded ? 'expanded' : ''} relative rounded-lg ${GraphComponent ? 'cursor-pointer' : ''}`} // Add cursor pointer only if clickable
@@ -164,13 +194,14 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
 
       {isExpanded && GraphComponent && (
         <>
-          <div className="button-group flex justify-center space-x-2 mb-2">
+          <div className="button-group flex justify-center space-x-2 mb-2" onClick={(e) => e.stopPropagation()}>
             <button onClick={() => handleViewChange(1)} className={`btn ${viewLength === 1 ? 'active' : ''}`}>Hourly</button>
             <button onClick={() => handleViewChange(7)} className={`btn ${viewLength === 7 ? 'active' : ''}`}>7 Days</button>
             <button onClick={() => handleViewChange(30)} className={`btn ${viewLength === 30 ? 'active' : ''}`}>30 Days</button>
           </div>
           <div className="graph-container px-4 pb-4">
-            <GraphComponent data={graphData} datakey={dataKey} />
+            {/* Use avg_value as the datakey for the graph */}
+            <GraphComponent data={graphData} datakey="avg_value" />
           </div>
         </>
       )}
@@ -179,3 +210,4 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
 };
 
 export default Widget;
+
