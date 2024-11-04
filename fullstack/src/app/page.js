@@ -13,11 +13,8 @@ export default function Home() {
 
       {/* Widgets Section */}
       <div className="widgets">
-        <Widget
-          name="Temperature"
-          dataKey="temperature"
-          GraphComponent={null}
-        />
+        <Widget name="Temperature" dataKey="temperature" GraphComponent={null} />
+        <Widget name= "Rain" dataKey="rain" GraphComponent={null}/>
         <Widget name="Air Pressure" dataKey="pressure" GraphComponent={null} />
         <Widget name="Wind" dataKey="wind" GraphComponent={null} />
         <Widget name="CO2" dataKey="co2" GraphComponent={null} />
