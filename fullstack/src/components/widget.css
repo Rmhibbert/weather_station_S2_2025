@@ -30,6 +30,7 @@
   background-color: hsla(0, 0%, 100%, 0.15); 
   transform: none; 
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); 
+  transform: translateY(-5px);
 }
 
 .button-group .btn {
