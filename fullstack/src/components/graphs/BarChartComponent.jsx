@@ -9,6 +9,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { calculateYAxisConfig } from '../../app/utils/chartUtils';
+import { parseISO, format } from 'date-fns';
 
 const BarChartComponent = ({ data, datakey, viewType }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -19,26 +20,43 @@ const BarChartComponent = ({ data, datakey, viewType }) => {
     };
 
     window.addEventListener('resize', handleResize);
-
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Get Y-axis configuration
   const { domain, ticks } = calculateYAxisConfig(data, datakey);
 
-  // Determine the x-axis data key based on viewType (hourly, 7 days, or 30 days)
   const xAxisDataKey = viewType === 'hourly' ? 'hour' : 'day';
 
-  // Transform the data for mobile view only, use full day names otherwise
-  const transformedData = isMobile
-    ? data.map((item) => ({ ...item, [xAxisDataKey]: item[xAxisDataKey]?.charAt(0) })) // 'M', 'T', 'W', etc. for mobile
-    : data; // Full day names for larger screens
+  const validData = data.filter(
+    (item) => item[xAxisDataKey] !== undefined && item[xAxisDataKey] !== null,
+  );
+
+  const sortedData = validData.slice().sort((a, b) => {
+    const dateA = parseISO(a[xAxisDataKey]);
+    const dateB = parseISO(b[xAxisDataKey]);
+    return isNaN(dateA) || isNaN(dateB) ? 0 : dateA - dateB;
+  });
+
+  const filteredData = sortedData.slice(viewType === 'hourly' ? -24 : -30);
+
+  const formatXAxis = (tick) => {
+    if (!tick) return 'No Data';
+    try {
+      const date = parseISO(tick);
+      return viewType === 'hourly'
+        ? format(date, 'ha').toLowerCase()
+        : format(date, 'dd/MM');
+    } catch (error) {
+      console.error('Error formatting date:', error, 'Original tick:', tick);
+      return 'Invalid Date';
+    }
+  };
 
   return (
     <div style={{ height: '100%', width: '100%', marginTop: '10px' }}>
       <ResponsiveContainer width="100%" height={300}>
         <BarChart
-          data={transformedData}
+          data={filteredData}
           margin={{ top: 20, right: 22, left: 0, bottom: 5 }}
         >
           <CartesianGrid stroke="white" strokeDasharray="5 5" />
@@ -46,6 +64,8 @@ const BarChartComponent = ({ data, datakey, viewType }) => {
             dataKey={xAxisDataKey}
             stroke="#113f67"
             tick={{ fontSize: isMobile ? 8 : 12 }}
+            tickFormatter={formatXAxis}
+            interval={0}
           />
           <YAxis
             type="number"
