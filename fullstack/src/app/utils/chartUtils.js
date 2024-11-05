@@ -39,21 +39,27 @@ export function filterAndSortData(data, xAxisDataKey, viewType) {
   return sortedData.slice(viewType === 'hourly' ? -24 : -30);
 }
 
-export function formatXAxisTick(tick) {
-  if (!tick) return 'No Data';
-  try {
-    const date = parseISO(tick);
-    return `${format(date, 'dd/MM')} (${format(date, 'EEE')})`;
-  } catch (error) {
-    console.error('Error formatting date:', error, 'Original tick:', tick);
-    return 'Invalid Date';
-  }
-}
-
 // Custom tick component for displaying date and day
-export const CustomXAxisTick = ({ x, y, payload }) => {
+export const CustomXAxisTick = ({ x, y, payload, viewType }) => {
   try {
-    const date = parseISO(payload.value);
+    let displayDate = payload.value;
+    if (viewType === 'hourly') {
+      // For hourly, format as "11am, 12pm"
+      const time = new Date(displayDate);
+      displayDate = format(time, 'haaa');
+    } else {
+      // For daily, format as "dd/MM" on the first line and "EEE" on the second line
+      const date = parseISO(payload.value);
+      const formattedDate = format(date, 'dd/MM');
+      const formattedDay = format(date, 'EEE');
+      displayDate = (
+        <>
+          <tspan x={0} dy="1em">{formattedDate}</tspan>
+          <tspan x={0} dy="1em">{formattedDay}</tspan>
+        </>
+      );
+    }
+
     return (
       <g transform={`translate(${x},${y})`}>
         <text
@@ -65,12 +71,7 @@ export const CustomXAxisTick = ({ x, y, payload }) => {
           fontSize={10}
           transform="rotate(-45)"
         >
-          <tspan x={0} dy="1em">
-            {format(date, 'dd/MM')}
-          </tspan>
-          <tspan x={0} dy="1em">
-            {format(date, 'EEE')}
-          </tspan>
+          {displayDate}
         </text>
       </g>
     );
@@ -79,3 +80,4 @@ export const CustomXAxisTick = ({ x, y, payload }) => {
     return null;
   }
 };
+
