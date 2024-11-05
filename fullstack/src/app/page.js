@@ -5,7 +5,6 @@ import BarChartComponent from '@/components/graphs/BarChartComponent';
 import Header from '../components/header';
 import Footer from '../components/footer';
 import './page.css';
-import { Line } from 'recharts';
 
 export default function Home() {
   return (
@@ -22,7 +21,6 @@ export default function Home() {
         <Widget name="Gas" dataKey="gas" GraphComponent={LineChartComponent} />
         <Widget name="Dust" dataKey="dust" GraphComponent={LineChartComponent} />
       </div>
-
       <Footer />
     </div>
   );
