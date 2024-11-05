@@ -11,6 +11,24 @@ import {
 import { calculateYAxisConfig } from '../../app/utils/chartUtils';
 import { parseISO, format } from 'date-fns';
 
+// Custom tick component for displaying date and day
+const CustomXAxisTick = ({ x, y, payload }) => {
+  try {
+    const date = parseISO(payload.value);
+    return (
+      <g transform={`translate(${x},${y})`}>
+        <text x={0} y={0} dy={10} textAnchor="end" fill="#113f67" fontSize={10} transform="rotate(-45)">
+          <tspan x={0} dy="1em">{format(date, 'dd/MM')}</tspan>
+          <tspan x={0} dy="1em">{format(date, 'EEE')}</tspan>
+        </text>
+      </g>
+    );
+  } catch (error) {
+    console.error('Error formatting date:', error, 'Original value:', payload.value);
+    return null;
+  }
+};
+
 const LineChartComponent = ({ data, datakey, viewType }) => {
   const [isScrollEnabled, setIsScrollEnabled] = useState(
     window.innerWidth <= 1060,
@@ -39,13 +57,7 @@ const LineChartComponent = ({ data, datakey, viewType }) => {
   const sortedData = validData.slice().sort((a, b) => {
     const dateA = parseISO(a[dateKey]);
     const dateB = parseISO(b[dateKey]);
-
-    if (isNaN(dateA) || isNaN(dateB)) {
-      console.warn('Invalid date encountered:', a[dateKey], b[dateKey]);
-      return 0;
-    }
-
-    return dateA - dateB;
+    return isNaN(dateA) || isNaN(dateB) ? 0 : dateA - dateB;
   });
 
   // Slice data based on the viewType without changing its order
@@ -61,9 +73,7 @@ const LineChartComponent = ({ data, datakey, viewType }) => {
     if (!tick) return 'No Data';
     try {
       const date = parseISO(tick);
-      return viewType === 'hourly'
-        ? format(date, 'ha').toLowerCase()
-        : format(date, 'dd/MM');
+      return `${format(date, 'dd/MM')} (${format(date, 'EEE')})`;
     } catch (error) {
       console.error('Error formatting date:', error, 'Original tick:', tick);
       return 'Invalid Date';
@@ -84,17 +94,18 @@ const LineChartComponent = ({ data, datakey, viewType }) => {
         <ResponsiveContainer width="100%" height={300}>
           <LineChart
             data={filteredData}
-            margin={{ top: 10, right: 22, left: 0, bottom: 20 }}
+            margin={{ top: 10, right: 22, left: 0, bottom: 15 }} 
           >
             <CartesianGrid stroke="white" strokeDasharray="5 5" />
             <XAxis
               dataKey={xAxisDataKey}
               stroke={graphColor}
-              tick={{ fontSize: isScrollEnabled ? 10 : 12 }}
+              tick={<CustomXAxisTick />}
+              tickLine={{ transform: 'translateY(5px)' }}
               tickFormatter={formatXAxis}
               textAnchor="end"
-              angle={-45} 
-              dy={10} 
+              angle={-45}
+              dy={10}
             />
             <YAxis
               type="number"

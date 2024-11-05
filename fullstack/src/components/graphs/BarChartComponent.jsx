@@ -11,6 +11,24 @@ import {
 import { calculateYAxisConfig } from '../../app/utils/chartUtils';
 import { parseISO, format } from 'date-fns';
 
+// Custom tick component for displaying date and day
+const CustomXAxisTick = ({ x, y, payload }) => {
+  try {
+    const date = parseISO(payload.value);
+    return (
+      <g transform={`translate(${x},${y})`}>
+        <text x={0} y={0} dy={10} textAnchor="end" fill="#113f67" fontSize={10} transform="rotate(-45)">
+          <tspan x={0} dy="1em">{format(date, 'dd/MM')}</tspan>
+          <tspan x={0} dy="1em">{format(date, 'EEE')}</tspan>
+        </text>
+      </g>
+    );
+  } catch (error) {
+    console.error('Error formatting date:', error, 'Original value:', payload.value);
+    return null;
+  }
+};
+
 const BarChartComponent = ({ data, datakey, viewType }) => {
   const [isScrollEnabled, setIsScrollEnabled] = useState(window.innerWidth <= 1060);
   const graphColor = '#113f67';
@@ -49,19 +67,6 @@ const BarChartComponent = ({ data, datakey, viewType }) => {
         ? `${filteredData.length * 50}px` // Enable scroll for hourly and 30-day views
         : '100%';
 
-  const formatXAxis = (tick) => {
-    if (!tick) return 'No Data';
-    try {
-      const date = parseISO(tick);
-      return viewType === 'hourly'
-        ? format(date, 'ha').toLowerCase()
-        : format(date, 'dd/MM');
-    } catch (error) {
-      console.error('Error formatting date:', error, 'Original tick:', tick);
-      return 'Invalid Date';
-    }
-  };
-
   return (
     <div
       style={{
@@ -75,19 +80,14 @@ const BarChartComponent = ({ data, datakey, viewType }) => {
         <ResponsiveContainer width="100%" height={300}>
           <BarChart
             data={filteredData}
-            margin={{ top: 20, right: 22, left: 0, bottom: 20 }} 
+            margin={{ top: 20, right: 22, left: 0, bottom: 15 }} 
           >
             <CartesianGrid stroke="white" strokeDasharray="5 5" />
             <XAxis
               dataKey={xAxisDataKey}
               stroke={graphColor}
-              tick={{
-                fontSize: isScrollEnabled && viewType !== '7days' ? 10 : 12,
-              }}
-              tickFormatter={formatXAxis}
+              tick={<CustomXAxisTick />}
               interval={0}
-              angle={-45} 
-              dy={10} 
             />
             <YAxis
               type="number"
