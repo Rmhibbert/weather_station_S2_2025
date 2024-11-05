@@ -198,8 +198,8 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
             <button onClick={() => handleViewChange(1)} className={`btn ${viewLength === 1 ? 'active' : ''}`}>Hourly</button>
             <button onClick={() => handleViewChange(7)} className={`btn ${viewLength === 7 ? 'active' : ''}`}>7 Days</button>
             <button onClick={() => handleViewChange(30)} className={`btn ${viewLength === 30 ? 'active' : ''}`}>30 Days</button>
-          </div>
-          <div className="graph-container" >
+        </div>
+         <div className="graph-container" onClick={(e) => e.stopPropagation()}>
             {/* Use avg_value as the datakey for the graph */}
             <GraphComponent data={graphData} datakey="avg_value" viewType={viewLength === 1 ? 'hourly' : 'day'} />
           </div>
