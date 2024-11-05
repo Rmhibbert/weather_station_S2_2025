@@ -90,7 +90,7 @@ const LineChartComponent = ({ data, datakey, viewType }) => {
           isScrollEnabled && viewType !== '7days' ? 'scroll' : 'hidden',
       }}
     >
-      <div style={{ width: containerWidth }}>
+      <div style={{ width: '100%' }}>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart
             data={filteredData}
