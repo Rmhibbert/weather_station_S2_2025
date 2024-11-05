@@ -17,14 +17,31 @@ const CustomXAxisTick = ({ x, y, payload }) => {
     const date = parseISO(payload.value);
     return (
       <g transform={`translate(${x},${y})`}>
-        <text x={0} y={0} dy={10} textAnchor="end" fill="#113f67" fontSize={10} transform="rotate(-45)">
-          <tspan x={0} dy="1em">{format(date, 'dd/MM')}</tspan>
-          <tspan x={0} dy="1em">{format(date, 'EEE')}</tspan>
+        <text
+          x={0}
+          y={0}
+          dy={10}
+          textAnchor="end"
+          fill="#113f67"
+          fontSize={10}
+          transform="rotate(-45)"
+        >
+          <tspan x={0} dy="1em">
+            {format(date, 'dd/MM')}
+          </tspan>
+          <tspan x={0} dy="1em">
+            {format(date, 'EEE')}
+          </tspan>
         </text>
       </g>
     );
   } catch (error) {
-    console.error('Error formatting date:', error, 'Original value:', payload.value);
+    console.error(
+      'Error formatting date:',
+      error,
+      'Original value:',
+      payload.value,
+    );
     return null;
   }
 };
@@ -65,8 +82,8 @@ const LineChartComponent = ({ data, datakey, viewType }) => {
 
   // Adjust container width for scroll functionality
   const containerWidth =
-    isScrollEnabled && viewType !== '7days'
-      ? `${filteredData.length * 50}px` // Adjust width based on the data length for scrolling
+    viewType !== '7days' && isScrollEnabled
+      ? `${Math.max(filteredData.length * 50, window.innerWidth)}px`
       : '100%';
 
   const formatXAxis = (tick) => {
@@ -90,11 +107,11 @@ const LineChartComponent = ({ data, datakey, viewType }) => {
           isScrollEnabled && viewType !== '7days' ? 'scroll' : 'hidden',
       }}
     >
-      <div style={{ width: '100%' }}>
+      <div style={{ width: containerWidth }}>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart
             data={filteredData}
-            margin={{ top: 10, right: 22, left: 0, bottom: 15 }} 
+            margin={{ top: 10, right: 22, left: 0, bottom: 15 }}
           >
             <CartesianGrid stroke="white" strokeDasharray="5 5" />
             <XAxis

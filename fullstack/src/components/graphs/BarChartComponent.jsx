@@ -17,20 +17,39 @@ const CustomXAxisTick = ({ x, y, payload }) => {
     const date = parseISO(payload.value);
     return (
       <g transform={`translate(${x},${y})`}>
-        <text x={0} y={0} dy={10} textAnchor="end" fill="#113f67" fontSize={10} transform="rotate(-45)">
-          <tspan x={0} dy="1em">{format(date, 'dd/MM')}</tspan>
-          <tspan x={0} dy="1em">{format(date, 'EEE')}</tspan>
+        <text
+          x={0}
+          y={0}
+          dy={10}
+          textAnchor="end"
+          fill="#113f67"
+          fontSize={10}
+          transform="rotate(-45)"
+        >
+          <tspan x={0} dy="1em">
+            {format(date, 'dd/MM')}
+          </tspan>
+          <tspan x={0} dy="1em">
+            {format(date, 'EEE')}
+          </tspan>
         </text>
       </g>
     );
   } catch (error) {
-    console.error('Error formatting date:', error, 'Original value:', payload.value);
+    console.error(
+      'Error formatting date:',
+      error,
+      'Original value:',
+      payload.value,
+    );
     return null;
   }
 };
 
 const BarChartComponent = ({ data, datakey, viewType }) => {
-  const [isScrollEnabled, setIsScrollEnabled] = useState(window.innerWidth <= 1060);
+  const [isScrollEnabled, setIsScrollEnabled] = useState(
+    window.innerWidth <= 1060,
+  );
   const graphColor = '#113f67';
 
   useEffect(() => {
@@ -61,11 +80,9 @@ const BarChartComponent = ({ data, datakey, viewType }) => {
 
   // Adjust container width based on view type to prevent squishing for the 7-day view
   const containerWidth =
-    viewType === '7days'
-      ? '100%' // Ensure 7-day view is full width without scrolling
-      : isScrollEnabled
-        ? `${filteredData.length * 50}px` // Enable scroll for hourly and 30-day views
-        : '100%';
+    viewType !== '7days' && isScrollEnabled
+      ? `${Math.max(filteredData.length * 50, window.innerWidth)}px`
+      : '100%';
 
   return (
     <div
@@ -73,14 +90,15 @@ const BarChartComponent = ({ data, datakey, viewType }) => {
         height: '100%',
         width: '100%',
         marginTop: '10px',
-        overflowX: viewType !== '7days' && isScrollEnabled ? 'scroll' : 'hidden',
+        overflowX:
+          viewType !== '7days' && isScrollEnabled ? 'scroll' : 'hidden',
       }}
     >
-      <div style={{ width: '100%' }}>
+      <div style={{ width: containerWidth }}>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart
             data={filteredData}
-            margin={{ top: 20, right: 22, left: 0, bottom: 15 }} 
+            margin={{ top: 20, right: 22, left: 0, bottom: 15 }}
           >
             <CartesianGrid stroke="white" strokeDasharray="5 5" />
             <XAxis
