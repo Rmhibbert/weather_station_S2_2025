@@ -217,7 +217,10 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
               30 Days
             </button>
           </div>
-          <div className="graph-container custom-scrollbar" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="graph-container custom-scrollbar"
+            onClick={(e) => e.stopPropagation()}
+          >
             {/* Use avg_value as the datakey for the graph */}
             <GraphComponent
               data={graphData}
