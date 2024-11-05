@@ -12,11 +12,12 @@ import { calculateYAxisConfig } from '../../app/utils/chartUtils';
 import { parseISO, format } from 'date-fns';
 
 const BarChartComponent = ({ data, datakey, viewType }) => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isScrollEnabled, setIsScrollEnabled] = useState(window.innerWidth <= 1060);
+  const graphColor = '#113f67';
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
+      setIsScrollEnabled(window.innerWidth <= 1060);
     };
 
     window.addEventListener('resize', handleResize);
@@ -27,6 +28,7 @@ const BarChartComponent = ({ data, datakey, viewType }) => {
 
   const xAxisDataKey = viewType === 'hourly' ? 'hour' : 'day';
 
+  // Ensure data is valid and sorted
   const validData = data.filter(
     (item) => item[xAxisDataKey] !== undefined && item[xAxisDataKey] !== null,
   );
@@ -38,6 +40,14 @@ const BarChartComponent = ({ data, datakey, viewType }) => {
   });
 
   const filteredData = sortedData.slice(viewType === 'hourly' ? -24 : -30);
+
+  // Adjust container width based on view type to prevent squishing for the 7-day view
+  const containerWidth =
+    viewType === '7days'
+      ? '100%' // Ensure 7-day view is full width without scrolling
+      : isScrollEnabled
+        ? `${filteredData.length * 50}px` // Enable scroll for hourly and 30-day views
+        : '100%';
 
   const formatXAxis = (tick) => {
     if (!tick) return 'No Data';
@@ -53,42 +63,55 @@ const BarChartComponent = ({ data, datakey, viewType }) => {
   };
 
   return (
-    <div style={{ height: '100%', width: '100%', marginTop: '10px' }}>
-      <ResponsiveContainer width="100%" height={300}>
-        <BarChart
-          data={filteredData}
-          margin={{ top: 20, right: 22, left: 0, bottom: 5 }}
-        >
-          <CartesianGrid stroke="white" strokeDasharray="5 5" />
-          <XAxis
-            dataKey={xAxisDataKey}
-            stroke="#113f67"
-            tick={{ fontSize: isMobile ? 8 : 12 }}
-            tickFormatter={formatXAxis}
-            interval={0}
-          />
-          <YAxis
-            type="number"
-            domain={domain}
-            ticks={ticks}
-            stroke="#113f67"
-            allowDecimals={false}
-            tick={{ fontSize: 12 }}
-          />
-          <Tooltip
-            cursor={{ fill: 'transparent' }}
-            contentStyle={{
-              backgroundColor: '#ffffff',
-              borderColor: '#113f67',
-              borderRadius: '8px',
-              padding: '5px',
-            }}
-            itemStyle={{ color: '#113f67' }}
-            labelFormatter={() => ''}
-          />
-          <Bar dataKey={datakey} fill="#113f67" />
-        </BarChart>
-      </ResponsiveContainer>
+    <div
+      style={{
+        height: '100%',
+        width: '100%',
+        marginTop: '10px',
+        overflowX: viewType !== '7days' && isScrollEnabled ? 'scroll' : 'hidden',
+      }}
+    >
+      <div style={{ width: containerWidth }}>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart
+            data={filteredData}
+            margin={{ top: 20, right: 22, left: 0, bottom: 20 }} 
+          >
+            <CartesianGrid stroke="white" strokeDasharray="5 5" />
+            <XAxis
+              dataKey={xAxisDataKey}
+              stroke={graphColor}
+              tick={{
+                fontSize: isScrollEnabled && viewType !== '7days' ? 10 : 12,
+              }}
+              tickFormatter={formatXAxis}
+              interval={0}
+              angle={-45} 
+              dy={10} 
+            />
+            <YAxis
+              type="number"
+              domain={domain}
+              ticks={ticks}
+              stroke={graphColor}
+              allowDecimals={false}
+              tick={{ fontSize: 12 }}
+            />
+            <Tooltip
+              cursor={{ fill: 'transparent' }}
+              contentStyle={{
+                backgroundColor: '#ffffff',
+                borderColor: graphColor,
+                borderRadius: '8px',
+                padding: '5px',
+              }}
+              itemStyle={{ color: graphColor }}
+              labelFormatter={() => ''}
+            />
+            <Bar dataKey={datakey} fill={graphColor} />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 };
