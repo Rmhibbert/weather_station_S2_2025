@@ -27,7 +27,7 @@ export function calculateYAxisConfig(data, dataKey) {
 
 export function filterAndSortData(data, xAxisDataKey, viewType) {
   const validData = data.filter(
-    (item) => item[xAxisDataKey] !== undefined && item[xAxisDataKey] !== null
+    (item) => item[xAxisDataKey] !== undefined && item[xAxisDataKey] !== null,
   );
 
   const sortedData = validData.slice().sort((a, b) => {
@@ -76,7 +76,12 @@ export const CustomXAxisTick = ({ x, y, payload, viewType }) => {
       </g>
     );
   } catch (error) {
-    console.error('Error formatting date:', error, 'Original value:', payload.value);
+    console.error(
+      'Error formatting date:',
+      error,
+      'Original value:',
+      payload.value,
+    );
     return null;
   }
 };

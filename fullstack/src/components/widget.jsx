@@ -58,7 +58,7 @@ const fetchGraphData = async (dataKey, length) => {
       break;
     case 'wind':
       table = 'wind';
-      value = 'wind_speed'; 
+      value = 'wind_speed';
       break;
     default:
       table = dataKey;
@@ -67,14 +67,14 @@ const fetchGraphData = async (dataKey, length) => {
   }
 
   // Construct the fetch URL with the correct table and value
-  const response = await fetch(`${baseUrl}/api/get-graph-data?table=${table}&value=${value}&length=${length}`);
+  const response = await fetch(
+    `${baseUrl}/api/get-graph-data?table=${table}&value=${value}&length=${length}`,
+  );
   if (!response.ok) {
     throw new Error('Failed to fetch graph data');
   }
   return response.json();
 };
-
-
 
 const Widget = ({ name, dataKey, GraphComponent }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -194,14 +194,36 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
 
       {isExpanded && GraphComponent && (
         <>
-          <div className="button-group flex justify-center space-x-2 mb-2" onClick={(e) => e.stopPropagation()}>
-            <button onClick={() => handleViewChange(1)} className={`btn ${viewLength === 1 ? 'active' : ''}`}>Hourly</button>
-            <button onClick={() => handleViewChange(7)} className={`btn ${viewLength === 7 ? 'active' : ''}`}>7 Days</button>
-            <button onClick={() => handleViewChange(30)} className={`btn ${viewLength === 30 ? 'active' : ''}`}>30 Days</button>
-        </div>
-         <div className="graph-container custom-scrollbar" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="button-group flex justify-center space-x-2 mb-2"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => handleViewChange(1)}
+              className={`btn ${viewLength === 1 ? 'active' : ''}`}
+            >
+              Hourly
+            </button>
+            <button
+              onClick={() => handleViewChange(7)}
+              className={`btn ${viewLength === 7 ? 'active' : ''}`}
+            >
+              7 Days
+            </button>
+            <button
+              onClick={() => handleViewChange(30)}
+              className={`btn ${viewLength === 30 ? 'active' : ''}`}
+            >
+              30 Days
+            </button>
+          </div>
+          <div className="graph-container" onClick={(e) => e.stopPropagation()}>
             {/* Use avg_value as the datakey for the graph */}
-            <GraphComponent data={graphData} datakey="avg_value" viewType={viewLength === 1 ? 'hourly' : 'day'} />
+            <GraphComponent
+              data={graphData}
+              datakey="avg_value"
+              viewType={viewLength === 1 ? 'hourly' : 'day'}
+            />
           </div>
         </>
       )}
@@ -210,4 +232,3 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
 };
 
 export default Widget;
-
