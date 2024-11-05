@@ -134,7 +134,7 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
         value = latestData.gas_level;
         break;
       case 'rain':
-        value = latestData.rainfall_mm;
+        value = parseFloat(latestData.rainfall_mm).toFixed(2);
         break;
       default:
         value = latestData[dataKey];
