@@ -53,3 +53,31 @@
   color: white; 
 }
 
+
+.custom-scrollbar {
+  overflow-x: auto; /* Ensures the scroll bar appears */
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  height: 6px; /* Adjust the height to be smaller */
+  
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent; 
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #113f67; 
+  border-radius: 4px; 
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #0d2e4b; 
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin; /* Firefox - sets the scrollbar to be thin */
+  scrollbar-color: #113f67 transparent; /* Custom color for Firefox */
+}
+
