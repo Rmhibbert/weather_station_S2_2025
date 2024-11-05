@@ -76,7 +76,7 @@ const BarChartComponent = ({ data, datakey, viewType }) => {
         overflowX: viewType !== '7days' && isScrollEnabled ? 'scroll' : 'hidden',
       }}
     >
-      <div style={{ width: containerWidth }}>
+      <div style={{ width: '100%' }}>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart
             data={filteredData}
