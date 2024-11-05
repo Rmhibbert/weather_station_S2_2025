@@ -54,8 +54,12 @@ export const CustomXAxisTick = ({ x, y, payload, viewType }) => {
       const formattedDay = format(date, 'EEE');
       displayDate = (
         <>
-          <tspan x={0} dy="1em">{formattedDate}</tspan>
-          <tspan x={0} dy="1em">{formattedDay}</tspan>
+          <tspan x={0} dy="1em">
+            {formattedDate}
+          </tspan>
+          <tspan x={0} dy="1em">
+            {formattedDay}
+          </tspan>
         </>
       );
     }
@@ -85,4 +89,3 @@ export const CustomXAxisTick = ({ x, y, payload, viewType }) => {
     return null;
   }
 };
-

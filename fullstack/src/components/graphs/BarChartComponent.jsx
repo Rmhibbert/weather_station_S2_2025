@@ -61,7 +61,7 @@ const BarChartComponent = ({ data, datakey, viewType }) => {
             <XAxis
               dataKey={xAxisDataKey}
               stroke={graphColor}
-              tick={<CustomXAxisTick viewType={viewType}/>}
+              tick={<CustomXAxisTick viewType={viewType} />}
               interval={0}
             />
             <YAxis
