@@ -1,8 +1,6 @@
 'use client';
 import Widget from "@/components/widget";
-import LineChartComponent from "@/components/graphs/LineChartComponent";
-import BarChartComponent from "@/components/graphs/BarChartComponent";
-import Link from 'next/link';  // Import the Link component for internal routing
+import Link from 'next/link';  // Import the Link component for internal navigation
 import "./page.css";
 
 export default function Home() {
@@ -16,10 +14,10 @@ export default function Home() {
         <Widget name="Gas" dataKey="gas" GraphComponent={null} />
         <Widget name="Dust" dataKey="dust" GraphComponent={null} />
 
-        {/* Link to external site */}
-        <a href="https://huggingface.co/spaces/TomMc9010/Cloud_AI_model" target="_blank" rel="noopener noreferrer">
+        {/* Link to the internal cloud-details page */}
+        <Link href="/cloud-details" passHref>
           <Widget name="Cloud" GraphComponent={null} />
-        </a>
+        </Link>
       </div>
     </div>
   );
