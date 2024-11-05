@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import * as Tooltip from '@radix-ui/react-tooltip';
-import './WidgetBase.css';
+import './widget.css';
 
 // Sensor Mapping
 const sensorMapping = {
