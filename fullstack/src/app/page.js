@@ -17,7 +17,7 @@ export default function Home() {
         <Widget name= "Rain" dataKey="rain" GraphComponent={LineChartComponent}/>
         <Widget name="Air Pressure" dataKey="pressure" GraphComponent={LineChartComponent} />
         <Widget name="Wind" dataKey="wind" GraphComponent={LineChartComponent} />
-        <Widget name="CO2" dataKey="co2" GraphComponent={LineChartComponent} />
+        <Widget name="CO2" dataKey="co2" GraphComponent={BarChartComponent} />
         <Widget name="Gas" dataKey="gas" GraphComponent={LineChartComponent} />
         <Widget name="Dust" dataKey="dust" GraphComponent={LineChartComponent} />
       </div>
