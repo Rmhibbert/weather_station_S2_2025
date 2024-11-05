@@ -8,43 +8,11 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-import { calculateYAxisConfig } from '../../app/utils/chartUtils';
-import { parseISO, format } from 'date-fns';
-
-// Custom tick component for displaying date and day
-const CustomXAxisTick = ({ x, y, payload }) => {
-  try {
-    const date = parseISO(payload.value);
-    return (
-      <g transform={`translate(${x},${y})`}>
-        <text
-          x={0}
-          y={0}
-          dy={10}
-          textAnchor="end"
-          fill="#113f67"
-          fontSize={10}
-          transform="rotate(-45)"
-        >
-          <tspan x={0} dy="1em">
-            {format(date, 'dd/MM')}
-          </tspan>
-          <tspan x={0} dy="1em">
-            {format(date, 'EEE')}
-          </tspan>
-        </text>
-      </g>
-    );
-  } catch (error) {
-    console.error(
-      'Error formatting date:',
-      error,
-      'Original value:',
-      payload.value,
-    );
-    return null;
-  }
-};
+import {
+  calculateYAxisConfig,
+  filterAndSortData,
+  CustomXAxisTick,
+} from '../../app/utils/chartUtils';
 
 const BarChartComponent = ({ data, datakey, viewType }) => {
   const [isScrollEnabled, setIsScrollEnabled] = useState(
@@ -62,21 +30,10 @@ const BarChartComponent = ({ data, datakey, viewType }) => {
   }, []);
 
   const { domain, ticks } = calculateYAxisConfig(data, datakey);
-
   const xAxisDataKey = viewType === 'hourly' ? 'hour' : 'day';
 
-  // Ensure data is valid and sorted
-  const validData = data.filter(
-    (item) => item[xAxisDataKey] !== undefined && item[xAxisDataKey] !== null,
-  );
-
-  const sortedData = validData.slice().sort((a, b) => {
-    const dateA = parseISO(a[xAxisDataKey]);
-    const dateB = parseISO(b[xAxisDataKey]);
-    return isNaN(dateA) || isNaN(dateB) ? 0 : dateA - dateB;
-  });
-
-  const filteredData = sortedData.slice(viewType === 'hourly' ? -24 : -30);
+  // Use the utility function for filtering and sorting data
+  const filteredData = filterAndSortData(data, xAxisDataKey, viewType);
 
   // Adjust container width based on view type to prevent squishing for the 7-day view
   const containerWidth =
