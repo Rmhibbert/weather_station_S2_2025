@@ -201,7 +201,7 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
           </div>
           <div className="graph-container px-4 pb-4">
             {/* Use avg_value as the datakey for the graph */}
-            <GraphComponent data={graphData} datakey="avg_value" />
+            <GraphComponent data={graphData} datakey="avg_value" viewType={viewLength === 1 ? 'hourly' : 'day'} />
           </div>
         </>
       )}
