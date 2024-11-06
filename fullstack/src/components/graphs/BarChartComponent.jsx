@@ -19,6 +19,7 @@ const BarChartComponent = ({ data, datakey, viewType }) => {
     window.innerWidth <= 1060,
   );
   const graphColor = '#113f67';
+  const xyAxis = 'white';
 
   useEffect(() => {
     const handleResize = () => {
@@ -60,15 +61,15 @@ const BarChartComponent = ({ data, datakey, viewType }) => {
             <CartesianGrid stroke="white" strokeDasharray="5 5" />
             <XAxis
               dataKey={xAxisDataKey}
-              stroke={graphColor}
-              tick={<CustomXAxisTick viewType={viewType} />}
+              stroke={xyAxis}
+              tick={<CustomXAxisTick viewType={viewType} color={xyAxis} />}
               interval={0}
             />
             <YAxis
               type="number"
               domain={domain}
               ticks={ticks}
-              stroke={graphColor}
+              stroke={xyAxis}
               allowDecimals={false}
               tick={{ fontSize: 12 }}
             />

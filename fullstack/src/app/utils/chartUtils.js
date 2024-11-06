@@ -40,7 +40,7 @@ export function filterAndSortData(data, xAxisDataKey, viewType) {
 }
 
 // Custom tick component for displaying date and day
-export const CustomXAxisTick = ({ x, y, payload, viewType }) => {
+export const CustomXAxisTick = ({ x, y, payload, viewType, color }) => {
   try {
     let displayDate = payload.value;
     if (viewType === 'hourly') {
@@ -71,7 +71,7 @@ export const CustomXAxisTick = ({ x, y, payload, viewType }) => {
           y={0}
           dy={10}
           textAnchor="end"
-          fill="#113f67"
+          fill= {color}
           fontSize={10}
           transform="rotate(-45)"
         >

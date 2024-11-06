@@ -169,7 +169,7 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
               <Tooltip.Trigger asChild>
                 <span
                   className="inline-flex items-center justify-center w-6 h-6 text-white rounded-full text-lg cursor-pointer"
-                  style={{ backgroundColor: 'hsla(0, 0%, 100%, .15)' }}
+                  style={{ backgroundColor: '#113f67' }}
                   aria-label="Info"
                   onClick={handleTooltipToggle} // Add click functionality
                 >
