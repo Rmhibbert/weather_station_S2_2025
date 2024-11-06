@@ -36,7 +36,7 @@ export const GET = async (request) => {
       'pressure',
       'humidity',
       'wind',
-      'rain_gauge',
+      'rainfall_measurement',
       'dust',
       'co2',
       'gas',

@@ -30,7 +30,7 @@ export const GET = async (request) => {
       { table: 'pressure', value: 'pressure' },
       { table: 'humidity', value: 'humidity' },
       { table: 'wind', value: 'wind_speed' },
-      { table: 'rain_gauge', value: 'rain_gauge' },
+      { table: 'rainfall_measurement', value: 'rainfall_mm' },
       { table: 'dust', value: 'dust' },
       { table: 'co2', value: 'co2_level' },
       { table: 'gas', value: 'gas_level' },
