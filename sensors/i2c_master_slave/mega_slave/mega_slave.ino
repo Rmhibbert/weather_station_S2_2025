@@ -60,7 +60,7 @@ void loop() {
     previousWindUpdateMillis = currentMillis;  // Update the last wind update time
 
     // Rainfall calculation (each pulse represents 0.2794 mm of rainfall)
-    rainfall = rainPulseCount * 0.2794;
+    rainfall = rainPulseCount;
 
     // Get wind direction from the wind vane
     windDirection = getWindDirection();
