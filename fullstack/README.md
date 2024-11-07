@@ -1,11 +1,12 @@
 npm install pg pg-promise
-npm i dotenv  
+npm i dotenv
 
 npm install tailwindcss postcss autoprefixer @vitejs/plugin-react-swc --save-dev  
 npx tailwindcss init -p  
-npx shadcn@latest init  
+npx shadcn@latest init
 
 npm install @tanstack/react-query
+
 
 
 
@@ -29,3 +30,8 @@ Click on that this will take you to a new  page with an image of a cloud click o
 
 
 Note: Make your you have nothing else running on port 8000 or there might be som issues with docker. 
+
+npm install -D cypress
+npm init @eslint/config@latest
+npm install --save-dev jest
+

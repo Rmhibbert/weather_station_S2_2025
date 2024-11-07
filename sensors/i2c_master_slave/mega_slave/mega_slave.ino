@@ -57,26 +57,11 @@ void loop() {
 
     // Wind speed calculation
     windSpeed = (windPulseCount * 2.4) / dataCount;  // Convert pulses to m/s (assuming 2.4 m/s for 1 pulse per second)
-    
     previousWindUpdateMillis = currentMillis;  // Update the last wind update time
-    Serial.print("WindSpeed: ");
-    Serial.println(windSpeed);
-
-    // Rainfall calculation (each pulse represents 0.2794 mm of rainfall)
-    rainfall = (rainPulseCount / 3) * 0.2794;
-
-    Serial.print("Rain: ");
-    Serial.println(rainfall);
-
-    buttonState = digitalRead(1);
-
     dataCount++;
 
-  if (buttonState == HIGH) {     
-Serial.println ("1");
-  } 
-  else {
-  }
+    // Rainfall calculation (each pulse represents 0.2794 mm of rainfall)
+    rainfall = rainPulseCount;
 
     // Get wind direction from the wind vane
     windDirection = getWindDirection();
