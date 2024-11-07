@@ -1,5 +1,5 @@
 /**
- * @api {get} /api/rain-data Get Barometric Pressure Data
+ * @api {get} /api/rain-data Get Rain Data
  */
 import db from '@/db';
 import { isRateLimited } from '@/app/utils/ratelimit';

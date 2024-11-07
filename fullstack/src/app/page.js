@@ -1,4 +1,7 @@
 'use client';
+
+import Link from 'next/link'; // Import the Link component for internal navigation
+
 import Widget from '@/components/widget';
 import LineChartComponent from '@/components/graphs/LineChartComponent';
 import BarChartComponent from '@/components/graphs/BarChartComponent';
@@ -40,6 +43,10 @@ export default function Home() {
           dataKey="dust"
           GraphComponent={LineChartComponent}
         />
+        {/* Link to the internal cloud-details page */}
+        <Link href="/cloud-details" passHref>
+          <Widget name="Cloud" GraphComponent={null} />
+        </Link>
       </div>
       <Footer />
     </div>

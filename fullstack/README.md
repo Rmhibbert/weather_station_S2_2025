@@ -7,6 +7,21 @@ npx shadcn@latest init
 
 npm install @tanstack/react-query
 
+# How to run cloud api
+
+1.  When you start the front end make sure you run `npm i`
+2.  Make sure you have docker installed on your computer.
+
+3.  Cd in to the `\fullstack\src\app\cloud-details\PythonBackEnd>`
+4.  In the terminal run `docker build -t fastapi-app .`
+
+5.  Then after its been built run `docker run -d -p 8000:8000 fastapi-app`
+
+On the front end of the app you will see a new widget called Cloud.
+Click on that this will take you to a new page with an image of a cloud click on the cloud and wait until you see the results.
+
+Note: Make your you have nothing else running on port 8000 or there might be som issues with docker.
+
 npm install -D cypress
 npm init @eslint/config@latest
 npm install --save-dev jest
