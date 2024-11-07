@@ -87,6 +87,8 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
   const { data, error, isLoading } = useQuery({
     queryKey: [dataKey],
     queryFn: () => fetchSensorData(dataKey),
+    staleTime: 60000, // 1 minute 
+    cacheTime: 300000, // 5 minutes 
   });
 
   const toggleExpand = async () => {
