@@ -1,8 +1,6 @@
 'use client';
 
-
-import Link from 'next/link';  // Import the Link component for internal navigation
-
+import Link from 'next/link'; // Import the Link component for internal navigation
 
 import Widget from '@/components/widget';
 import LineChartComponent from '@/components/graphs/LineChartComponent';
@@ -10,7 +8,6 @@ import BarChartComponent from '@/components/graphs/BarChartComponent';
 import Header from '../components/header';
 import Footer from '../components/footer';
 import './page.css';
-
 
 export default function Home() {
   return (

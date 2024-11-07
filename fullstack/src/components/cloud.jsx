@@ -2,10 +2,10 @@
 import React, { useState } from 'react';
 
 const CloudDetails = () => {
-  const [result, setResult] = useState(''); 
+  const [result, setResult] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  
+
   const images = [
     { id: 1, src: '/images/1.png', alt: 'Cloud Image 1' }, // Sample test image
   ];
@@ -86,7 +86,9 @@ const CloudDetails = () => {
   return (
     <div className="min-h-screen bg-[--color-background] text-[--foreground] flex flex-col items-center py-10">
       <h1 className="text-3xl font-bold mb-4">Cloud Details</h1>
-      <p className="text-lg mb-4">Drag and drop an image or use a test image below:</p>
+      <p className="text-lg mb-4">
+        Drag and drop an image or use a test image below:
+      </p>
 
       <div
         onDrop={handleDrop}
@@ -99,7 +101,7 @@ const CloudDetails = () => {
           onChange={(e) => handleFileUpload(e.target.files[0])}
           className="hidden"
         />
-        Drag and Drop 
+        Drag and Drop
       </div>
 
       <div className="flex gap-4 flex-wrap justify-center mb-4">
@@ -131,7 +133,8 @@ const CloudDetails = () => {
       )}
 
       <p className="text-sm text-gray-500 mt-4">
-        Note: Predictions may not always be accurate. Please double-check the results.
+        Note: Predictions may not always be accurate. Please double-check the
+        results.
       </p>
 
       <style jsx>{`

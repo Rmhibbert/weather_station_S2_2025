@@ -1,5 +1,5 @@
 'use client';
-import Cloud from "@/components/cloud";
+import Cloud from '@/components/cloud';
 
 export default function CloudDetails() {
   return (
