@@ -46,7 +46,7 @@ export default function Home() {
           GraphComponent={LineChartComponent}
         />
         <Cloud />
-          {/* name="Cloud Prediction Model"
+        {/* name="Cloud Prediction Model"
           dataKey="cloud"
           GraphComponent={LineChartComponent}
         /> */}

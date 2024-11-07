@@ -61,14 +61,21 @@ const CloudDetails = () => {
     >
       <div className="text-center">
         <h1 className="px-4 pb-2">Cloud Details</h1>
-        <p className={`text-lg mb-4 ${!isExpanded ? 'block' : 'hidden'}`}>Click to expand</p>
+        <p className={`text-lg mb-4 ${!isExpanded ? 'block' : 'hidden'}`}>
+          Click to expand
+        </p>
         {/* Conditionally render content when isExpanded is true - using Widget Logic */}
         {isExpanded && (
           <>
-            <p className="text-lg mb-4">Drag and drop an image or use a test image below:</p>
+            <p className="text-lg mb-4">
+              Drag and drop an image or use a test image below:
+            </p>
 
             <div
-              onDrop={(e) => { e.preventDefault(); handleFileUpload(e.dataTransfer.files[0]); }}
+              onDrop={(e) => {
+                e.preventDefault();
+                handleFileUpload(e.dataTransfer.files[0]);
+              }}
               onDragOver={(e) => e.preventDefault()}
               className="border-4 max-w-[600px] mx-auto border-dashed border-gray-400 rounded-lg p-10 cursor-pointer mb-4"
             >
@@ -97,7 +104,7 @@ const CloudDetails = () => {
 
             {loading && (
               <div className="flex items-center justify-center space-x-2 text-lg text-[--secondary-foreground] mt-4">
-<div className="loader w-6 h-6 rounded-full bg-gray-300 animate-pulse"></div>
+                <div className="loader w-6 h-6 rounded-full bg-gray-300 animate-pulse"></div>
                 <span>Analyzing image...</span>
               </div>
             )}
@@ -106,13 +113,16 @@ const CloudDetails = () => {
 
             {result && (
               <div className="mt-6 max-w-[600px] justify-center p-4 bg-white text-black rounded-md shadow-md">
-                <h3 className="text-xl font-semibold mb-2">Prediction Result:</h3>
+                <h3 className="text-xl font-semibold mb-2">
+                  Prediction Result:
+                </h3>
                 <pre className="text-sm">{result}</pre>
               </div>
             )}
 
             <p className="text-sm mt-4">
-              Note: Predictions may not always be accurate. Please double-check the results.
+              Note: Predictions may not always be accurate. Please double-check
+              the results.
             </p>
           </>
         )}
