@@ -60,7 +60,7 @@ const CloudDetails = () => {
       className={`widget ${isExpanded ? 'expanded' : ''} relative rounded-lg cursor-pointer flex items-center justify-center`}
     >
       <div className="text-center">
-        <h1 className="px-4 pb-2">Cloud Details</h1>
+        <h1 className="px-4 pb-2">Cloud Details (Experimental)</h1>
         <p className={`text-lg mb-4 ${!isExpanded ? 'block' : 'hidden'}`}>
           Click to expand
         </p>
@@ -68,7 +68,7 @@ const CloudDetails = () => {
         {isExpanded && (
           <>
             <p className="text-lg mb-4">
-              Drag and drop an image or use a test image below:
+              Drag and drop an image or click the test image below:
             </p>
 
             <div
