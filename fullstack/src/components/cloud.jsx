@@ -86,7 +86,7 @@ const CloudDetails = () => {
   return (
     <div className="min-h-screen bg-[--color-background] text-[--foreground] flex flex-col items-center py-10">
       <h1 className="text-3xl font-bold mb-4">Cloud Details</h1>
-      <p className="text-lg mb-4">Drag and drop an image, click to upload, or use a test image below:</p>
+      <p className="text-lg mb-4">Drag and drop an image or use a test image below:</p>
 
       <div
         onDrop={handleDrop}
@@ -99,7 +99,7 @@ const CloudDetails = () => {
           onChange={(e) => handleFileUpload(e.target.files[0])}
           className="hidden"
         />
-        Drag and Drop or Click to Upload
+        Drag and Drop 
       </div>
 
       <div className="flex gap-4 flex-wrap justify-center mb-4">
