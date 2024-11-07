@@ -1,5 +1,5 @@
 /**
- * @api {get} /api/rain-data Get Barometric Pressure Data
+ * @api {get} /api/rain-data Get Rain Data
  */
 import db from '@/db';
 import { isRateLimited } from '@/app/utils/ratelimit';
@@ -18,7 +18,7 @@ export const GET = async (request) => {
     }
 
     const data = await db.any(
-      'select * FROM rain_gauge ORDER BY timestamp DESC LIMIT 1',
+      'select * FROM rainfall_measurement ORDER BY timestamp DESC LIMIT 1',
     );
     return new Response(JSON.stringify(data), {
       status: 200,

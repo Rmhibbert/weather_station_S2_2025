@@ -1,10 +1,15 @@
 'use client';
+
+import Link from 'next/link'; // Import the Link component for internal navigation
+import Cloud from '@/components/cloud';
+
 import Widget from '@/components/widget';
 import LineChartComponent from '@/components/graphs/LineChartComponent';
 import BarChartComponent from '@/components/graphs/BarChartComponent';
 import Header from '../components/header';
 import Footer from '../components/footer';
 import './page.css';
+//import { Cloud } from 'lucide-react';
 
 export default function Home() {
   return (
@@ -16,15 +21,36 @@ export default function Home() {
         <Widget
           name="Temperature"
           dataKey="temperature"
-          GraphComponent={null}
+          GraphComponent={LineChartComponent}
         />
-        <Widget name="Air Pressure" dataKey="pressure" GraphComponent={null} />
-        <Widget name="Wind" dataKey="wind" GraphComponent={null} />
-        <Widget name="CO2" dataKey="co2" GraphComponent={null} />
-        <Widget name="Gas" dataKey="gas" GraphComponent={null} />
-        <Widget name="Dust" dataKey="dust" GraphComponent={null} />
+        <Widget
+          name="Rain"
+          dataKey="rain"
+          GraphComponent={LineChartComponent}
+        />
+        <Widget
+          name="Air Pressure"
+          dataKey="pressure"
+          GraphComponent={LineChartComponent}
+        />
+        <Widget
+          name="Wind"
+          dataKey="wind"
+          GraphComponent={LineChartComponent}
+        />
+        <Widget name="CO2" dataKey="co2" GraphComponent={BarChartComponent} />
+        <Widget name="Gas" dataKey="gas" GraphComponent={LineChartComponent} />
+        <Widget
+          name="Dust"
+          dataKey="dust"
+          GraphComponent={LineChartComponent}
+        />
+        <Cloud />
+        {/* name="Cloud Prediction Model"
+          dataKey="cloud"
+          GraphComponent={LineChartComponent}
+        /> */}
       </div>
-
       <Footer />
     </div>
   );
