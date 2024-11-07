@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import Image from 'next/image';
 
 const CloudDetails = () => {
   const [result, setResult] = useState('');
@@ -106,7 +107,7 @@ const CloudDetails = () => {
 
       <div className="flex gap-4 flex-wrap justify-center mb-4">
         {images.map((image) => (
-          <img
+          <Image
             key={image.id}
             src={image.src}
             alt={image.alt}

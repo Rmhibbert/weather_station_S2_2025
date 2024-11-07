@@ -1,3 +1,4 @@
+import Image from 'next/image'
 export default function Footer() {
   return (
     <footer className="page-footer p-6 text-center text-sm flex flex-col items-center w-full">
@@ -16,7 +17,7 @@ export default function Footer() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img
+          <Image
             src="/images/github-mark-white.png"
             alt="GitHub Logo"
             className="w-6 h-6 inline-block align-middle"
