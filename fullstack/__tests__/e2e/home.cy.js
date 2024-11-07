@@ -3,7 +3,7 @@ describe('Navigation', () => {
       // Start from the home page
       cy.visit('http://localhost:3000/');
   
-      cy.get('.more-button').click();
+      cy.get('.widget').click({multiple: true});
   
       // The new page should contain a graph
       cy.get('.recharts-surface');

@@ -6,5 +6,6 @@ module.exports = defineConfig({
     },
     supportFile: false,
     specPattern: '**/*.cy.js',
+    screenshotOnRunFailure: false,
   },
 });
