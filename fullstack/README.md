@@ -25,4 +25,3 @@ Note: Make your you have nothing else running on port 8000 or there might be som
 docker build -t weather-app .
 docker inspect --format '{{.State.Pid}}'
 docker run -d -p 3000:3000 weather-app
-
