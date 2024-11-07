@@ -20,7 +20,7 @@ const CloudDetails = () => {
       const formData = new FormData();
       formData.append('image', file);
 
-      const apiResponse = await fetch('http://localhost:8000/analyze', {
+      const apiResponse = await fetch('https://weather.op-bit.nz/analyze', {
         method: 'POST',
         body: formData,
       });
