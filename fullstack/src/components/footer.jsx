@@ -21,6 +21,8 @@ export default function Footer() {
             src="/images/github-mark-white.png"
             alt="GitHub Logo"
             className="w-6 h-6 inline-block align-middle"
+            width={24}
+            height={24}
           />
         </a>
       </div>

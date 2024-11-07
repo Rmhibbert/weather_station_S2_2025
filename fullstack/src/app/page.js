@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link'; // Import the Link component for internal navigation
+import Cloud from '@/components/cloud';
 
 import Widget from '@/components/widget';
 import LineChartComponent from '@/components/graphs/LineChartComponent';
@@ -8,6 +9,7 @@ import BarChartComponent from '@/components/graphs/BarChartComponent';
 import Header from '../components/header';
 import Footer from '../components/footer';
 import './page.css';
+//import { Cloud } from 'lucide-react';
 
 export default function Home() {
   return (
@@ -43,10 +45,11 @@ export default function Home() {
           dataKey="dust"
           GraphComponent={LineChartComponent}
         />
-        {/* Link to the internal cloud-details page */}
-        <Link href="/cloud-details" passHref>
-          <Widget name="Cloud" GraphComponent={null} />
-        </Link>
+        <Cloud />
+          {/* name="Cloud Prediction Model"
+          dataKey="cloud"
+          GraphComponent={LineChartComponent}
+        /> */}
       </div>
       <Footer />
     </div>
