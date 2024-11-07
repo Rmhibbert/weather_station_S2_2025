@@ -30,6 +30,8 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@gradio/client": "^1.7.1",
+    "formidable": "^3.5.2",
     "@eslint/js": "^9.13.0",
     "autoprefixer": "^10.4.20",
     "eslint": "^8",
