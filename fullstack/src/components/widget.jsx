@@ -78,9 +78,10 @@ const fetchGraphData = async (dataKey, length) => {
 
 const Widget = ({ name, dataKey, GraphComponent }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [graphData, setGraphData] = useState([]);
+  const [graphDataCache, setGraphDataCache] = useState({});
   const [viewLength, setViewLength] = useState(1); // Default view is hourly
   const [openTooltip, setOpenTooltip] = useState(false);
+  const graphData = graphDataCache[viewLength] || [];
 
   // Fetch the main widget data using React Query
   const { data, error, isLoading } = useQuery({
@@ -89,13 +90,15 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
   });
 
   const toggleExpand = async () => {
-    if (!isExpanded && data) {
+    if (!isExpanded) {
       setIsExpanded(true);
-      try {
-        const initialGraphData = await fetchGraphData(dataKey, viewLength);
-        setGraphData(initialGraphData);
-      } catch (err) {
-        console.error('Error fetching graph data:', err);
+      if (!graphDataCache[viewLength]) {
+        try {
+          const initialGraphData = await fetchGraphData(dataKey, viewLength);
+          setGraphDataCache((prevCache) => ({ ...prevCache, [viewLength]: initialGraphData }));
+        } catch (err) {
+          console.error('Error fetching graph data:', err);
+        }
       }
     } else {
       setIsExpanded(false);
@@ -104,13 +107,16 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
 
   const handleViewChange = async (length) => {
     setViewLength(length);
-    try {
-      const updatedGraphData = await fetchGraphData(dataKey, length);
-      setGraphData(updatedGraphData);
-    } catch (err) {
-      console.error(`Error fetching ${length}-day data:`, err);
+    if (!graphDataCache[length]) {
+      try {
+        const updatedGraphData = await fetchGraphData(dataKey, length);
+        setGraphDataCache((prevCache) => ({ ...prevCache, [length]: updatedGraphData }));
+      } catch (err) {
+        console.error(`Error fetching ${length}-day data:`, err);
+      }
     }
   };
+
 
   const latestData = data?.length ? data[data.length - 1] : null; // Get the latest data point
 
