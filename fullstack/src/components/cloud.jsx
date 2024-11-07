@@ -97,7 +97,10 @@ const CloudDetails = () => {
                   src={image.src}
                   alt={image.alt}
                   className="w-36 h-36 rounded-lg cursor-pointer transition-transform duration-300 hover:scale-110 hover:shadow-lg"
-                  onClick={() => handleImageClick(image.src)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleImageClick(image.src)}
+                  }
                 />
               ))}
             </div>
