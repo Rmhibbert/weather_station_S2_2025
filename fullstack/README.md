@@ -12,7 +12,7 @@ npm install @tanstack/react-query
 1. When you start the front end make sure you run `npm i`
 2. Make sure you have docker installed on your computer.
 
-3. CD in to the `\fullstack\src\PythonBackEnd>`
+3. CD in to the `\PythonBackEnd>`
 
 4. In the terminal run `docker build -t fastapi-app .`
 5. Then after its been built run `docker run -d -p 8000:8000 fastapi-app`
