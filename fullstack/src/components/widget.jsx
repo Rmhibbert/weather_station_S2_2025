@@ -125,7 +125,7 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
         value = latestData.avg_temperature;
         break;
       case 'wind':
-        value = latestData.wind_speed * 3.6;
+        value = parseFloat(latestData.wind_speed * 3.6).toFixed(2);
         break;
       case 'co2':
         value = latestData.co2_level;
