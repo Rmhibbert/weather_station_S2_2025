@@ -25,3 +25,5 @@ Note: Make your you have nothing else running on port 8000 or there might be som
 npm install -D cypress
 npm init @eslint/config@latest
 npm install --save-dev jest
+
+npm install date-fns
