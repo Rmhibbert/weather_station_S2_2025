@@ -15,13 +15,6 @@ export function calculateYAxisConfig(data, dataKey, minRange = 0, maxRange = 400
   const adjustedMinValue = Math.max(minValue, minRange);
   const adjustedMaxValue = Math.min(maxValue, maxRange);
 
-  // Calculate the magnitude for legible scaling
-  const magnitude = Math.pow(10, Math.floor(Math.log10(adjustedMaxValue || 1)));
-  
-  // Dynamic step size calculation
-  // let stepSize = Math.ceil((adjustedMaxValue - adjustedMinValue) / 10); 
-  // if (stepSize < magnitude / 2) stepSize = Math.ceil(magnitude / 2); 
-  
   let stepSize;
 
 // Adjusting for graphs without actually adjusting for each type (sorry)
@@ -36,32 +29,24 @@ export function calculateYAxisConfig(data, dataKey, minRange = 0, maxRange = 400
   else if (adjustedMaxValue < 10) {
     stepSize = 2;
   }
-  else if (adjustedMaxValue < 110) {
-    stepSize = 50;
+  // Temperature catch
+  else if (adjustedMaxValue < 40) {
+    stepSize = 5;
   }
-  // Gas catch
-  else if (adjustedMaxValue < 800) {
-    stepSize = 50;
+  // Humidity catch
+  else if (adjustedMaxValue < 100) {
+    stepSize = 25;
     }
   // Air pressure catch
   else if ((adjustedMaxValue < 2000) && (adjustedMaxValue > 800)) {
     stepSize = 5;
-  }
+  } //Dynamic calculation (Gets gas)
   else {
-      // Calculate step size based on range
       stepSize = Math.ceil((adjustedMaxValue - adjustedMinValue) / 10);
-
-      // If stepSize is too small, increase it to half of the magnitude
-      if (stepSize < magnitude / 2) {
-          stepSize = Math.ceil(magnitude / 2);
-      }
-
-      // For values 2 or greater, make sure step size is divisible by 5 or 2
+      // Check if stepSize can be rounded to the nearest multiple of 5 or 2
       if (stepSize % 5 !== 0 && stepSize % 2 !== 0) {
-          // Check if stepSize can be rounded to the nearest multiple of 5 or 2
           let nearestMultipleOf5 = Math.ceil(stepSize / 5) * 5;
           let nearestMultipleOf2 = Math.ceil(stepSize / 2) * 2;
-
           // Choose the smaller of the two that is still larger than the current stepSize
           if (nearestMultipleOf5 >= stepSize) {
               stepSize = nearestMultipleOf5;
@@ -85,7 +70,6 @@ export function calculateYAxisConfig(data, dataKey, minRange = 0, maxRange = 400
     ticks: ticks,
   };
 }
-
 
 export function filterAndSortData(data, xAxisDataKey, viewType) {
   const validData = data.filter(
