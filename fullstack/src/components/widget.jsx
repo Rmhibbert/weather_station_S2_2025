@@ -236,11 +236,15 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
             className="graph-container custom-scrollbar"
             onClick={(e) => e.stopPropagation()}
           >
+            
             {/* Use avg_value as the datakey for the graph */}
             <GraphComponent
               data={graphData}
               datakey="avg_value"
               viewType={viewLength === 1 ? 'hourly' : 'day'}
+              xAxisLabel={viewLength === 1 ? 'Time' : 'Date'}
+              yAxisLabel="Average Value"
+              tooltipFormatter={(value) => `${value.toFixed(2)} units`}
             />
           </div>
         </>

@@ -19,8 +19,11 @@ export function calculateYAxisConfig(data, dataKey, minRange = 0, maxRange = 400
 
 // Adjusting for graphs without actually adjusting for each type (sorry)
   // Catches rain and dust graphs
-  if (adjustedMaxValue < 2) {
+  if (adjustedMaxValue < 0.5) {
       stepSize = 0.1;
+  } 
+  else if (adjustedMaxValue < 2) {
+    stepSize = 0.2;
   } 
   // Larger catches for rain and dust and wind
   else if (adjustedMaxValue < 5) {

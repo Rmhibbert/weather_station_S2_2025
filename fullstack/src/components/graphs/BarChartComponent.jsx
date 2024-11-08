@@ -71,7 +71,7 @@ const BarChartComponent = ({ data, datakey, viewType }) => {
               ticks={ticks}
               stroke={xyAxis}
               allowDecimals={false}
-              tick={{ fontSize: 12 }}
+              tick={{ fontSize: 14 }}
             />
             <Tooltip
               cursor={{ fill: 'transparent' }}
