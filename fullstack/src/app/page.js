@@ -39,7 +39,7 @@ export default function Home() {
           GraphComponent={LineChartComponent}
         />
         <Widget name="CO2" dataKey="co2" GraphComponent={BarChartComponent} />
-        <Widget name="Gas" dataKey="gas" GraphComponent={LineChartComponent} />
+        <Widget name="Gas" dataKey="gas" GraphComponent={BarChartComponent} />
         <Widget
           name="Dust"
           dataKey="dust"

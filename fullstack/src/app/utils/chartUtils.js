@@ -25,20 +25,27 @@ export function calculateYAxisConfig(data, dataKey, minRange = 0, maxRange = 400
   let stepSize;
 
 // Adjusting for graphs without actually adjusting for each type (sorry)
+  // Catches rain and dust graphs
   if (adjustedMaxValue < 2) {
       stepSize = 0.1;
   } 
+  // Larger catches for rain and dust and wind
   else if (adjustedMaxValue < 5) {
     stepSize = 1;
   }
   else if (adjustedMaxValue < 10) {
     stepSize = 2;
   }
-  else if (adjustedMaxValue > 800) {
-    stepSize = 1;
+  else if (adjustedMaxValue < 110) {
+    stepSize = 50;
+  }
+  // Gas catch
+  else if (adjustedMaxValue < 800) {
+    stepSize = 50;
     }
-  else if (adjustedMaxValue > 1000) {
-    stepSize = 100;
+  // Air pressure catch
+  else if ((adjustedMaxValue < 2000) && (adjustedMaxValue > 800)) {
+    stepSize = 5;
   }
   else {
       // Calculate step size based on range
