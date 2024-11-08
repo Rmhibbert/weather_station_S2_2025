@@ -1,7 +1,12 @@
 import React from 'react';
 import { parseISO, format } from 'date-fns';
 
-export function calculateYAxisConfig(data, dataKey, minRange = 0, maxRange = 4000) {
+export function calculateYAxisConfig(
+  data,
+  dataKey,
+  minRange = 0,
+  maxRange = 4000,
+) {
   if (!data || data.length === 0) {
     return { domain: [0, 10], ticks: [0, 2, 4, 6, 8, 10] }; // Fallback for empty data
   }
@@ -17,19 +22,17 @@ export function calculateYAxisConfig(data, dataKey, minRange = 0, maxRange = 400
 
   let stepSize;
 
-// Adjusting for graphs without actually adjusting for each type (sorry)
+  // Adjusting for graphs without actually adjusting for each type (sorry)
   // Catches rain and dust graphs
   if (adjustedMaxValue < 0.5) {
-      stepSize = 0.1;
-  } 
-  else if (adjustedMaxValue < 2) {
+    stepSize = 0.1;
+  } else if (adjustedMaxValue < 2) {
     stepSize = 0.2;
-  } 
+  }
   // Larger catches for rain and dust and wind
   else if (adjustedMaxValue < 5) {
     stepSize = 1;
-  }
-  else if (adjustedMaxValue < 10) {
+  } else if (adjustedMaxValue < 10) {
     stepSize = 2;
   }
   // Temperature catch
@@ -39,24 +42,24 @@ export function calculateYAxisConfig(data, dataKey, minRange = 0, maxRange = 400
   // Humidity catch
   else if (adjustedMaxValue < 100) {
     stepSize = 25;
-    }
+  }
   // Air pressure catch
-  else if ((adjustedMaxValue < 2000) && (adjustedMaxValue > 800)) {
+  else if (adjustedMaxValue < 2000 && adjustedMaxValue > 800) {
     stepSize = 5;
   } //Dynamic calculation (Gets gas)
   else {
-      stepSize = Math.ceil((adjustedMaxValue - adjustedMinValue) / 10);
-      // Check if stepSize can be rounded to the nearest multiple of 5 or 2
-      if (stepSize % 5 !== 0 && stepSize % 2 !== 0) {
-          let nearestMultipleOf5 = Math.ceil(stepSize / 5) * 5;
-          let nearestMultipleOf2 = Math.ceil(stepSize / 2) * 2;
-          // Choose the smaller of the two that is still larger than the current stepSize
-          if (nearestMultipleOf5 >= stepSize) {
-              stepSize = nearestMultipleOf5;
-          } else {
-              stepSize = nearestMultipleOf2;
-          }
+    stepSize = Math.ceil((adjustedMaxValue - adjustedMinValue) / 10);
+    // Check if stepSize can be rounded to the nearest multiple of 5 or 2
+    if (stepSize % 5 !== 0 && stepSize % 2 !== 0) {
+      let nearestMultipleOf5 = Math.ceil(stepSize / 5) * 5;
+      let nearestMultipleOf2 = Math.ceil(stepSize / 2) * 2;
+      // Choose the smaller of the two that is still larger than the current stepSize
+      if (nearestMultipleOf5 >= stepSize) {
+        stepSize = nearestMultipleOf5;
+      } else {
+        stepSize = nearestMultipleOf2;
       }
+    }
   }
 
   // Calculate the adjusted maxY and minY

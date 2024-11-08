@@ -25,7 +25,8 @@ const tooltipMapping = {
   co2: 'Indicates CO₂ concentration in parts per million. Levels below 1000 ppm are optimal indoors; higher levels suggest poor ventilation.',
   gas: 'Reflects tvoc (Total volatile organic compounds) concentration in parts per million. Elevated readings could signal indoor air quality issues or pollutant sources. TVOC is a combination of all organic compounds present in the air, except carbon dioxide, carbon monoxide, and methane.',
   rain: 'Indicates the current rainfall level measured in millimeters per hour. Light rain is generally below 2.5 mm per hour',
-  humidity: 'Shows the relative humidity in percentage. Ideal indoor range is 30-50%; high levels can cause discomfort and mold growth.',
+  humidity:
+    'Shows the relative humidity in percentage. Ideal indoor range is 30-50%; high levels can cause discomfort and mold growth.',
 };
 
 // Fetch main widget data
@@ -92,8 +93,8 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
   const { data, error, isLoading } = useQuery({
     queryKey: [dataKey],
     queryFn: () => fetchSensorData(dataKey),
-    staleTime: 60000, // 1 minute 
-    cacheTime: 300000, // 5 minutes 
+    staleTime: 60000, // 1 minute
+    cacheTime: 300000, // 5 minutes
   });
 
   const toggleExpand = async () => {
@@ -102,7 +103,10 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
       if (!graphDataCache[viewLength]) {
         try {
           const initialGraphData = await fetchGraphData(dataKey, viewLength);
-          setGraphDataCache((prevCache) => ({ ...prevCache, [viewLength]: initialGraphData }));
+          setGraphDataCache((prevCache) => ({
+            ...prevCache,
+            [viewLength]: initialGraphData,
+          }));
         } catch (err) {
           console.error('Error fetching graph data:', err);
         }
@@ -117,7 +121,10 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
     if (!graphDataCache[length]) {
       try {
         const updatedGraphData = await fetchGraphData(dataKey, length);
-        setGraphDataCache((prevCache) => ({ ...prevCache, [length]: updatedGraphData }));
+        setGraphDataCache((prevCache) => ({
+          ...prevCache,
+          [length]: updatedGraphData,
+        }));
       } catch (err) {
         console.error(`Error fetching ${length}-day data:`, err);
       }
@@ -236,7 +243,6 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
             className="graph-container custom-scrollbar"
             onClick={(e) => e.stopPropagation()}
           >
-            
             {/* Use avg_value as the datakey for the graph */}
             <GraphComponent
               data={graphData}

@@ -67,8 +67,13 @@ const CloudDetails = () => {
         {/* Conditionally render content when isExpanded is true - using Widget Logic */}
         {isExpanded && (
           <>
-            <p className="text-lg">This is a cloud prediction model that will return the type of cloud found in an image.</p>
-            <p className="text-lg mb-5">Drag and drop an image or click the test image below:</p>
+            <p className="text-lg">
+              This is a cloud prediction model that will return the type of
+              cloud found in an image.
+            </p>
+            <p className="text-lg mb-5">
+              Drag and drop an image or click the test image below:
+            </p>
 
             <div
               onDrop={(e) => {
