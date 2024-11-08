@@ -45,6 +45,7 @@ export default function Home() {
           dataKey="dust"
           GraphComponent={LineChartComponent}
         />
+        <Widget name="Humidity" dataKey="humidity" GraphComponent={LineChartComponent} />
         <Cloud />
         {/* name="Cloud Prediction Model"
           dataKey="cloud"

@@ -10,7 +10,9 @@ export function calculateYAxisConfig(data, dataKey) {
   const maxValue = Math.max(...values);
   const minY = 0;
 
-  const magnitude = Math.pow(10, Math.floor(Math.log10(maxValue)));
+  const adjustedMaxValue = Math.min(maxValue, 1000); 
+
+  const magnitude = Math.pow(10, Math.floor(Math.log10(adjustedMaxValue)));
   let stepSize = magnitude / 2; // Divide by 2 for better granularity
   const maxY = Math.ceil(maxValue / stepSize) * stepSize;
 

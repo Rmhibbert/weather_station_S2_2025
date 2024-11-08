@@ -12,6 +12,7 @@ const sensorMapping = {
   co2: { unit: 'ppm', label: 'CO2 Levels' },
   gas: { unit: 'ppm', label: 'Gas Levels' },
   rain: { unit: 'mm', label: 'Rain Levels' },
+  humidity: { unit: '%', label: 'Humidity' },
 };
 
 const tooltipMapping = {
@@ -22,8 +23,9 @@ const tooltipMapping = {
   wind: 'Represents wind speed in kilometers per hour. High speeds can influence ventilation and comfort in open areas.',
   dust: 'Shows airborne dust concentration in micrograms per cubic meter. Lower levels indicate better air quality; values above 50 µg/m³ may affect health.',
   co2: 'Indicates CO₂ concentration in parts per million. Levels below 1000 ppm are optimal indoors; higher levels suggest poor ventilation.',
-  gas: 'Reflects gas concentration in parts per million. Elevated readings could signal indoor air quality issues or pollutant sources.',
+  gas: 'Reflects tvoc (Total volatile organic compounds) concentration in parts per million. Elevated readings could signal indoor air quality issues or pollutant sources. TVOC is a combination of all organic compounds present in the air, except carbon dioxide, carbon monoxide, and methane.',
   rain: 'Indicates the current rainfall level measured in millimeters per hour. Light rain is generally below 2.5 mm per hour',
+  humidity: 'Shows the relative humidity in percentage. Ideal indoor range is 30-50%; high levels can cause discomfort and mold growth.',
 };
 
 // Fetch main widget data
@@ -60,6 +62,9 @@ const fetchGraphData = async (dataKey, length) => {
       table = 'wind';
       value = 'wind_speed';
       break;
+    case 'humidity':
+      table = 'humidity';
+      value = 'humidity';
     default:
       table = dataKey;
       value = dataKey;
@@ -143,6 +148,9 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
         break;
       case 'rain':
         value = parseFloat(latestData.rainfall_mm).toFixed(2);
+        break;
+      case 'humidity':
+        value = latestData.humidity;
         break;
       default:
         value = latestData[dataKey];
