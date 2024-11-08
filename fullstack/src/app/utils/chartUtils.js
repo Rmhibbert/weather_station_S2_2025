@@ -1,7 +1,7 @@
 import React from 'react';
 import { parseISO, format } from 'date-fns';
 
-export function calculateYAxisConfig(data, dataKey, minRange = 0, maxRange = 1000) {
+export function calculateYAxisConfig(data, dataKey, minRange = 0, maxRange = 4000) {
   if (!data || data.length === 0) {
     return { domain: [0, 10], ticks: [0, 2, 4, 6, 8, 10] }; // Fallback for empty data
   }
@@ -19,9 +19,51 @@ export function calculateYAxisConfig(data, dataKey, minRange = 0, maxRange = 100
   const magnitude = Math.pow(10, Math.floor(Math.log10(adjustedMaxValue || 1)));
   
   // Dynamic step size calculation
-  let stepSize = Math.ceil((adjustedMaxValue - adjustedMinValue) / 10); 
-  if (stepSize < magnitude / 2) stepSize = Math.ceil(magnitude / 2); 
+  // let stepSize = Math.ceil((adjustedMaxValue - adjustedMinValue) / 10); 
+  // if (stepSize < magnitude / 2) stepSize = Math.ceil(magnitude / 2); 
   
+  let stepSize;
+
+// Adjusting for graphs without actually adjusting for each type (sorry)
+  if (adjustedMaxValue < 2) {
+      stepSize = 0.1;
+  } 
+  else if (adjustedMaxValue < 5) {
+    stepSize = 1;
+  }
+  else if (adjustedMaxValue < 10) {
+    stepSize = 2;
+  }
+  else if (adjustedMaxValue > 800) {
+    stepSize = 1;
+    }
+  else if (adjustedMaxValue > 1000) {
+    stepSize = 100;
+  }
+  else {
+      // Calculate step size based on range
+      stepSize = Math.ceil((adjustedMaxValue - adjustedMinValue) / 10);
+
+      // If stepSize is too small, increase it to half of the magnitude
+      if (stepSize < magnitude / 2) {
+          stepSize = Math.ceil(magnitude / 2);
+      }
+
+      // For values 2 or greater, make sure step size is divisible by 5 or 2
+      if (stepSize % 5 !== 0 && stepSize % 2 !== 0) {
+          // Check if stepSize can be rounded to the nearest multiple of 5 or 2
+          let nearestMultipleOf5 = Math.ceil(stepSize / 5) * 5;
+          let nearestMultipleOf2 = Math.ceil(stepSize / 2) * 2;
+
+          // Choose the smaller of the two that is still larger than the current stepSize
+          if (nearestMultipleOf5 >= stepSize) {
+              stepSize = nearestMultipleOf5;
+          } else {
+              stepSize = nearestMultipleOf2;
+          }
+      }
+  }
+
   // Calculate the adjusted maxY and minY
   const maxY = Math.ceil(adjustedMaxValue / stepSize) * stepSize;
   const minY = Math.floor(adjustedMinValue / stepSize) * stepSize;

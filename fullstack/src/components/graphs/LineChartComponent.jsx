@@ -74,6 +74,9 @@ const LineChartComponent = ({ data, datakey, viewType }) => {
               ticks={ticks}
               stroke={xyAxis}
               allowDecimals={false}
+              tickFormatter={(value) => {
+                return value < 4 ? value.toFixed(2) : value; // Only format if value is under 4
+              }}
               tick={{ fontSize: 12 }}
             />
             <Tooltip

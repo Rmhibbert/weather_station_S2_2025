@@ -124,7 +124,6 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
     }
   };
 
-
   const latestData = data?.length ? data[data.length - 1] : null; // Get the latest data point
 
   const renderLatestData = () => {

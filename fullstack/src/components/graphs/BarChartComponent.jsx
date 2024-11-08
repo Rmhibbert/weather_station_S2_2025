@@ -53,7 +53,7 @@ const BarChartComponent = ({ data, datakey, viewType }) => {
       }}
     >
       <div style={{ width: containerWidth }}>
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="100%" height={600}>
           <BarChart
             data={filteredData}
             margin={{ top: 20, right: 22, left: 0, bottom: 15 }}
