@@ -1,20 +1,30 @@
 import React from 'react';
 import { parseISO, format } from 'date-fns';
 
-export function calculateYAxisConfig(data, dataKey) {
+export function calculateYAxisConfig(data, dataKey, minRange = 0, maxRange = 1000) {
   if (!data || data.length === 0) {
     return { domain: [0, 10], ticks: [0, 2, 4, 6, 8, 10] }; // Fallback for empty data
   }
 
   const values = data.map((item) => item[dataKey]);
+
   const maxValue = Math.max(...values);
-  const minY = 0;
+  const minValue = Math.min(...values);
 
-  const adjustedMaxValue = Math.min(maxValue, 1000); 
+  // Allow dynamic scaling based on the provided min and max range
+  const adjustedMinValue = Math.max(minValue, minRange);
+  const adjustedMaxValue = Math.min(maxValue, maxRange);
 
-  const magnitude = Math.pow(10, Math.floor(Math.log10(adjustedMaxValue)));
-  let stepSize = magnitude / 2; // Divide by 2 for better granularity
-  const maxY = Math.ceil(maxValue / stepSize) * stepSize;
+  // Calculate the magnitude for legible scaling
+  const magnitude = Math.pow(10, Math.floor(Math.log10(adjustedMaxValue || 1)));
+  
+  // Dynamic step size calculation
+  let stepSize = Math.ceil((adjustedMaxValue - adjustedMinValue) / 10); 
+  if (stepSize < magnitude / 2) stepSize = Math.ceil(magnitude / 2); 
+  
+  // Calculate the adjusted maxY and minY
+  const maxY = Math.ceil(adjustedMaxValue / stepSize) * stepSize;
+  const minY = Math.floor(adjustedMinValue / stepSize) * stepSize;
 
   const ticks = [];
   for (let i = minY; i <= maxY; i += stepSize) {
@@ -26,6 +36,7 @@ export function calculateYAxisConfig(data, dataKey) {
     ticks: ticks,
   };
 }
+
 
 export function filterAndSortData(data, xAxisDataKey, viewType) {
   const validData = data.filter(
