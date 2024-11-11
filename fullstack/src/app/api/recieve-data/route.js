@@ -55,9 +55,9 @@ export const POST = async (request) => {
     const wind_direction = decodedPayload.windDir ?? null;
     let rain_gauge = decodedPayload.rain ?? null;
     const humidity = decodedPayload.humidity ?? null;
-    
-    if (rain_gauge === 0){
-        rain_gauge += 1
+
+    if (rain_gauge === 0) {
+      rain_gauge += 1;
     }
 
     const sensorData = [
