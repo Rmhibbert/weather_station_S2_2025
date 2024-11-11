@@ -91,7 +91,6 @@ export const POST = async (request) => {
           },
         );
       }
-    }
 
     return new Response(JSON.stringify(send), {
       headers: {
