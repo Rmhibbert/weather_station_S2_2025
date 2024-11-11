@@ -102,30 +102,6 @@ export const POST = async (request) => {
       }
     }
 
-    if (!device_id) {
-      return new Response(
-        JSON.stringify({ message: 'Device ID is required' }),
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*', // Allow all origins
-            'Access-Control-Allow-Methods': 'POST', // Allow POST method
-          },
-          status: 400,
-        },
-      );
-    }
-
-    for (const { condition, fetchData } of sensorData) {
-      if (condition) {
-        const results = await fetchData(
-          device_id,
-          ...(Array.isArray(condition) ? condition : [condition]),
-        );
-        send.push(results);
-      }
-    }
-
     return new Response(JSON.stringify(send), {
       headers: {
         'Content-Type': 'application/json',
