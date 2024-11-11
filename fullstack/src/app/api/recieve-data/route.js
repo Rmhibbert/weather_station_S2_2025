@@ -15,6 +15,7 @@ import {
   GasData,
   WindData,
   RainData,
+  HumidityData,
 } from '@/app/utils/receive-data-helper';
 export const dynamic = 'force-dynamic';
 
@@ -52,7 +53,12 @@ export const POST = async (request) => {
     const dust = decodedPayload.dustDensity ?? null;
     const wind_speed = decodedPayload.windSpeed ?? null;
     const wind_direction = decodedPayload.windDir ?? null;
-    const rain_gauge = decodedPayload.rain ?? null;
+    let rain_gauge = decodedPayload.rain ?? null;
+    const humidity = decodedPayload.humidity ?? null;
+
+    if (rain_gauge === 0) {
+      rain_gauge += 1;
+    }
 
     const sensorData = [
       { condition: dust, fetchData: DustData },
@@ -62,6 +68,7 @@ export const POST = async (request) => {
       { condition: gas_level, fetchData: GasData },
       { condition: wind_direction && wind_speed, fetchData: WindData },
       { condition: rain_gauge, fetchData: RainData },
+      { condition: humidity, fetchData: HumidityData },
     ];
 
     if (!authHeader) return new Response('Authentication Required');

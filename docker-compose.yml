@@ -5,11 +5,12 @@ services:
     restart: always
     ports:
       - "3000:3000" 
-    networks:
-      - app-network
-    environment:
-      - NODE_ENV=production 
+    env_file:
+      - ./fullstack/.env
 
-networks:
-  app-network:
-    driver: bridge
+  python:
+    build:
+      context: python-backend
+    restart: always
+    ports:
+      - "8000:8000"
