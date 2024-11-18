@@ -13,6 +13,21 @@ export default defineConfig({
     },
   },
   test: {
+    globals: true,
     environment: 'jsdom',
+    coverage: {
+      enabled: true,
+      reportsDirectory: './coverage',
+      reportOnFailure: true,
+      allowExternal: true,
+      include: [
+          // path list to include in coverage report
+          '**/src/components/**',
+          '**/src/composables/**',
+          '**/src/server/**'
+      ],
+      clean: true,
+    },
+    reportOnFailure: true, // Persist coverage report even on failure
   },
 })
