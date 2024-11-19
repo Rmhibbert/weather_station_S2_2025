@@ -9,10 +9,12 @@ import BarChartComponent from '@/components/graphs/BarChartComponent';
 import Header from '../components/header';
 import Footer from '../components/footer';
 import './page.css';
-//import { Cloud } from 'lucide-react';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+export const queryClient = new QueryClient();
 
 export default function Home() {
   return (
+    <QueryClientProvider client={queryClient}>
     <div className="app-container">
       <Header />
 
@@ -58,5 +60,6 @@ export default function Home() {
       </div>
       <Footer />
     </div>
+    </QueryClientProvider>
   );
 }
