@@ -2,7 +2,7 @@
 
 import Link from 'next/link'; // Import the Link component for internal navigation
 import Cloud from '@/components/cloud';
-
+import { useEffect, useState } from 'react';
 import Widget from '@/components/widget';
 import LineChartComponent from '@/components/graphs/LineChartComponent';
 import BarChartComponent from '@/components/graphs/BarChartComponent';
@@ -13,6 +13,16 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 export const queryClient = new QueryClient();
 
 export default function Home() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    fetch('/api/co2-data')
+      .then(res => res.json())
+      .then(json => setData(json[0]))
+      .catch(console.error);
+  }, []);
+
+  if (!data) return <p>Loading...</p>;
   return (
     <QueryClientProvider client={queryClient}>
       <div className="app-container">
@@ -52,7 +62,8 @@ export default function Home() {
             dataKey="humidity"
             GraphComponent={LineChartComponent}
           />
-          <Cloud />
+          <h1>{data.co2_level}</h1>
+      <Cloud />
           {/* name="Cloud Prediction Model"
           dataKey="cloud"
           GraphComponent={LineChartComponent}
