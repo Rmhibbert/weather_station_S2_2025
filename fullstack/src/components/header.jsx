@@ -1,10 +1,20 @@
+import './header.css'; 
+
 export default function Header() {
   return (
-    <header className="page-header p-4 text-center text-gray-100 mb-4 relative z-50 w-full">
-      <h1 className="text-4xl font-bold leading-snug">
-        Otago Polytechnic Weather Station
-      </h1>
-      <div className="mt-4 w-4/5 mx-auto h-px bg-white"></div>
-    </header>
+    <section className="header">
+      <nav>
+        <a href="home"><img src="./Images/logo1.png" alt="Logo" /></a>
+        <div className="textbox">
+        <h1>Otago Polytechnic Weather Station</h1>
+      </div>
+        <div className="links">
+          <ul>
+            <li><a href="about">ABOUT</a></li>
+            <li><a href="courses">OTAGO POLYTECHNIC</a></li>
+          </ul>
+        </div>
+      </nav>
+    </section>
   );
 }
