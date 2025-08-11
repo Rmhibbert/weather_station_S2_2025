@@ -188,8 +188,9 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
     >
 
 <div className="flex justify-between items-start p-4">
-  <div className="flex items-center space-x-1">
+  <div className="items-center space-x-1">
     <p>{name}</p>
+    <p>Current Value</p>
   </div>
 
   <div className="absolute top-4 right-4">
