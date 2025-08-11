@@ -83,90 +83,90 @@ const fetchGraphData = async (dataKey, length) => {
 };
 
 const Widget = ({ name, dataKey, GraphComponent }) => {
-  // const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [graphDataCache, setGraphDataCache] = useState({});
   const [viewLength, setViewLength] = useState(1); // Default view is hourly
   const [openTooltip, setOpenTooltip] = useState(false);
   const graphData = graphDataCache[viewLength] || [];
 
   // Fetch the main widget data using React Query
-  // const { data, error, isLoading } = useQuery({
-  //   queryKey: [dataKey],
-  //   queryFn: () => fetchSensorData(dataKey),
-  //   staleTime: 60000, // 1 minute
-  //   cacheTime: 300000, // 5 minutes
-  // });
+  const { data, error, isLoading } = useQuery({
+    queryKey: [dataKey],
+    queryFn: () => fetchSensorData(dataKey),
+    staleTime: 60000, // 1 minute
+    cacheTime: 300000, // 5 minutes
+  });
 
-  // const toggleExpand = async () => {
-  //   if (!isExpanded) {
-  //     setIsExpanded(true);
-  //     if (!graphDataCache[viewLength]) {
-  //       try {
-  //         const initialGraphData = await fetchGraphData(dataKey, viewLength);
-  //         setGraphDataCache((prevCache) => ({
-  //           ...prevCache,
-  //           [viewLength]: initialGraphData,
-  //         }));
-  //       } catch (err) {
-  //         console.error('Error fetching graph data:', err);
-  //       }
-  //     }
-  //   } else {
-  //     setIsExpanded(false);
-  //   }
-  // };
+  const toggleExpand = async () => {
+    if (!isExpanded) {
+      setIsExpanded(true);
+      if (!graphDataCache[viewLength]) {
+        try {
+          const initialGraphData = await fetchGraphData(dataKey, viewLength);
+          setGraphDataCache((prevCache) => ({
+            ...prevCache,
+            [viewLength]: initialGraphData,
+          }));
+        } catch (err) {
+          console.error('Error fetching graph data:', err);
+        }
+      }
+    } else {
+      setIsExpanded(false);
+    }
+  };
 
-  // const handleViewChange = async (length) => {
-  //   setViewLength(length);
-  //   if (!graphDataCache[length]) {
-  //     try {
-  //       const updatedGraphData = await fetchGraphData(dataKey, length);
-  //       setGraphDataCache((prevCache) => ({
-  //         ...prevCache,
-  //         [length]: updatedGraphData,
-  //       }));
-  //     } catch (err) {
-  //       console.error(`Error fetching ${length}-day data:`, err);
-  //     }
-  //   }
-  // };
+  const handleViewChange = async (length) => {
+    setViewLength(length);
+    if (!graphDataCache[length]) {
+      try {
+        const updatedGraphData = await fetchGraphData(dataKey, length);
+        setGraphDataCache((prevCache) => ({
+          ...prevCache,
+          [length]: updatedGraphData,
+        }));
+      } catch (err) {
+        console.error(`Error fetching ${length}-day data:`, err);
+      }
+    }
+  };
 
-  // const latestData = data?.length ? data[data.length - 1] : null; // Get the latest data point
+  const latestData = data?.length ? data[data.length - 1] : null; // Get the latest data point
 
-  // const renderLatestData = () => {
-  //   if (isLoading) return 'Loading...';
-  //   if (error) return 'Error fetching data';
-  //   if (!latestData) return 'No Data Available';
+  const renderLatestData = () => {
+    if (isLoading) return 'Loading...';
+    if (error) return 'Error fetching data';
+    if (!latestData) return 'No Data Available';
 
-  //   let value;
-  //   switch (dataKey) {
-  //     case 'temperature':
-  //       value = latestData.avg_temperature;
-  //       break;
-  //     case 'wind':
-  //       value = parseFloat(latestData.wind_speed * 3.6).toFixed(2);
-  //       break;
-  //     case 'co2':
-  //       value = latestData.co2_level;
-  //       break;
-  //     case 'gas':
-  //       value = latestData.gas_level;
-  //       break;
-  //     case 'rain':
-  //       value = parseFloat(latestData.rainfall_mm).toFixed(2);
-  //       break;
-  //     case 'humidity':
-  //       value = latestData.humidity;
-  //       break;
-  //     default:
-  //       value = latestData[dataKey];
-  //   }
+    let value;
+    switch (dataKey) {
+      case 'temperature':
+        value = latestData.avg_temperature;
+        break;
+      case 'wind':
+        value = parseFloat(latestData.wind_speed * 3.6).toFixed(2);
+        break;
+      case 'co2':
+        value = latestData.co2_level;
+        break;
+      case 'gas':
+        value = latestData.gas_level;
+        break;
+      case 'rain':
+        value = parseFloat(latestData.rainfall_mm).toFixed(2);
+        break;
+      case 'humidity':
+        value = latestData.humidity;
+        break;
+      default:
+        value = latestData[dataKey];
+    }
 
-  //   if (value == null) return 'No Data Available';
+    if (value == null) return 'No Data Available';
 
-  //   const unit = dataKey ? sensorMapping[dataKey]?.unit || '' : '';
-  //   return `${value} ${unit}`;
-  // };
+    const unit = dataKey ? sensorMapping[dataKey]?.unit || '' : '';
+    return `${value} ${unit}`;
+  };
 
   const handleTooltipToggle = () => {
     setOpenTooltip((prev) => !prev);
@@ -174,19 +174,13 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
 
   return (
     <div
-
-    // ------------------------------------------------------On click route to new page--------------------------------------------------------
-      // onClick={() => {
-      //   if (GraphComponent) {
-      //     toggleExpand(); // Toggle widget on click
-      //   }
-      // }}
-      // className={`widget ${isExpanded ? 'expanded' : ''} relative rounded-lg ${GraphComponent ? 'cursor-pointer' : ''}`} // Add cursor pointer only if clickable
-
-      // --------------------------------------- Change this to add cursor on cover, not if there is a graph -----------------------------------------------------
-      className={`widget relative rounded-lg ${GraphComponent ? 'cursor-pointer' : ''}`} // Add cursor pointer only if clickable
+      onClick={() => {
+        if (GraphComponent) {
+          toggleExpand(); // Toggle widget on click
+        }
+      }}
+      className={`widget ${isExpanded ? 'expanded' : ''} relative rounded-lg ${GraphComponent ? 'cursor-pointer' : ''}`} // Add cursor pointer only if clickable
     >
-
       <div className="flex justify-between items-start p-4">
         <div className="flex items-center space-x-1">
           <p>{name}</p>
@@ -218,8 +212,49 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
         </div>
       </div>
 
-{/* Not needed in this page now */}
-      {/* <p className="px-4 pb-2"> {renderLatestData()}</p> */}
+      <p className="px-4 pb-2"> {renderLatestData()}</p>
+
+      {isExpanded && GraphComponent && (
+        <>
+          <div
+            className="button-group flex justify-center space-x-2 mb-2"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => handleViewChange(1)}
+              className={`btn ${viewLength === 1 ? 'active' : ''}`}
+            >
+              Hourly
+            </button>
+            <button
+              onClick={() => handleViewChange(7)}
+              className={`btn ${viewLength === 7 ? 'active' : ''}`}
+            >
+              7 Days
+            </button>
+            <button
+              onClick={() => handleViewChange(30)}
+              className={`btn ${viewLength === 30 ? 'active' : ''}`}
+            >
+              30 Days
+            </button>
+          </div>
+          <div
+            className="graph-container custom-scrollbar"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Use avg_value as the datakey for the graph */}
+            <GraphComponent
+              data={graphData}
+              datakey="avg_value"
+              viewType={viewLength === 1 ? 'hourly' : 'day'}
+              xAxisLabel={viewLength === 1 ? 'Time' : 'Date'}
+              yAxisLabel="Average Value"
+              tooltipFormatter={(value) => `${value.toFixed(2)} units`}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };

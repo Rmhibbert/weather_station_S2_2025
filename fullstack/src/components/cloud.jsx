@@ -52,11 +52,11 @@ const CloudDetails = () => {
     analyzeImage(imageBlob);
   };
 
-  // const toggleExpand = () => setIsExpanded(!isExpanded);
+  const toggleExpand = () => setIsExpanded(!isExpanded);
 
   return (
     <div
-      // onClick={toggleExpand}
+      onClick={toggleExpand}
       className={`widget ${isExpanded ? 'expanded' : ''} relative rounded-lg cursor-pointer flex items-center justify-center`}
     >
       <div className="text-center">

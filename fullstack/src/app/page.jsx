@@ -1,7 +1,7 @@
 'use client';
 
-// import Link from 'next/link'; // Import the Link component for internal navigation
-// import Cloud from '@/components/cloud';
+import Link from 'next/link'; // Import the Link component for internal navigation
+import Cloud from '@/components/cloud';
 
 import Widget from '@/components/widget';
 import LineChartComponent from '@/components/graphs/LineChartComponent';
@@ -23,6 +23,7 @@ export default function Home() {
           <Widget
             name="Temperature"
             dataKey="temperature"
+            GraphComponent={LineChartComponent}
           />
           <Widget
             name="Rain"
@@ -51,7 +52,7 @@ export default function Home() {
             dataKey="humidity"
             GraphComponent={LineChartComponent}
           />
-          {/* <Cloud /> */}
+          <Cloud />
           {/* name="Cloud Prediction Model"
           dataKey="cloud"
           GraphComponent={LineChartComponent}
