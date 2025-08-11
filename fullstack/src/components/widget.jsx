@@ -187,36 +187,37 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
       className={`widget relative rounded-lg ${GraphComponent ? 'cursor-pointer' : ''}`} // Add cursor pointer only if clickable
     >
 
-      <div className="flex justify-between items-start p-4">
-        <div className="flex items-center space-x-1">
-          <p>{name}</p>
+<div className="flex justify-between items-start p-4">
+  <div className="flex items-center space-x-1">
+    <p>{name}</p>
+  </div>
 
-          {/* Tooltip with hover and click functionality */}
-          <Tooltip.Provider>
-            <Tooltip.Root open={openTooltip} onOpenChange={setOpenTooltip}>
-              <Tooltip.Trigger asChild>
-                <span
-                  className="inline-flex items-center justify-center w-6 h-6 text-white rounded-full text-lg cursor-pointer"
-                  style={{ backgroundColor: '#113f67' }}
-                  aria-label="Info"
-                  onClick={handleTooltipToggle} // Add click functionality
-                >
-                  i
-                </span>
-              </Tooltip.Trigger>
-              <Tooltip.Content
-                side="top"
-                align="center"
-                className="bg-gray-700 text-white text-xs p-2 rounded shadow-lg max-w-xs"
-                onPointerDownOutside={() => setOpenTooltip(false)} // Close when clicking outside
-              >
-                {tooltipMapping[dataKey]}
-                <Tooltip.Arrow className="fill-gray-700" />
-              </Tooltip.Content>
-            </Tooltip.Root>
-          </Tooltip.Provider>
-        </div>
-      </div>
+  <div className="absolute top-4 right-4">
+    <Tooltip.Provider>
+      <Tooltip.Root open={openTooltip} onOpenChange={setOpenTooltip}>
+        <Tooltip.Trigger asChild>
+          <span
+            className="inline-flex items-center justify-center w-6 h-6 text-white rounded-full text-lg cursor-pointer"
+            style={{ backgroundColor: '#113f67' }}
+            aria-label="Info"
+            onClick={handleTooltipToggle} // Add click functionality
+          >
+            i
+          </span>
+        </Tooltip.Trigger>
+        <Tooltip.Content
+          side="top"
+          align="center"
+          className="bg-gray-700 text-white text-xs p-2 rounded shadow-lg max-w-xs"
+          onPointerDownOutside={() => setOpenTooltip(false)} // Close when clicking outside
+        >
+          {tooltipMapping[dataKey]}
+          <Tooltip.Arrow className="fill-gray-700" />
+        </Tooltip.Content>
+      </Tooltip.Root>
+    </Tooltip.Provider>
+  </div>
+</div>
 
 {/* Not needed in this page now */}
       {/* <p className="px-4 pb-2"> {renderLatestData()}</p> */}
