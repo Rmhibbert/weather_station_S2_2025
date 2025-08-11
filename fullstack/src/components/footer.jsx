@@ -8,12 +8,13 @@ export default function Footer() {
         Harbour Terrace
       </p>
       <p className="m-0 font-light">
-        Developed by Samantha, Kieren, Jackson, Tom, and Ben
+        {/* Developed by Samantha, Kieren, Jackson, Tom, and Ben */}
+        Developed by Hayden, Rory, Sophie, Tylor, Denise and Bradley
       </p>
       <p className="m-0 font-light">Check out our GitHub page:</p>
       <div className="mt-2">
         <a
-          href="https://github.com/OtagoPolytechnic/Cloudy-with-a-Chance-of-LoRa"
+          href="https://github.com/Rmhibbert/weather_station_S2_2025"
           target="_blank"
           rel="noopener noreferrer"
         >
