@@ -1,7 +1,7 @@
 .app-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+ 
   align-items: center;
   min-height: 100vh;
   background: linear-gradient(to bottom, #1e3c72, #6699cc);
@@ -11,11 +11,10 @@
 }
 
 .widgets {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 20px;
   width: 90%;
   transition: all 0.7s ease;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 20px;
 }
