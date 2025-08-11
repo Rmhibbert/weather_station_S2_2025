@@ -1,4 +1,7 @@
 .widget {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
   flex: 1 1 700px;
   padding: 1%;
   background-color: hsla(0, 0%, 100%, 0.15);
@@ -16,6 +19,7 @@
     background-color 0.3s ease-in-out,
     transform 0.3s ease-in-out,
     box-shadow 0.3s ease-in-out;
+  padding-top: 10px;
 }
 
 .widget:hover {
@@ -33,7 +37,7 @@
   transform: translateY(-5px);
 } */
 
-.button-group .btn {
+/* .button-group .btn {
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 5px;
@@ -45,23 +49,23 @@
   transition:
     background-color 0.3s,
     color 0.3s;
-}
+} */
 
-.button-group .btn:hover {
+/* .button-group .btn:hover {
   background-color: #7cb9e8;
-}
+} */
 
-.button-group .btn.active {
+/* .button-group .btn.active {
   background-color: #113f67;
   color: white;
-}
+} */
 
-.custom-scrollbar {
-  overflow-x: auto; /* Ensures the scroll bar appears */
-}
+/* .custom-scrollbar {
+  overflow-x: auto; /* Ensures the scroll bar appears 
+} 
 
 .custom-scrollbar::-webkit-scrollbar {
-  height: 6px; /* Adjust the height to be smaller */
+  height: 6px; /* Adjust the height to be smaller 
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -78,6 +82,6 @@
 }
 
 .custom-scrollbar {
-  scrollbar-width: thin; /* Firefox - sets the scrollbar to be thin */
-  scrollbar-color: #113f67 transparent; /* Custom color for Firefox */
-}
+  scrollbar-width: thin; /* Firefox - sets the scrollbar to be thin 
+  scrollbar-color: #113f67 transparent; /* Custom color for Firefox 
+} */
