@@ -27,6 +27,24 @@ export default function Footer() {
           />
         </a>
       </div>
+
+      
+      <p className="m-0 font-light">Otago Polytechnic Website:</p>
+      <div className="mt-2">
+        <a
+          href="https://www.op.ac.nz/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Image
+            src="/images/OP-logo.png"
+            alt="Otago Polytechnic Logo"
+            className="w-6 h-6 inline-block align-middle"
+            width={24}
+            height={24}
+          />
+        </a>
+      </div>
     </footer>
   );
 }
