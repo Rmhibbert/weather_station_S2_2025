@@ -5,7 +5,7 @@ export default function Header() {
     <section className="header">
       <nav>
         <a href="home">
-          <img src="/images/logo1.png" alt="Logo" />
+          <img src="/images/logo3.png" alt="Logo" />
         </a>
         <div className="textbox">
           <h1>Otago Polytechnic Weather Station</h1>

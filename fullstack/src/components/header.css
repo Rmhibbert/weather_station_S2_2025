@@ -21,7 +21,6 @@ nav {
 
 nav img {
   border-radius: 0%;
-  width: 80px;
   height: 80px;
   object-fit: cover;
 }
@@ -59,7 +58,7 @@ nav img {
   bottom: 0;
   width: 0%;
   height: 2px;
-  background: #9fc842;
+  background: #fff;
   transition: width 0.5s;
 }
 
