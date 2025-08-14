@@ -1,7 +1,7 @@
 .widget {
   flex: 1 1 700px;
   padding: 1%;
-  background-color: hsla(0, 0%, 100%, 0.15);
+  background-color: #00499E;
   border-radius: 20px;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
   transition:
@@ -19,7 +19,7 @@
 }
 
 .widget:hover:not(.expanded) {
-  background-color: #7cb9e8;
+  background-color:  #0061D1;
   transform: translateY(-5px);
   box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
 }
