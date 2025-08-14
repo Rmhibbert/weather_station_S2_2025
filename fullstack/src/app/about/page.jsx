@@ -5,89 +5,97 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 // Placeholder components
-const SearchHeader = () => <div className="text-white p-4">Search Header Placeholder</div>;
-const SunriseSunset = () => <div className="text-white p-4">Sunrise/Sunset Placeholder</div>;
-const LocationDetails = () => <div className="text-white p-4">Location Details Placeholder</div>;
+const SearchHeader = () => <div className="text-blue-900 p-4">Search Placeholder</div>;
+const SunriseSunset = () => <div className="text-blue-900 p-4">Sunrise/Sunset Placeholder</div>;
+const LocationDetails = () => <div className="text-blue-900 p-4">Location Details Placeholder</div>;
 
 export default function AboutPage() {
-  const crewImages = ["crew1.jpg", "crew2.jpg", "crew3.jpg", "crew4.jpg"];
+  const sensors = [
+    { name: "Temperature", icon: "🌡️" },
+    { name: "Humidity", icon: "💧" },
+    { name: "Wind", icon: "🌬️" },
+    { name: "Rain", icon: "🌧️" },
+    { name: "CO2", icon: "🟢" },
+    { name: "Dust", icon: "🌫️" },
+  ];
 
   return (
-    <div className="min-h-screen bg-blue-600 text-white relative font-sans">
-      <div className="absolute inset-0 bg-blue-500/30 backdrop-blur-lg z-0" />
-      <div className="relative z-10 w-full min-h-screen max-w-[2800px] mx-auto overflow-auto flex flex-col lg:pr-10">
-        {/* Header */}
-        <div className="pt-4">
-          <Header />
+    <div className="min-h-screen bg-blue-200 font-sans">
+      <Header />
+
+      {/* Hero Section */}
+      <section className="relative flex flex-col items-center justify-center text-center py-20 px-4 bg-blue-300 rounded-b-3xl shadow-md">
+        <h1 className="text-4xl font-bold mb-4 text-blue-900">🌦️ Our Weather Station</h1>
+        <p className="max-w-2xl text-blue-900/90 leading-relaxed">
+          A student-built IoT weather station using LoRaWAN to monitor temperature, humidity, wind, and more in real-time.
+        </p>
+      </section>
+
+      {/* Main Grid */}
+      <section className="max-w-6xl mx-auto px-4 py-12 grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* About Section */}
+        <div className="bg-blue-100 border border-blue-300 rounded-2xl p-6 shadow-md space-y-4">
+          <h2 className="text-2xl font-bold mb-2 text-blue-900">About the Project</h2>
+          <p>
+            This weather station was developed to explore environmental monitoring, IoT, and communication protocols. It collects data from multiple sensors and transmits it wirelessly to a server for analysis and visualization.
+          </p>
+          <ul className="list-disc list-inside ml-4 text-blue-900/90">
+            <li>Temperature monitoring in °C</li>
+            <li>Humidity levels in %</li>
+            <li>Wind speed tracking in km/h</li>
+            <li>Rainfall measurement in mm</li>
+          </ul>
         </div>
 
-        {/* Content */}
-        <div className="relative z-10 flex flex-col flex-1 ml-0 lg:ml-28 px-4 pt-3 sm:px-6 pb-6 space-y-6">
-          <SearchHeader />
+        {/* FAQ Section */}
+        <div className="bg-blue-100 border border-blue-300 rounded-2xl p-6 shadow-md space-y-4">
+          <h2 className="text-2xl font-bold mb-2 text-blue-900">❓ FAQ</h2>
+          {[
+            { q: "What sensors are used?", a: "XC3702 Barometric, XC3780 Dust Sensor, Duinotech Air Quality Sensor" },
+            { q: "How often is data updated?", a: "Constantly in real time." },
+            { q: "Where is the station located?", a: "On the roof of the Polytech’s D-Block." },
+          ].map(({ q, a }) => (
+            <details key={q} className="bg-blue-200 border border-blue-300 rounded-lg p-3">
+              <summary className="cursor-pointer font-semibold text-blue-900">{q}</summary>
+              <p className="mt-1 text-blue-900/80 text-sm">{a}</p>
+            </details>
+          ))}
+        </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* About Section */}
-            <div className="bg-white/20 backdrop-blur-md border border-white/30 rounded-2xl p-6 shadow-lg text-white leading-relaxed text-justify space-y-4">
-              <h1 className="text-2xl font-bold mb-2">
-                🌦️ About Our Weather Station
-              </h1>
-              <p>
-                This project was a student-built weather station designed to meet
-                the requirements outlined by our lecturer...
-              </p>
-              <ul className="list-disc list-inside ml-4">
-                <li>Temperature</li>
-                <li>Humidity</li>
-                <li>Wind speed</li>
-                <li>And more...</li>
-              </ul>
-              <p>Using LoRaWAN, this data is sent wirelessly...</p>
-            </div>
-
-            {/* FAQ */}
-            <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-6 shadow-xl text-white/90 space-y-4">
-              <h2 className="text-xl font-bold mb-2">❓ FAQ</h2>
-              {[
-                { q: "What sensors are used?", a: "XC3702 Barometric, XC3780 Dust Sensor..." },
-                { q: "How often is data updated?", a: "The data is updated constantly..." },
-                { q: "Device location?", a: "On the roof of the Polytech’s D-Block." },
-              ].map(({ q, a }) => (
-                <details key={q} className="bg-white/10 backdrop-blur-md border border-white/30 rounded-xl p-4">
-                  <summary className="cursor-pointer font-semibold text-white">{q}</summary>
-                  <p className="mt-2 text-sm text-white/80">{a}</p>
-                </details>
-              ))}
-            </div>
-
-            {/* Crew Highlights */}
-            <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 shadow-lg space-y-4">
-              <h2 className="text-xl font-bold text-white text-center mb-2">📸 Highlights</h2>
-              <div className="grid grid-cols-2 gap-3">
-                {crewImages.map((img, i) => (
-                  <div key={i} className="overflow-hidden rounded-xl border border-white/20 group aspect-[4/3]">
-                    <div className="relative w-full h-0 pb-[75%]">
-                      <Image
-                        src={`/images/Crew/${img}`}
-                        alt={`Crew member ${i + 1}`}
-                        fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-500 ease-in-out rounded-xl"
-                      />
-                    </div>
-                  </div>
-                ))}
+        {/* Key Sensors Section */}
+        <div className="bg-blue-100 border border-blue-300 rounded-2xl p-6 shadow-md space-y-4">
+          <h2 className="text-2xl font-bold text-center mb-4 text-blue-900">🛠️ Key Sensors</h2>
+          <div className="grid grid-cols-2 gap-4">
+            {sensors.map((sensor, idx) => (
+              <div key={idx} className="bg-blue-300 rounded-xl p-4 text-center shadow-sm">
+                <span className="text-3xl">{sensor.icon}</span>
+                <p className="mt-2 font-semibold text-blue-900">{sensor.name}</p>
               </div>
-            </div>
-          </div>
-
-          {/* Location and Sunrise/Sunset */}
-          <div className="text-white w-full max-w-6xl mx-auto space-y-4 mt-6">
-            <LocationDetails />
-            <SunriseSunset />
+            ))}
           </div>
         </div>
+      </section>
 
-        <Footer />
-      </div>
+      {/* Weather Widgets Section */}
+      <section className="bg-blue-300 py-12">
+        <h2 className="text-3xl font-bold text-center mb-8 text-blue-900">Current Readings</h2>
+        <div className="max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 px-4">
+          {["Temperature", "Humidity", "Wind", "Rain"].map((sensor, idx) => (
+            <div key={idx} className="bg-blue-100 rounded-2xl p-6 text-center shadow-md">
+              <p className="text-lg font-semibold text-blue-900">{sensor}</p>
+              <p className="text-2xl mt-2 text-blue-900">--</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Location and Sunrise/Sunset */}
+      <section className="max-w-6xl mx-auto px-4 py-12 space-y-4">
+        <LocationDetails />
+        <SunriseSunset />
+      </section>
+
+      <Footer />
     </div>
   );
 }
