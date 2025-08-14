@@ -1,85 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
 .header {
-    min-height: 10vh;
-    width: 100%;
-    background-image: linear-gradient(#2E5186, #2E5186);
-    background-position: center;
-    background-size: cover;
-    position: relative;
+  min-height: 10vh;
+  width: 100%;
+  background-image: linear-gradient(#00499E, #00499E);
+  background-position: center;
+  background-size: cover;
+  position: relative;
+  margin-bottom: 20px;
 }
-  
+
 nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 2% 6%;
-  }
-  
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2% 6%;
+  gap: 16px;
+  font-family: 'Poppins', sans-serif;
+}
+
 nav img {
-    border-radius: 50%;
-    width: 80px; 
-    height: 80px;
-    object-fit: cover;    
+  border-radius: 0%;
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
 }
-  
+
+.links {
+  flex: 0 0 auto;
+}
+
 .links ul {
-    display: flex;
-    gap: 50 px; 
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  display: flex;
+  gap: 50px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
-  
+
 .links ul li {
-    list-style: none;
-    display: inline-block;
-    padding: 10px 12px;
-    position: relative;
+  list-style: none;
+  display: inline-block;
+  padding: 10px 12px;
+  position: relative;
 }
-  
+
 .links ul li a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 13px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
 }
-  
+
 .links ul li::after {
-    content: '';
-    position: absolute; /* better hover positioning */
-    left: 0;
-    bottom: 0;
-    width: 0%;
-    height: 2px;
-    background: #7CB9E8;
-    transition: width 0.5s;
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  height: 2px;
+  background: #9fc842;
+  transition: width 0.5s;
 }
-  
+
 .links ul li:hover::after {
-    width: 100%;
+  width: 100%;
 }
-  
+
 .textbox {
-    width: 90%;
-    color: #fff;
-    position: relative; 
-    text-align: center;
-    margin-top: 20px; 
+  margin: 0;
+  color: #fff;
+  text-align: center;
+  flex: 1;
 }
-  
+
 .textbox h1 {
-    font-size: 32px; 
+  font-size: 32px;
+  font-weight: 500;
 }
-  
+
 @media (max-width: 800px) {
-.header {
+  .header {
     min-height: auto;
-}
-  
-.textbox h1 {
-    font-size: 20px; 
-}
-  
-.links ul li {
-    padding: 1px 1px; 
-}
   }
-  
+
+  .textbox h1 {
+    font-size: 20px;
+  }
+
+  .links ul li {
+    padding: 1px 1px;
+  }
+}
