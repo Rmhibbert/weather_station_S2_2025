@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+// import { useQuery } from '@tanstack/react-query';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import './widget.css';
 
 // Sensor Mapping
-const sensorMapping = {
-  temperature: { unit: '°C', label: 'Temperature' },
-  pressure: { unit: 'hPa', label: 'Air Pressure' },
-  wind: { unit: 'km/h', label: 'Wind Speed' },
-  dust: { unit: 'µg/m³', label: 'Dust Reading' },
-  co2: { unit: 'ppm', label: 'CO2 Levels' },
-  gas: { unit: 'ppm', label: 'Gas Levels' },
-  rain: { unit: 'mm', label: 'Rain Levels' },
-  humidity: { unit: '%', label: 'Humidity' },
-};
+// const sensorMapping = {
+//   temperature: { unit: '°C', label: 'Temperature' },
+//   pressure: { unit: 'hPa', label: 'Air Pressure' },
+//   wind: { unit: 'km/h', label: 'Wind Speed' },
+//   dust: { unit: 'µg/m³', label: 'Dust Reading' },
+//   co2: { unit: 'ppm', label: 'CO2 Levels' },
+//   gas: { unit: 'ppm', label: 'Gas Levels' },
+//   rain: { unit: 'mm', label: 'Rain Levels' },
+//   humidity: { unit: '%', label: 'Humidity' },
+// };
 
 const tooltipMapping = {
   temperature:
@@ -30,64 +30,64 @@ const tooltipMapping = {
 };
 
 // Fetch main widget data
-const fetchSensorData = async (dataKey) => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-  const response = await fetch(`${baseUrl}/api/${dataKey}-data`);
-  if (!response.ok) {
-    throw new Error('Failed to fetch data');
-  }
-  return response.json();
-};
+// const fetchSensorData = async (dataKey) => {
+//   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+//   const response = await fetch(`${baseUrl}/api/${dataKey}-data`);
+//   if (!response.ok) {
+//     throw new Error('Failed to fetch data');
+//   }
+//   return response.json();
+// };
 
 // Fetch graph data for expanded view
-const fetchGraphData = async (dataKey, length) => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-  let table;
-  let value;
+// const fetchGraphData = async (dataKey, length) => {
+//   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+//   let table;
+//   let value;
 
-  // Switch for special cases
-  switch (dataKey) {
-    case 'rain':
-      table = 'rainfall_measurement';
-      value = 'rainfall_mm';
-      break;
-    case 'co2':
-      table = 'co2';
-      value = 'co2_level';
-      break;
-    case 'gas':
-      table = 'gas';
-      value = 'gas_level';
-      break;
-    case 'wind':
-      table = 'wind';
-      value = 'wind_speed';
-      break;
-    case 'humidity':
-      table = 'humidity';
-      value = 'humidity';
-    default:
-      table = dataKey;
-      value = dataKey;
-      break;
-  }
+//   // Switch for special cases
+//   switch (dataKey) {
+//     case 'rain':
+//       table = 'rainfall_measurement';
+//       value = 'rainfall_mm';
+//       break;
+//     case 'co2':
+//       table = 'co2';
+//       value = 'co2_level';
+//       break;
+//     case 'gas':
+//       table = 'gas';
+//       value = 'gas_level';
+//       break;
+//     case 'wind':
+//       table = 'wind';
+//       value = 'wind_speed';
+//       break;
+//     case 'humidity':
+//       table = 'humidity';
+//       value = 'humidity';
+//     default:
+//       table = dataKey;
+//       value = dataKey;
+//       break;
+//   }
 
-  // Construct the fetch URL with the correct table and value
-  const response = await fetch(
-    `${baseUrl}/api/get-graph-data?table=${table}&value=${value}&length=${length}`,
-  );
-  if (!response.ok) {
-    throw new Error('Failed to fetch graph data');
-  }
-  return response.json();
-};
+//   // Construct the fetch URL with the correct table and value
+//   const response = await fetch(
+//     `${baseUrl}/api/get-graph-data?table=${table}&value=${value}&length=${length}`,
+//   );
+//   if (!response.ok) {
+//     throw new Error('Failed to fetch graph data');
+//   }
+//   return response.json();
+// };
 
 const Widget = ({ name, dataKey, GraphComponent }) => {
   // const [isExpanded, setIsExpanded] = useState(false);
-  const [graphDataCache, setGraphDataCache] = useState({});
-  const [viewLength, setViewLength] = useState(1); // Default view is hourly
+  //const [graphDataCache, setGraphDataCache] = useState({});
+  //const [viewLength, setViewLength] = useState(1); // Default view is hourly
   const [openTooltip, setOpenTooltip] = useState(false);
-  const graphData = graphDataCache[viewLength] || [];
+  //const graphData = graphDataCache[viewLength] || [];
 
   // Fetch the main widget data using React Query
   // const { data, error, isLoading } = useQuery({
@@ -185,7 +185,7 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
 
       // --------------------------------------- Change this to add cursor on cover, not if there is a graph -----------------------------------------------------
       //className={`widget relative rounded-lg ${GraphComponent ? 'cursor-pointer' : ''}`} // Add cursor pointer only if clickable
-      
+
       className={`widget relative rounded-lg cursor-pointer`} // Add cursor pointer only if clickable
     >
 

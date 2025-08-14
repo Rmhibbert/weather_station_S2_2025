@@ -4,8 +4,8 @@
 // import Cloud from '@/components/cloud';
 
 import Widget from '@/components/widget';
-import LineChartComponent from '@/components/graphs/LineChartComponent';
-import BarChartComponent from '@/components/graphs/BarChartComponent';
+// import LineChartComponent from '@/components/graphs/LineChartComponent';
+// import BarChartComponent from '@/components/graphs/BarChartComponent';
 import Header from '../components/header';
 import Footer from '../components/footer';
 import './page.css';
@@ -23,33 +23,36 @@ export default function Home() {
           <Widget
             name="Temperature"
             dataKey="temperature"
+            // onlick = open new page with graph
           />
           <Widget
             name="Rain"
             dataKey="rain"
-            GraphComponent={LineChartComponent}
+            // GraphComponent={LineChartComponent}
           />
           <Widget
             name="Air Pressure"
             dataKey="pressure"
-            GraphComponent={LineChartComponent}
+            // GraphComponent={LineChartComponent}
           />
           <Widget
             name="Wind"
             dataKey="wind"
-            GraphComponent={LineChartComponent}
+            // GraphComponent={LineChartComponent}
           />
-          <Widget name="CO2" dataKey="co2" GraphComponent={BarChartComponent} />
-          <Widget name="Gas" dataKey="gas" GraphComponent={BarChartComponent} />
+          {/* <Widget name="CO2" dataKey="co2" GraphComponent={BarChartComponent} />
+          <Widget name="Gas" dataKey="gas" GraphComponent={BarChartComponent} /> */}
+                    <Widget name="CO2" dataKey="co2" />
+                    <Widget name="Gas" dataKey="gas" />
           <Widget
             name="Dust"
             dataKey="dust"
-            GraphComponent={LineChartComponent}
+            // GraphComponent={LineChartComponent}
           />
           <Widget
             name="Humidity"
             dataKey="humidity"
-            GraphComponent={LineChartComponent}
+            // GraphComponent={LineChartComponent}
           />
           {/* <Cloud /> */}
           {/* name="Cloud Prediction Model"
