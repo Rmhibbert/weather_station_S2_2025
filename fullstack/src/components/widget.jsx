@@ -82,7 +82,8 @@ const tooltipMapping = {
 //   return response.json();
 // };
 
-const Widget = ({ name, dataKey, GraphComponent }) => {
+// const Widget = ({ name, dataKey, GraphComponent }) => {
+  const Widget = ({ name, dataKey }) => {
   // const [isExpanded, setIsExpanded] = useState(false);
   //const [graphDataCache, setGraphDataCache] = useState({});
   //const [viewLength, setViewLength] = useState(1); // Default view is hourly
