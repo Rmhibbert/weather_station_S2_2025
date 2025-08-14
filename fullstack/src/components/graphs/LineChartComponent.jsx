@@ -18,8 +18,8 @@ const LineChartComponent = ({ data, datakey, viewType }) => {
   const [isScrollEnabled, setIsScrollEnabled] = useState(
     window.innerWidth <= 1060,
   );
-  const graphColor = '#113f67';
-  const xyAxis = 'white';
+  const graphColor = '#113f67'; // keep the line dark blue
+  const xyAxis = '#333333';     // dark gray for axis labels
 
   useEffect(() => {
     const handleResize = () => {
@@ -58,7 +58,7 @@ const LineChartComponent = ({ data, datakey, viewType }) => {
             data={filteredData}
             margin={{ top: 10, right: 22, left: 0, bottom: 15 }}
           >
-            <CartesianGrid stroke="white" strokeDasharray="5 5" />
+            <CartesianGrid stroke="#e0e0e0" strokeDasharray="5 5" /> // light gray grid
             <XAxis
               dataKey={xAxisDataKey}
               stroke={xyAxis}
@@ -80,7 +80,6 @@ const LineChartComponent = ({ data, datakey, viewType }) => {
               tick={{ fontSize: 12 }}
             />
             <Tooltip
-              cursor={{ fill: 'transparent' }}
               contentStyle={{
                 backgroundColor: '#ffffff',
                 borderColor: graphColor,
@@ -88,7 +87,6 @@ const LineChartComponent = ({ data, datakey, viewType }) => {
                 padding: '5px',
               }}
               itemStyle={{ color: graphColor }}
-              labelFormatter={() => ''}
             />
             <Line
               type="monotone"
