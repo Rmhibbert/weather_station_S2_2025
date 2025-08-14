@@ -184,12 +184,15 @@ const Widget = ({ name, dataKey, GraphComponent }) => {
       // className={`widget ${isExpanded ? 'expanded' : ''} relative rounded-lg ${GraphComponent ? 'cursor-pointer' : ''}`} // Add cursor pointer only if clickable
 
       // --------------------------------------- Change this to add cursor on cover, not if there is a graph -----------------------------------------------------
-      className={`widget relative rounded-lg ${GraphComponent ? 'cursor-pointer' : ''}`} // Add cursor pointer only if clickable
+      //className={`widget relative rounded-lg ${GraphComponent ? 'cursor-pointer' : ''}`} // Add cursor pointer only if clickable
+      
+      className={`widget relative rounded-lg cursor-pointer`} // Add cursor pointer only if clickable
     >
 
 <div className="flex justify-between items-start p-4">
   <div className="items-center space-x-1">
     <p>{name}</p>
+    {/* <p>{value}</p> */}
     <p>Current Value</p>
   </div>
 

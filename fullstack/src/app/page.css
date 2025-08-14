@@ -15,8 +15,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(2, 1fr);
-  gap: 5vh;
+  gap: 7vh;
   row-gap: 7vh;
-  padding-top: 5vh;
-  padding-bottom: 5vh;
+  padding: 9vh;
 }
