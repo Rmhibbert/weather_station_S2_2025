@@ -3,29 +3,51 @@
 import React, { useEffect, useState } from 'react';
 import LineChartComponent from "@/components/graphs/LineChartComponent";
 
-const StandaloneChart = () => {
+export default function TemperaturePage() {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchGraphData = async () => {
-      const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-      const res = await fetch(`${baseUrl}/api/get-graph-data?table=temperature&value=avg_temperature&length=7`);
-      const json = await res.json();
-      setData(json);
-    };
-    fetchGraphData();
+    fetch('/api/temperature-data')
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Temperature API response:", data);
+        setData(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
   }, []);
 
+  if (loading) return <p>Loading temperature data...</p>;
+
   return (
-    <div style={{ padding: '20px', background: '#1a1a1a' }}>
-      <h2 style={{ color: 'white' }}>Temperature (7 Days)</h2>
-      <LineChartComponent
-        data={data}
-        datakey="avg_value" 
-        viewType="day"      
-      />
+    <div style={{ padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
+      <h1 style={{ marginBottom: '1.5rem' }}>Temperature Page</h1>
+      {data.length === 0 ? (
+        <p>No temperature data available.</p>
+      ) : (
+        <ul style={{ listStyle: 'none', padding: 0 }}>
+          {data.map((item) => (
+            <li
+              key={item.timestamp}
+              style={{
+                padding: '0.8rem',
+                marginBottom: '1rem',
+                border: '1px solid #ccc',
+                borderRadius: '6px',
+                maxWidth: '400px',
+              }}
+            >
+              <p><strong>Temperature :</strong> {item.temperature} +C</p>
+              <p><strong>Time recorded:</strong> 
+              {new Date(item.timestamp).toLocaleString()}</p>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
-};
-
-export default StandaloneChart;
+}
