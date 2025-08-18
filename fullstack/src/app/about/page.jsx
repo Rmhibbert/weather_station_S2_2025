@@ -88,13 +88,8 @@ export default function AboutPage() {
           ))}
         </div>
       </section>
-
-      {/* Location and Sunrise/Sunset */}
       <section className="max-w-6xl mx-auto px-4 py-12 space-y-4">
-        <LocationDetails />
-        <SunriseSunset />
       </section>
-
       <Footer />
     </div>
   );
