@@ -23,7 +23,7 @@ export default function Co2Page() {
 
   return (
     <div style={{ padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
-      <h1 style={{ marginBottom: '1.5rem' }}>Rain Page</h1>
+      <h1 style={{ marginBottom: '1.5rem' }}>Co2 Page</h1>
       {data.length === 0 ? (
         <p>No co2 data available.</p>
       ) : (
