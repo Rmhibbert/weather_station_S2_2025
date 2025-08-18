@@ -39,7 +39,7 @@ export default function Co2Page() {
                 maxWidth: '400px',
               }}
             >
-              <p><strong>Co2:</strong> {item.co2_level}</p>
+              <p><strong>Co2:</strong> {item.co2_level} ppm</p>
               <p><strong>Time recorded:</strong> {new Date(item.timestamp).toLocaleString()}</p>
             </li>
           ))}

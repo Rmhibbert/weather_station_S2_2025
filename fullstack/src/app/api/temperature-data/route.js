@@ -18,7 +18,10 @@ export const GET = async (request) => {
       return new Response('Too many requests', { status: 429 });
     }
 
-    const data = await db.any('SELECT average_temp() AS avg_temperature');
+    const data = await db.any(`
+      SELECT average_temp() AS avg_temperature, MAX(timestamp) AS timestamp
+      FROM temperature
+    `);
     return new Response(JSON.stringify(data), {
       status: 200,
       headers: {

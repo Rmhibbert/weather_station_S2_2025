@@ -39,7 +39,7 @@ export default function HumidityPage() {
                 maxWidth: '400px',
               }}
             >
-              <p><strong>Humidity:</strong> {item.humidity}</p>
+              <p><strong>Humidity:</strong> {item.humidity} %</p>
               <p><strong>Time recorded:</strong> {new Date(item.timestamp).toLocaleString()}</p>
             </li>
           ))}
