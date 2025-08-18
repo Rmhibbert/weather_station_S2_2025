@@ -5,7 +5,7 @@ export default function Header() {
     <section className="header">
       <nav>
         <a href="home">
-          <img src="/images/logo3.png" alt="Logo" />
+            <img src="/images/logo3.png" alt="Logo" />
         </a>
         <div className="textbox">
           <h1>Otago Polytechnic Weather Station</h1>
@@ -13,10 +13,10 @@ export default function Header() {
         <div className="links">
           <ul>
             <li>
-              <a href="about">ABOUT</a>
+              <a href="/about">ABOUT</a>
             </li>
             <li>
-              <a href="courses">OTAGO POLYTECHNIC</a>
+              <a href="https://www.op.ac.nz/">OTAGO POLYTECHNIC</a>
             </li>
           </ul>
         </div>
