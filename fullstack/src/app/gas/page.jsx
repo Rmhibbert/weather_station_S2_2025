@@ -39,7 +39,7 @@ export default function GasPage() {
                 maxWidth: '400px',
               }}
             >
-              <p><strong>Gas:</strong> {item.gas}</p>
+              <p><strong>Gas:</strong> {item.gas_level}</p>
               <p><strong>Time recorded:</strong> {new Date(item.timestamp).toLocaleString()}</p>
             </li>
           ))}

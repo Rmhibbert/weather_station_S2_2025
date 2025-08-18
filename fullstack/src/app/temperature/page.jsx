@@ -41,7 +41,7 @@ export default function TemperaturePage() {
                 maxWidth: '400px',
               }}
             >
-              <p><strong>Temperature :</strong> {item.temperature} +C</p>
+              <p><strong>Temperature :</strong> {item.avg_temperature} +C</p>
               <p><strong>Time recorded:</strong> 
               {new Date(item.timestamp).toLocaleString()}</p>
             </li>
