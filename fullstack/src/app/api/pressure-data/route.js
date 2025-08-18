@@ -18,7 +18,7 @@ export const GET = async (request) => {
     }
 
     const data = await db.any(
-      'select * FROM pressure ORDER BY timestamp DESC LIMIT 1',
+      'select * FROM pressure ORDER BY timestamp ASC',
     );
     return new Response(JSON.stringify(data), {
       status: 200,

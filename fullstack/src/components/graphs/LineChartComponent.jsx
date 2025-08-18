@@ -18,8 +18,8 @@ const LineChartComponent = ({ data, datakey, viewType }) => {
   const [isScrollEnabled, setIsScrollEnabled] = useState(
     window.innerWidth <= 1060,
   );
-  const graphColor = '#113f67'; // keep the line dark blue
-  const xyAxis = '#333333';     // dark gray for axis labels
+  const graphColor = '#113f67'; 
+  const xyAxis = '#333333';
 
   useEffect(() => {
     const handleResize = () => {
