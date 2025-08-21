@@ -8,96 +8,111 @@ export default function HumidityPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/humidity-data')
-      .then((res) => res.json())
-      .then((data) => {
-        // setData(data);
-        const sorted = data.sort( 
-          (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
-        );
-        setData(sorted);
+    async function fetchData() {
+      try {
+        const response = await fetch('/api/humidity-data');
+        const rawData = await response.json();
+
+        // Parse data and add day/hour for charts
+        const parsed = rawData.map(d => {
+          const ts = new Date(d.timestamp);
+          return {
+            ...d,
+            timestamp: ts,
+            humidity: parseFloat(d.humidity),
+            day: ts.toISOString().split('T')[0], // YYYY-MM-DD UTC
+            hour: ts.getUTCHours().toString().padStart(2, '0') + ':00',
+          };
+        });
+
+        setData(parsed);
+      } catch (err) {
+        console.error('Error fetching humidity data:', err);
+      } finally {
         setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setLoading(false);
-      });
+      }
+    }
+
+    fetchData();
   }, []);
 
+
   if (loading) return <p>Loading humidity data...</p>;
-
   if (data.length === 0) return <p>No humidity data available.</p>;
-  const latest = data[data.length - 1];
 
-  const sevenDaysAgo = new Date();
-  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  const today = new Date();
 
-  const last7DaysData = data.filter(
-    (item) => new Date(item.timestamp) >= sevenDaysAgo
-  );
+  // --- Latest reading ---
+  const latest = data.reduce((prev, curr) => (curr.timestamp > prev.timestamp ? curr : prev), data[0]);
 
-  const chartData = last7DaysData.map((item) => {
-    const date = new Date(item.timestamp);
-    return {
-      day: `${date.getDate()}/${date.getMonth() + 1}`,   // for daily
-      hourly: `${date.getHours()}:${String(date.getMinutes()).padStart(2,'0')}`, // for hourly
-      humidity: Number(item.humidity),  // ensure numeric
-    };
+  // --- Weekly chart (last 7 days, aggregated per day) ---
+  const last7DaysRaw = data.filter(d => {
+    const diffDays = (today.getTime() - d.timestamp.getTime()) / (1000 * 60 * 60 * 24);
+    return diffDays <= 7;
   });
+
+  const weeklyAggregated = last7DaysRaw.reduce((acc, curr) => {
+    const dayStr = curr.timestamp.toISOString().split('T')[0];
+    if (!acc[dayStr]) acc[dayStr] = { day: dayStr, humidity: 0, count: 0 };
+    acc[dayStr].humidity += curr.humidity;
+    acc[dayStr].count += 1;
+    return acc;
+  }, {});
+
+  const weeklyChartData = Object.values(weeklyAggregated)
+    .map(d => ({ day: d.day, humidity: d.humidity / d.count })) // average per day
+    .sort((a, b) => new Date(a.day) - new Date(b.day));
+
+  // --- Monthly chart (current month only, aggregated per day) ---
+  const currentMonthData = data.filter(d => {
+    const ts = d.timestamp;
+    const utcMonth = ts.getUTCMonth();
+    const utcYear = ts.getUTCFullYear();
+    return utcMonth === today.getUTCMonth() && utcYear === today.getUTCFullYear();
+  });
+
+  const monthlyAggregated = currentMonthData.reduce((acc, curr) => {
+    const dayStr = curr.timestamp.toISOString().split('T')[0];
+    if (!acc[dayStr]) acc[dayStr] = { day: dayStr, humidity: 0, count: 0 };
+    acc[dayStr].humidity += curr.humidity;
+    acc[dayStr].count += 1;
+    return acc;
+  }, {})
   
-  
+  const monthlyChartData = Object.values(monthlyAggregated)
+    .map(d => ({ day: d.day, humidity: d.humidity / d.count })) // average per day
+    .sort((a, b) => new Date(a.day) - new Date(b.day));
 
   return (
     <div style={{ padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
       <h1 style={{ marginBottom: '1.5rem' }}>Humidity Page</h1>
-      {/* {data.length === 0 ? (
-        <p>No humidity data available.</p>
-      ) : (
-        <ul style={{ listStyle: 'none', padding: 0 }}>
-          {data.map((item) => (
-            <li
-              key={item.timestamp}
-              style={{
-                padding: '0.8rem',
-                marginBottom: '1rem',
-                border: '1px solid #ccc',
-                borderRadius: '6px',
-                maxWidth: '400px',
-              }}
-            >
-              <p><strong>Humidity:</strong> {item.humidity} %</p>
-              <p><strong>Time recorded:</strong> {new Date(item.timestamp).toLocaleString()}</p>
-            </li>
-          ))}
-        </ul>
-      )} */}
-
-      <div
-        style={{
-          padding: '1rem',
-          marginBottom: '2rem',
-          border: '1px solid #ccc',
-          borderRadius: '6px',
-          maxWidth: '400px',
-        }}
-      >
-        <p>
-          <strong>Latest Rain Amount:</strong> {latest.humidity} mm
-        </p>
-        <p>
-          <strong>Time Recorded:</strong>{' '}
-          {new Date(latest.timestamp).toLocaleString()}
-        </p>
+      <div style={{
+        padding: '1rem',
+        marginBottom: '2rem',
+        border: '1px solid #ccc',
+        borderRadius: '6px',
+        maxWidth: '400px',
+        backgroundColor: '#f9f9f9'
+      }}>
+        <p><strong>Latest humidity:</strong> {latest.humidity}%</p>
+        <p><strong>Time Recorded:</strong> {latest.timestamp.toLocaleString()}</p>
       </div>
 
-      <div style={{ maxWidth: '800px', height: '350px' }}>
+      {/* --- Weekly chart --- */}
+      <h2>Daily humidity (Past 7 Days)</h2>
       <LineChartComponent
-        data={chartData}
-        datakey="humidity"   // matches chartData field
-        viewType="daily"     // or "hourly" for hourly view
+        data={weeklyChartData}
+        datakey="humidity"
+        viewType="daily"
       />
-      </div>
-      console.log(chartData);
+
+      {/* --- Monthly chart --- */}
+      <h2>Monthly humidity Speed (This Month)</h2>
+      <LineChartComponent
+        data={monthlyChartData}
+        datakey="humidity"
+        viewType="daily"
+      />
     </div>
   );
 }
