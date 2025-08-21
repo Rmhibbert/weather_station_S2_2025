@@ -23,6 +23,7 @@ const Widget = ({ name, dataKey }) => {
     setOpenTooltip((prev) => !prev);
   };
 
+  const [data, setData] = useState(null);
   const [dataName, setDataName] = useState('');
 
 useEffect(() => {
@@ -56,7 +57,7 @@ useEffect(() => {
       break;
     case 'rain':
       apiUrl = '/api/rain-data';
-      dataName = 'rainfall_mn';
+      dataName = 'rainfall_mm';
       break;
     case 'humidity':
       apiUrl = '/api/humidity-data';
@@ -75,20 +76,17 @@ useEffect(() => {
     .catch(console.error);
 }, [dataKey]);
 
-  // Create switch for dataKey. Set api url and data name using switch. Get data from api and display.
-
   return (
     <div
       // ------------------------------------------------------On click route to new page--------------------------------------------------------
       
       // TODO: Add routing to data pages when widget is clicked.
 
-      className={`widget relative rounded-lg cursor-pointer`} // Add cursor pointer only if clickable
+      className={`widget relative rounded-lg cursor-pointer`}
     >
       <div className="flex justify-between items-start p-4">
         <div >
           <p id="widget-title">{name}</p>
-          {/* TODO: Get latest value from the weather station */}
           <p id="widget-value"> {data && dataName ? data[dataName] : 'Loading...'} </p>
         </div>
 
