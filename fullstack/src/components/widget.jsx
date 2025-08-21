@@ -33,7 +33,7 @@ const Widget = ({ name, dataKey }) => {
       className={`widget relative rounded-lg cursor-pointer`} // Add cursor pointer only if clickable
     >
       <div className="flex justify-between items-start p-4">
-        <div className="items-center space-x-1">
+        <div >
           <p>{name}</p>
           {/* <p>{value}</p> */}
           <p>Current Value</p>

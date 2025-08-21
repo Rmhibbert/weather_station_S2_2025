@@ -1,7 +1,9 @@
 .widget {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: center; /* Center items vertically */
+  align-items: center; /* Center items horizontally */
+  flex-direction: column; /* Stack title and "Current Value" vertically */
+  gap: 200px; /* Add 50px of space between the title and "Current Value" */
   flex: 1 1 700px;
   padding: 1%;
   background-color: hsla(0, 0%, 100%, 0.15);
@@ -26,4 +28,10 @@
   background-color: #7cb9e8;
   transform: translateY(-5px);
   box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.widget .items-center {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
