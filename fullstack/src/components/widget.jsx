@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-// import { useQuery } from '@tanstack/react-query';
+import React, { useEffect, useState } from 'react';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import './widget.css';
 
@@ -22,7 +21,69 @@ const Widget = ({ name, dataKey }) => {
 
   const handleTooltipToggle = () => {
     setOpenTooltip((prev) => !prev);
+
+    // Sets local variable for dataKey.
+    //const data = dataKey;
   };
+
+  const [data, setData] = useState(null);
+  const [value, setValue] = useState(null);
+
+
+useEffect(() => {
+  let apiUrl = '';
+  let dataName = '';
+
+  switch (dataKey) {
+    case 'temperature':
+      apiUrl = '/api/temperature-data';
+      dataName = 'temperature';
+      break;
+    case 'pressure':
+      apiUrl = '/api/pressure-data';
+      dataName = 'pressure';
+      break;
+    case 'wind':
+      apiUrl = '/api/wind-data';
+      dataName = 'wind_speed';
+      break;
+    case 'dust':
+      apiUrl = '/api/dust-data';
+      dataName = 'dust_level';
+      break;
+    case 'co2':
+      apiUrl = '/api/co2-data';
+      dataName = 'co2_level';
+      break;
+    case 'gas':
+      apiUrl = '/api/gas-data';
+      dataName = 'tvoc';
+      break;
+    case 'rain':
+      apiUrl = '/api/rain-data';
+      dataName = 'rainfall';
+      break;
+    case 'humidity':
+      apiUrl = '/api/humidity-data';
+      dataName = 'humidity';
+      break;
+    default:
+      console.warn('Unknown dataKey:', dataKey);
+      break;
+  }
+
+  if (!apiUrl) return;
+
+  fetch(apiUrl)
+    .then(res => res.json())
+    .then(json => {
+      setData(json[0]);
+      setValue(json[0][field]); // Get the correct field for display
+    })
+    .catch(console.error);
+}, [dataKey]);
+
+  // Create switch for dataKey. Set api url and data name using switch. Get data from api and display.
 
   return (
     <div
@@ -36,8 +97,7 @@ const Widget = ({ name, dataKey }) => {
         <div >
           <p id="widget-title">{name}</p>
           {/* TODO: Get latest value from the weather station */}
-          {/* <p>{value}</p> */}
-          <p id="widget-value">Current Value</p>
+          <p id="widget-value">{value !== null ? value : 'Loading...'}</p>
         </div>
 
         <div className="absolute top-4 right-4">
