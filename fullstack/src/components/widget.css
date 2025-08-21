@@ -1,7 +1,7 @@
 .widget {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   flex: 1 1 700px;
   padding: 1%;
   background-color: hsla(0, 0%, 100%, 0.15);
