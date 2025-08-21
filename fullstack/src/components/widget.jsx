@@ -34,7 +34,7 @@ const Widget = ({ name, dataKey }) => {
     >
       <div className="flex justify-between items-start p-4">
         <div >
-          <p>{name}</p>
+          <p id="title">{name}</p>
           {/* <p>{value}</p> */}
           <p>Current Value</p>
         </div>
