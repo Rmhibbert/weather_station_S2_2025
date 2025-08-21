@@ -21,14 +21,9 @@ const Widget = ({ name, dataKey }) => {
 
   const handleTooltipToggle = () => {
     setOpenTooltip((prev) => !prev);
-
-    // Sets local variable for dataKey.
-    //const data = dataKey;
   };
 
-  const [data, setData] = useState(null);
-  const [value, setValue] = useState(null);
-
+  const [dataName, setDataName] = useState('');
 
 useEffect(() => {
   let apiUrl = '';
@@ -69,17 +64,14 @@ useEffect(() => {
       break;
     default:
       console.warn('Unknown dataKey:', dataKey);
-      break;
+      return;
   }
 
-  if (!apiUrl) return;
+  setDataName(dataName);
 
   fetch(apiUrl)
     .then(res => res.json())
-    .then(json => {
-      setData(json[0]);
-      setValue(json[0][field]); // Get the correct field for display
-    })
+    .then(json => setData(json[0]))
     .catch(console.error);
 }, [dataKey]);
 
@@ -97,7 +89,7 @@ useEffect(() => {
         <div >
           <p id="widget-title">{name}</p>
           {/* TODO: Get latest value from the weather station */}
-          <p id="widget-value">{value !== null ? value : 'Loading...'}</p>
+          <p id="widget-value"> {data && dataName ? data[dataName] : 'Loading...'} </p>
         </div>
 
         <div className="absolute top-4 right-4">
