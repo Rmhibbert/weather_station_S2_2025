@@ -35,6 +35,7 @@ const Widget = ({ name, dataKey }) => {
       <div className="flex justify-between items-start p-4">
         <div >
           <p id="widget-title">{name}</p>
+          {/* TODO: Get latest value from the weather station */}
           {/* <p>{value}</p> */}
           <p id="widget-value">Current Value</p>
         </div>
