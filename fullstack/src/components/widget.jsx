@@ -44,7 +44,7 @@ useEffect(() => {
       break;
     case 'dust':
       apiUrl = '/api/dust-data';
-      dataName = 'dust_level';
+      dataName = 'dust';
       break;
     case 'co2':
       apiUrl = '/api/co2-data';
@@ -52,11 +52,11 @@ useEffect(() => {
       break;
     case 'gas':
       apiUrl = '/api/gas-data';
-      dataName = 'tvoc';
+      dataName = 'gas_level';
       break;
     case 'rain':
       apiUrl = '/api/rain-data';
-      dataName = 'rainfall';
+      dataName = 'rainfall_mn';
       break;
     case 'humidity':
       apiUrl = '/api/humidity-data';
