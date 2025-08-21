@@ -25,56 +25,66 @@ const Widget = ({ name, dataKey }) => {
 
   const [data, setData] = useState(null);
   const [dataName, setDataName] = useState('');
-
-useEffect(() => {
-  let apiUrl = '';
-  let dataName = '';
-
-  switch (dataKey) {
-    case 'temperature':
-      apiUrl = '/api/temperature-data';
-      dataName = 'temperature';
-      break;
-    case 'pressure':
-      apiUrl = '/api/pressure-data';
-      dataName = 'pressure';
-      break;
-    case 'wind':
-      apiUrl = '/api/wind-data';
-      dataName = 'wind_speed';
-      break;
-    case 'dust':
-      apiUrl = '/api/dust-data';
-      dataName = 'dust';
-      break;
-    case 'co2':
-      apiUrl = '/api/co2-data';
-      dataName = 'co2_level';
-      break;
-    case 'gas':
-      apiUrl = '/api/gas-data';
-      dataName = 'gas_level';
-      break;
-    case 'rain':
-      apiUrl = '/api/rain-data';
-      dataName = 'rainfall_mm';
-      break;
-    case 'humidity':
-      apiUrl = '/api/humidity-data';
-      dataName = 'humidity';
-      break;
-    default:
-      console.warn('Unknown dataKey:', dataKey);
-      return;
-  }
-
-  setDataName(dataName);
-
-  fetch(apiUrl)
-    .then(res => res.json())
-    .then(json => setData(json[0]))
-    .catch(console.error);
-}, [dataKey]);
+  const [unit, setUnit] = useState('');
+  useEffect(() => {
+    let apiUrl = '';
+    let field = '';
+    let unitTag = '';
+  
+    switch (dataKey) {
+      case 'temperature':
+        apiUrl = '/api/temperature-data';
+        field = 'temperature';
+        unitTag = '°C';
+        break;
+      case 'pressure':
+        apiUrl = '/api/pressure-data';
+        field = 'pressure';
+        unitTag = ' hPa';
+        break;
+      case 'wind':
+        apiUrl = '/api/wind-data';
+        field = 'wind_speed';
+        unitTag = ' km/h';
+        break;
+      case 'dust':
+        apiUrl = '/api/dust-data';
+        field = 'dust_level';
+        unitTag = ' µg/m³';
+        break;
+      case 'co2':
+        apiUrl = '/api/co2-data';
+        field = 'co2_level';
+        unitTag = ' ppm';
+        break;
+      case 'gas':
+        apiUrl = '/api/gas-data';
+        field = 'tvoc';
+        unitTag = ' ppm';
+        break;
+      case 'rain':
+        apiUrl = '/api/rain-data';
+        field = 'rainfall_mm';
+        unitTag = ' mm';
+        break;
+      case 'humidity':
+        apiUrl = '/api/humidity-data';
+        field = 'humidity';
+        unitTag = '%';
+        break;
+      default:
+        console.warn('Unknown dataKey:', dataKey);
+        return;
+    }
+  
+    setDataName(field);
+    setUnit(unitTag);
+  
+    fetch(apiUrl)
+      .then(res => res.json())
+      .then(json => setData(json[0]))
+      .catch(console.error);
+  }, [dataKey]);
 
   return (
     <div
@@ -87,7 +97,8 @@ useEffect(() => {
       <div className="flex justify-between items-start p-4">
         <div >
           <p id="widget-title">{name}</p>
-          <p id="widget-value"> {data && dataName ? data[dataName] : 'Loading...'} </p>
+          <p id="widget-value"> {data && dataName ? `${data[dataName]}${unit}` : 'Loading...'} </p>
+          <p id="widget-value"> {`${unit}`}</p>
         </div>
 
         <div className="absolute top-4 right-4">
