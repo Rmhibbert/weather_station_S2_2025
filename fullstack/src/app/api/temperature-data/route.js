@@ -19,9 +19,9 @@ export const GET = async (request) => {
     }
 
     const data = await db.any(`
-      SELECT average_temp() AS avg_temperature, MAX(timestamp) AS timestamp
-      FROM temperature
-    `);
+      SELECT * FROM temperature WHERE device_id = 'temp-humidity'
+      ORDER BY timestamp ASC
+`);
     return new Response(JSON.stringify(data), {
       status: 200,
       headers: {
