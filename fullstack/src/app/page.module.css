@@ -102,6 +102,8 @@ a.secondary {
   display: flex;
   align-items: center;
   gap: 8px;
+  color: #1a1a1a;
+  background-color: #1a1a1a;
 }
 
 .footer img {
