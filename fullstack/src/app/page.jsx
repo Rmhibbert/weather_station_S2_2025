@@ -51,10 +51,7 @@ export default function Home() {
             name="Humidity"
             dataKey="humidity"
             GraphComponent={LineChartComponent}
-          />
-          <Link href="/about">
-           <button>Go to About</button>
-          </Link>
+          /> 
           <Cloud />
           {/* name="Cloud Prediction Model"
           dataKey="cloud"
@@ -62,9 +59,6 @@ export default function Home() {
         /> */}
         </div>
         <div style={{ textAlign: 'center', margin: '2rem' }}>
-        <Link href="/about">
-        <button className="navigate-btn">Go to About Page</button>
-        </Link>
 </div>
 
         <Footer />

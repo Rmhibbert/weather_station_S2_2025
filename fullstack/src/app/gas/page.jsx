@@ -94,7 +94,7 @@ export default function GasPage() {
         maxWidth: '400px',
         backgroundColor: '#f9f9f9'
       }}>
-        <p><strong>Latest gas:</strong> {latest.gas_level}%</p>
+        <p><strong>Latest gas:</strong> {latest.gas_level} ppm</p>
         <p><strong>Time Recorded:</strong> {latest.timestamp.toLocaleString()}</p>
       </div>
 
