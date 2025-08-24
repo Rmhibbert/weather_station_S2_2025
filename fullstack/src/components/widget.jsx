@@ -98,7 +98,6 @@ const Widget = ({ name, dataKey }) => {
         <div >
           <p id="widget-title">{name}</p>
           <p id="widget-value"> {data && dataName ? `${data[dataName]}${unit}` : 'Loading...'} </p>
-          <p id="widget-value"> {`${unit}`}</p>
         </div>
 
         <div className="absolute top-4 right-4">
