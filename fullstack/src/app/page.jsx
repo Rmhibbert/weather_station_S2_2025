@@ -14,7 +14,6 @@ export default function Home() {
         <Header />
 
         {/* Widgets Section */}
-        <div className="widgets">
           <Widget name="Temperature" dataKey="temperature" />
           <Widget name="Rain" dataKey="rain" />
           <Widget name="Air Pressure" dataKey="pressure" />
@@ -24,6 +23,9 @@ export default function Home() {
           <Widget name="Dust" dataKey="dust" />
           <Widget name="Humidity" dataKey="humidity" />
         </div>
+        <div style={{ textAlign: 'center', margin: '2rem' }}>
+</div>
+
         <Footer />
       </div>
     </QueryClientProvider>
