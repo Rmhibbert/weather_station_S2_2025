@@ -49,7 +49,7 @@ const Widget = ({ name, dataKey }) => {
         break;
       case 'dust':
         apiUrl = '/api/dust-data';
-        field = 'dust_level';
+        field = 'dust';
         unitTag = ' µg/m³';
         break;
       case 'co2':
@@ -59,7 +59,7 @@ const Widget = ({ name, dataKey }) => {
         break;
       case 'gas':
         apiUrl = '/api/gas-data';
-        field = 'tvoc';
+        field = 'gas_level';
         unitTag = ' ppm';
         break;
       case 'rain':
