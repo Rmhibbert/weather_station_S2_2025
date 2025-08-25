@@ -118,17 +118,18 @@ export default function AboutPage() {
 
       {/* Weather Widgets Section */}
       <section className="bg-blue-300 py-12">
-        <h2 className="text-3xl font-bold text-center mb-8 text-blue-900">Current Readings</h2>
-        <div className="max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 px-4">
-          {Object.entries(readings).map(([name, value]) => (
-            <div key={name} className="bg-blue-100 rounded-2xl p-6 text-center shadow-md">
-              <p className="text-lg font-semibold text-blue-900">{name}</p>
-              <p className="text-2xl mt-2 text-blue-900">{value}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
+      <h2 className="text-3xl font-bold text-center mb-8 text-blue-900">
+    Current Readings <span className="text-lg font-normal text-blue-900/70">(Demo data, not real)</span>
+    </h2>
+    <div className="max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 px-4">
+    {Object.keys(readings).map((sensor) => (
+      <div key={sensor} className="bg-blue-100 rounded-2xl p-6 text-center shadow-md">
+        <p className="text-lg font-semibold text-blue-900">{sensor}</p>
+        <p className="text-2xl mt-2 text-blue-900">{readings[sensor]}</p>
+      </div>
+    ))}
+    </div>
+  </section>
       <Footer />
     </div>
   );
