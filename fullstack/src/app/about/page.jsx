@@ -1,13 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-
-// Placeholder components
-const SearchHeader = () => <div className="text-blue-900 p-4">Search Placeholder</div>;
-const SunriseSunset = () => <div className="text-blue-900 p-4">Sunrise/Sunset Placeholder</div>;
-const LocationDetails = () => <div className="text-blue-900 p-4">Location Details Placeholder</div>;
+import { useState, useEffect } from "react";
 
 export default function AboutPage() {
   const sensors = [
@@ -15,11 +10,28 @@ export default function AboutPage() {
     { name: "Humidity", icon: "💧" },
     { name: "Wind", icon: "🌬️" },
     { name: "Rain", icon: "🌧️" },
-    { name: "CO2", icon: "🟢" },
+    { name: "CO₂", icon: "🟢" },
     { name: "Dust", icon: "🌫️" },
     { name: "Air Pressure", icon: "📊" },
     { name: "Light Intensity", icon: "💡" },
   ];
+
+  // --- Demo readings until real API works ---
+  const [readings, setReadings] = useState({});
+
+  useEffect(() => {
+    const demo = {
+      Temperature: "22°C",
+      Humidity: "55%",
+      Wind: "14 km/h",
+      Rain: "2 mm",
+      "CO₂": "420 ppm",
+      "Air Pressure": "1012 hPa",
+      Dust: "15 µg/m³",
+      "Light Intensity": "750 lux",
+    };
+    setReadings(demo);
+  }, []);
 
   return (
     <div className="min-h-screen bg-blue-200 font-sans">
@@ -35,6 +47,7 @@ export default function AboutPage() {
 
       {/* Main Grid */}
       <section className="max-w-6xl mx-auto px-4 py-12 grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
         {/* About Section */}
         <div className="bg-blue-100 border border-blue-300 rounded-2xl p-6 shadow-md space-y-4">
           <h2 className="text-2xl font-bold mb-2 text-blue-900">About the Project</h2>
@@ -93,8 +106,8 @@ export default function AboutPage() {
         <div className="bg-blue-100 border border-blue-300 rounded-2xl p-6 shadow-md space-y-4">
           <h2 className="text-2xl font-bold text-center mb-4 text-blue-900">🛠️ Key Sensors</h2>
           <div className="grid grid-cols-2 gap-4">
-            {sensors.map((sensor, idx) => (
-              <div key={idx} className="bg-blue-300 rounded-xl p-4 text-center shadow-sm">
+            {sensors.map((sensor) => (
+              <div key={sensor.name} className="bg-blue-300 rounded-xl p-4 text-center shadow-sm">
                 <span className="text-3xl">{sensor.icon}</span>
                 <p className="mt-2 font-semibold text-blue-900">{sensor.name}</p>
               </div>
@@ -107,16 +120,15 @@ export default function AboutPage() {
       <section className="bg-blue-300 py-12">
         <h2 className="text-3xl font-bold text-center mb-8 text-blue-900">Current Readings</h2>
         <div className="max-w-6xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 px-4">
-          {["Temperature", "Humidity", "Wind", "Rain", "CO₂", "Air Pressure", "Dust", "Light Intensity"].map((sensor, idx) => (
-            <div key={idx} className="bg-blue-100 rounded-2xl p-6 text-center shadow-md">
-              <p className="text-lg font-semibold text-blue-900">{sensor}</p>
-              <p className="text-2xl mt-2 text-blue-900">--</p>
+          {Object.entries(readings).map(([name, value]) => (
+            <div key={name} className="bg-blue-100 rounded-2xl p-6 text-center shadow-md">
+              <p className="text-lg font-semibold text-blue-900">{name}</p>
+              <p className="text-2xl mt-2 text-blue-900">{value}</p>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="max-w-6xl mx-auto px-4 py-12 space-y-4"></section>
       <Footer />
     </div>
   );
