@@ -18,9 +18,11 @@ const LineChartComponent = ({ data, datakey, viewType }) => {
   const [isScrollEnabled, setIsScrollEnabled] = useState(
     window.innerWidth <= 1060,
   );
+
   // const graphColor = '#113f67';
   const graphColor = '#113f67';
   // const xyAxis = 'white';
+
   const xyAxis = '#333333';
 
   useEffect(() => {
@@ -62,6 +64,7 @@ const LineChartComponent = ({ data, datakey, viewType }) => {
           >
             {/* <CartesianGrid stroke="white" strokeDasharray="5 5" /> */}
             <CartesianGrid stroke="#e0e0e0" strokeDasharray="5 5" />
+
             <XAxis
               dataKey={xAxisDataKey}
               stroke={xyAxis}
@@ -83,6 +86,7 @@ const LineChartComponent = ({ data, datakey, viewType }) => {
               tick={{ fontSize: 12 }}
             />
             <Tooltip
+
               // cursor={{ fill: 'transparent' }}
               contentStyle={{
                 backgroundColor: '#ffffff',
