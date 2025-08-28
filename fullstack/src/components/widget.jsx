@@ -1,6 +1,9 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import './widget.css';
+import { useRouter } from 'next/navigation';
 
 const tooltipMapping = {
   temperature:
@@ -16,7 +19,9 @@ const tooltipMapping = {
     'Shows the relative humidity in percentage. Ideal indoor range is 30-50%; high levels can cause discomfort and mold growth.',
 };
 
+
 const Widget = ({ name, dataKey }) => {
+  const router = useRouter();
   const [openTooltip, setOpenTooltip] = useState(false);
 
   const handleTooltipToggle = () => {
@@ -26,6 +31,12 @@ const Widget = ({ name, dataKey }) => {
   const [data, setData] = useState(null);
   const [dataName, setDataName] = useState('');
   const [unit, setUnit] = useState('');
+
+  const handleWidgetClick = () => {
+    // Routes to the page associated with the dataKey
+    router.push(`/${dataKey}`)
+  };
+
   useEffect(() => {
     let apiUrl = '';
     let field = '';
@@ -91,7 +102,7 @@ const Widget = ({ name, dataKey }) => {
       // ------------------------------------------------------On click route to new page--------------------------------------------------------
       
       // TODO: Add routing to data pages when widget is clicked.
-
+      onClick={handleWidgetClick}
       className={`widget relative rounded-lg cursor-pointer`}
     >
       <div className="flex justify-between items-start p-4">
