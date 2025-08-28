@@ -16,6 +16,10 @@ const tooltipMapping = {
     'Shows the relative humidity in percentage. Ideal indoor range is 30-50%; high levels can cause discomfort and mold growth.',
 };
 
+const handleWidgetClick = () => {
+  // Route to page using dataKey.
+}
+
 const Widget = ({ name, dataKey }) => {
   const [openTooltip, setOpenTooltip] = useState(false);
 

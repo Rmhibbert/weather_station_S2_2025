@@ -45,41 +45,42 @@ export default function RainPage() {
   // --- Latest reading ---
   const latest = data.reduce((prev, curr) => (curr.timestamp > prev.timestamp ? curr : prev), data[0]);
 
-  // --- Weekly chart (last 7 days, aggregated per day) ---
-  const last7DaysRaw = data.filter(d => {
-    const diffDays = (today.getTime() - d.timestamp.getTime()) / (1000 * 60 * 60 * 24);
-    return diffDays <= 7;
-  });
+// --- Weekly chart (last 7 days, averaged per day) ---
+const last7DaysRaw = data.filter(d => {
+  const diffDays = (today.getTime() - d.timestamp.getTime()) / (1000 * 60 * 60 * 24);
+  return diffDays <= 7;
+});
 
-  const weeklyAggregated = last7DaysRaw.reduce((acc, curr) => {
-    const dayStr = curr.timestamp.toISOString().split('T')[0]; // YYYY-MM-DD UTC
-    if (!acc[dayStr]) acc[dayStr] = { day: dayStr, rainfall_mm: 0 };
-    acc[dayStr].rainfall_mm += curr.rainfall_mm;
-    return acc;
-  }, {});
+const weeklyAggregated = last7DaysRaw.reduce((acc, curr) => {
+  const dayStr = curr.timestamp.toISOString().split('T')[0];
+  if (!acc[dayStr]) acc[dayStr] = { day: dayStr, sum: 0, count: 0 };
+  acc[dayStr].sum += curr.rainfall_mm;
+  acc[dayStr].count++;
+  return acc;
+}, {});
 
-  const weeklyChartData = Object.values(weeklyAggregated).sort(
-    (a, b) => new Date(a.day) - new Date(b.day)
-  );
+const weeklyChartData = Object.values(weeklyAggregated)
+  .map(d => ({ day: d.day, rainfall_mm: d.sum / d.count })) // average
+  .sort((a, b) => new Date(a.day) - new Date(b.day));
 
-  // --- Monthly chart (current month only, aggregated per day) ---
-  const currentMonthData = data.filter(d => {
-    const ts = d.timestamp;
-    const utcMonth = ts.getUTCMonth();
-    const utcYear = ts.getUTCFullYear();
-    return utcMonth === today.getUTCMonth() && utcYear === today.getUTCFullYear();
-  });
+// --- Monthly chart (current month only, averaged per day) ---
+const currentMonthData = data.filter(d => {
+  const ts = d.timestamp;
+  return ts.getUTCMonth() === today.getUTCMonth() && ts.getUTCFullYear() === today.getUTCFullYear();
+});
 
-  const monthlyAggregated = currentMonthData.reduce((acc, curr) => {
-    const dayStr = curr.timestamp.toISOString().split('T')[0]; // YYYY-MM-DD UTC
-    if (!acc[dayStr]) acc[dayStr] = { day: dayStr, rainfall_mm: 0 };
-    acc[dayStr].rainfall_mm += curr.rainfall_mm;
-    return acc;
-  }, {});
+const monthlyAggregated = currentMonthData.reduce((acc, curr) => {
+  const dayStr = curr.timestamp.toISOString().split('T')[0];
+  if (!acc[dayStr]) acc[dayStr] = { day: dayStr, sum: 0, count: 0 };
+  acc[dayStr].sum += curr.rainfall_mm;
+  acc[dayStr].count++;
+  return acc;
+}, {});
 
-  const monthlyChartData = Object.values(monthlyAggregated).sort(
-    (a, b) => new Date(a.day) - new Date(b.day)
-  );
+const monthlyChartData = Object.values(monthlyAggregated)
+  .map(d => ({ day: d.day, rainfall_mm: d.sum / d.count }))
+  .sort((a, b) => new Date(a.day) - new Date(b.day));
+
 
   return (
     <div style={{ background: 'white', color: 'black', minHeight: '100vh', padding: '20px', fontFamily: 'Arial, sans-serif' }}>
