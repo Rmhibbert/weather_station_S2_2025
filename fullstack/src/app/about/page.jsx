@@ -5,11 +5,11 @@ import Footer from "@/components/Footer";
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-blue-700 font-sans flex flex-col text-white">
+    <div className="min-h-screen font-sans flex flex-col" style={{ backgroundColor: "#1e3c72" }}>
       <Header />
 
       {/* Hero Section */}
-      <section className="relative flex flex-col items-center justify-center text-center py-20 px-4 bg-blue-800 rounded-b-3xl shadow-md">
+      <section className="relative flex flex-col items-center justify-center text-center py-20 px-4 rounded-b-3xl shadow-md" style={{ backgroundColor: "#1e3c72" }}>
         <h1 className="text-4xl font-bold mb-4 text-white">🌦️ Our Weather Station</h1>
         <p className="max-w-2xl text-white/90 leading-relaxed">
           A student-built IoT weather station using LoRaWAN to monitor temperature, humidity, wind, and more in real-time.
@@ -18,7 +18,7 @@ export default function AboutPage() {
 
       {/* About Section (Landscape style, centered) */}
       <section className="flex-grow flex justify-center items-center py-16 px-6">
-        <div className="bg-blue-100 text-blue-900 border border-blue-300 rounded-2xl p-10 shadow-md max-w-5xl w-full">
+        <div className="bg-white text-blue-900 border border-blue-300 rounded-2xl p-10 shadow-md max-w-5xl w-full">
           <h2 className="text-3xl font-bold mb-6 text-center">About the Project</h2>
 
           <p className="mb-4 text-lg leading-relaxed">
@@ -56,11 +56,7 @@ export default function AboutPage() {
             <ul className="list-disc list-inside ml-6 space-y-1">
               <li>XC3702 Barometric Pressure Sensor (Air Pressure)</li>
               <li>XC3780 Dust Sensor (Air Quality & Particulates)</li>
-              <li>Duinotech Air Quality Sensor (CO₂ levels)</li>
-              <li>DHT22 Temperature & Humidity Sensor</li>
-              <li>Anemometer (Wind Speed)</li>
-              <li>Rain Gauge (Rainfall Measurement)</li>
-              <li>Photoresistor/Light Sensor (Light Intensity)</li>
+              <li>Duinotech Air Quality Sensor (CO₂ levels)</li>  
             </ul>
 
             <p>
