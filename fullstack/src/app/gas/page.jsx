@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import LineChartComponent from '../../components/graphs/LineChartComponent';
+import Footer from '../../components/footer';
+import Header from '../../components/header';
 
 export default function GasPage() {
   const [data, setData] = useState([]);
@@ -85,6 +87,7 @@ export default function GasPage() {
 
   return (
     <div style={{ padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
+      <Header />
       <h1 style={{ marginBottom: '1.5rem' }}>Gas level Page</h1>
       <div style={{
         padding: '1rem',
@@ -113,6 +116,7 @@ export default function GasPage() {
         datakey="gas_level"
         viewType="daily"
       />
+      <Footer />
     </div>
   );
 }
