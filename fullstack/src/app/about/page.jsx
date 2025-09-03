@@ -5,16 +5,13 @@ import Footer from "@/components/Footer";
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen font-sans flex flex-col" style={{ backgroundColor: "#1e3c72" }}>
+    <div
+      className="min-h-screen font-sans flex flex-col"
+      style={{
+        background: "linear-gradient(to right, #1e3c72, #2a5298)", // Gradient to match homepage
+      }}
+    >
       <Header />
-
-      {/* Hero Section */}
-      <section className="relative flex flex-col items-center justify-center text-center py-20 px-4 rounded-b-3xl shadow-md" style={{ backgroundColor: "#1e3c72" }}>
-        <h1 className="text-4xl font-bold mb-4 text-white">🌦️ Our Weather Station</h1>
-        <p className="max-w-2xl text-white/90 leading-relaxed">
-          A student-built IoT weather station using LoRaWAN to monitor temperature, humidity, wind, and more in real-time.
-        </p>
-      </section>
 
       {/* About Section (Landscape style, centered) */}
       <section className="flex-grow flex justify-center items-center py-16 px-6">
@@ -56,7 +53,7 @@ export default function AboutPage() {
             <ul className="list-disc list-inside ml-6 space-y-1">
               <li>XC3702 Barometric Pressure Sensor (Air Pressure)</li>
               <li>XC3780 Dust Sensor (Air Quality & Particulates)</li>
-              <li>Duinotech Air Quality Sensor (CO₂ levels)</li>  
+              <li>Duinotech Air Quality Sensor (CO₂ levels)</li>
             </ul>
 
             <p>
@@ -70,7 +67,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <Footer />
+      {/* Footer with accessible white text */}
+      <Footer className="text-white" />
     </div>
   );
 }
