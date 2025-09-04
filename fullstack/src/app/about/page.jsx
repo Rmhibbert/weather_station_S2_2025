@@ -5,12 +5,7 @@ import Footer from "@/components/Footer";
 
 export default function AboutPage() {
   return (
-    <div
-      className="min-h-screen font-sans flex flex-col"
-      style={{
-        background: "linear-gradient(to right, #1e3c72, #2a5298)", // Gradient to match homepage
-      }}
-    >
+    <div className="min-h-screen font-sans flex flex-col bg-gradient-to-b from-[#1e3c72] to-[#6699cc]">
       <Header />
 
       {/* About Section (Landscape style, centered) */}
@@ -68,10 +63,9 @@ export default function AboutPage() {
       </section>
 
       {/* Footer with accessible white text */}
-      <div className="text-white">
-     <Footer />
-      </div>
-
+      <footer className="text-white">
+        <Footer />
+      </footer>
     </div>
   );
 }
