@@ -28,9 +28,8 @@ export default function AboutPage() {
             <li>Humidity levels in %</li>
             <li>Wind speed tracking in km/h</li>
             <li>Rainfall measurement in mm</li>
-            <li>CO₂ and dust particle levels</li>
+            <li>Dust particle levels</li>
             <li>Air pressure trends</li>
-            <li>Light intensity monitoring</li>
           </ul>
 
           <p className="mt-6 text-lg leading-relaxed">
@@ -48,7 +47,6 @@ export default function AboutPage() {
             <ul className="list-disc list-inside ml-6 space-y-1">
               <li>XC3702 Barometric Pressure Sensor (Air Pressure)</li>
               <li>XC3780 Dust Sensor (Air Quality & Particulates)</li>
-              <li>Duinotech Air Quality Sensor (CO₂ levels)</li>
             </ul>
 
             <p>
