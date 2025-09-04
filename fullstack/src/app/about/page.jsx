@@ -68,7 +68,10 @@ export default function AboutPage() {
       </section>
 
       {/* Footer with accessible white text */}
-      <Footer className="text-white" />
+      <div className="text-white">
+     <Footer />
+      </div>
+
     </div>
   );
 }
