@@ -1,14 +1,11 @@
 import './header.css';
-
 export default function Header() {
   return (
-    <section className="header">
       <nav>
-        <a href="home">
-            <img src="/images/logo3.png" alt="Logo" />
-        </a>
         <div className="textbox">
+          <a href="/">
           <h1>Otago Polytechnic Weather Station</h1>
+          </a>
         </div>
         <div className="links">
           <ul>
@@ -21,6 +18,5 @@ export default function Header() {
           </ul>
         </div>
       </nav>
-    </section>
   );
 }
