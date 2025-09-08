@@ -8,7 +8,9 @@ describe('Homepage', () => {
     cy.get('nav').should('contain.text', 'Otago Polytechnic Weather Station');
     cy.get('nav').should('contain.text', 'ABOUT');
     cy.get('footer').should('be.visible');
-  });
+    cy.get('footer img[alt="Otago Polytechnic Logo"]').should('exist');
+    cy.get('footer img[alt="GitHub Logo"]').should('exist');
+  });  
 
   it('shows 8 metric cards with labels', () => {
     const labels = [
