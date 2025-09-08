@@ -6,6 +6,7 @@
   background-size: 100vw 100vh;
   background-attachment: fixed;
   color: #f8f8ff;
+  min-height: 100vh;
 }
 
 /* Widgets grid */
