@@ -27,6 +27,25 @@ describe('Homepage', () => {
     });
   });
 
+  it('shows 8 metric cards with labels and units', () => {
+    const metrics = [
+      { label: 'Temperature', unit: '°C' },
+      { label: 'Humidity', unit: '%' },
+      { label: 'Rain', unit: 'mm' },
+      { label: 'Wind', unit: 'km/h' },
+      { label: 'CO2', unit: 'ppm' },
+      { label: 'Gas', unit: 'ppm' },
+      { label: 'Dust', unit: 'µg/m³' },
+      { label: 'Air Pressure', unit: 'hPa' },
+    ];
+  
+    // Check labels and units
+    metrics.forEach(({ label, unit }) => {
+      cy.contains(label).should('be.visible');
+      cy.contains(unit).should('be.visible');
+    });
+  });
+
   it('navigates to a detail page when a card is clicked', () => {
     cy.contains('Temperature').click();
     cy.location('pathname').should('include', 'temperature');
