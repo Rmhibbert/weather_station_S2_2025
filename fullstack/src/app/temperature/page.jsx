@@ -87,7 +87,7 @@ export default function TemperaturePage() {
     .sort((a, b) => new Date(a.day) - new Date(b.day));
 
   return (
-    <div>
+    <div className="app-container">
     <Header />
     <div style={{ padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
       <h1 style={{ marginBottom: '1.5rem' }}>Temperature Page</h1>
@@ -97,7 +97,7 @@ export default function TemperaturePage() {
         border: '1px solid #ccc',
         borderRadius: '6px',
         maxWidth: '400px',
-        backgroundColor: '#f9f9f9'
+        backgroundColor: 'hsla(0,0%,100%,0.15)'
       }}>
         <p><strong>Latest temperature:</strong> {latest.temperature}&deg;C</p>
         <p><strong>Time Recorded:</strong> {latest.timestamp.toLocaleString()}</p>
