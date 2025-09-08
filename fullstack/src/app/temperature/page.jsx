@@ -1,5 +1,6 @@
 'use client';
 
+import Footer from '../components/footer';
 import { useEffect, useState } from 'react';
 import LineChartComponent from '../../components/graphs/LineChartComponent';
 
@@ -84,6 +85,8 @@ export default function TemperaturePage() {
     .sort((a, b) => new Date(a.day) - new Date(b.day));
 
   return (
+    <div>
+
     <div style={{ padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
       <h1 style={{ marginBottom: '1.5rem' }}>Temperature Page</h1>
       <div style={{
@@ -113,6 +116,8 @@ export default function TemperaturePage() {
         datakey="temperature"
         viewType="daily"
       />
+    </div>
+    <footer />
     </div>
   );
 }
