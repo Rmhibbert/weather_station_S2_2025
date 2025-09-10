@@ -20,10 +20,10 @@ const LineChartComponent = ({ data, datakey, viewType }) => {
   );
 
   // const graphColor = '#113f67';
-  const graphColor = '#113f67';
+  const graphColor = '#0f0f0f';
   // const xyAxis = 'white';
 
-  const xyAxis = '#333333';
+  const xyAxis = '#f7f2f2';
 
   useEffect(() => {
     const handleResize = () => {
@@ -57,7 +57,7 @@ const LineChartComponent = ({ data, datakey, viewType }) => {
       }}
     >
       <div style={{ width: containerWidth }}>
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="100%" height={600}>
           <LineChart
             data={filteredData}
             margin={{ top: 10, right: 22, left: 0, bottom: 15 }}
@@ -77,7 +77,7 @@ const LineChartComponent = ({ data, datakey, viewType }) => {
             <YAxis
               type="number"
               domain={domain}
-              ticks={ticks}
+              ticks={[0, 5, 10, 15, 20, 25, 30]}
               stroke={xyAxis}
               allowDecimals={false}
               tickFormatter={(value) => {

@@ -1,6 +1,5 @@
 'use client';
 
-
 import { useEffect, useState } from 'react';
 import Footer from '../../components/footer';
 import Header from '../../components/header';
@@ -9,6 +8,8 @@ import LineChartComponent from '../../components/graphs/LineChartComponent';
 export default function TemperaturePage() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [view, setView] = useState('weekly');
+
 
   useEffect(() => {
     async function fetchData() {
@@ -87,9 +88,9 @@ export default function TemperaturePage() {
     .sort((a, b) => new Date(a.day) - new Date(b.day));
 
   return (
-    <div className="app-container">
+    <div className="app-container" style={{ minHeight: '100vh', flexDirection: 'column', display: 'flex' }}>
     <Header />
-    <div style={{ padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
+    <div style={{ flex: 1, padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
       <h1 style={{ marginBottom: '1.5rem' }}>Temperature Page</h1>
       <div style={{
         padding: '1rem',
@@ -103,13 +104,27 @@ export default function TemperaturePage() {
         <p><strong>Time Recorded:</strong> {latest.timestamp.toLocaleString()}</p>
       </div>
 
+      {/* Toggle Buttons */}
+        <div className="flex gap-2 mb-6">
+        <button className={`px-4 py-2 rounded-md font-semibold bg-blue-600 text-white hover:bg-blue-700 `} 
+          onClick={() => setView('weekly')}>Weekly</button>
+        <button className={`px-4 py-2 rounded-md font-semibold bg-blue-600 text-white hover:bg-blue-700`} 
+          onClick={() => setView('monthly')}>Monthly</button>
+        </div>
+
+
       {/* --- Weekly chart --- */}
+      {view === 'weekly' ? (
+        <>
       <h2>Daily temperature (Past 7 Days)</h2>
       <LineChartComponent
         data={weeklyChartData}
         datakey="temperature"
         viewType="daily"
       />
+      </>
+      ) : ( 
+      <>
 
       {/* --- Monthly chart --- */}
       <h2>Monthly temperature (This Month)</h2>
@@ -118,8 +133,11 @@ export default function TemperaturePage() {
         datakey="temperature"
         viewType="daily"
       />
+      </>
+      )}
     </div>
     <Footer />
     </div>
+    
   );
 }
