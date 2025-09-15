@@ -20,7 +20,7 @@ const LineChartComponent = ({ data, datakey, viewType }) => {
   );
 
   // const graphColor = '#113f67';
-  const graphColor = '#0f0f0f';
+  const graphColor = '#fafafa';
   // const xyAxis = 'white';
 
   const xyAxis = '#f7f2f2';
