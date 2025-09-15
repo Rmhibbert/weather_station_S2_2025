@@ -91,11 +91,16 @@ export default function TemperaturePage() {
     <div className="app-container" style={{ minHeight: '100vh', flexDirection: 'column', display: 'flex' }}>
     <Header />
     <div style={{ flex: 1, padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
-      <h1 style={{ marginBottom: '1.5rem' }}>Temperature Page</h1>
+      <h1 style={{ 
+        marginBottom: '1.5rem',
+        textAlign: 'center',
+        fontSize: '2rem',
+        fontWeight: '600',
+        letterSpacing: '1px',
+         }}>Temperature Page</h1>
       <div style={{
         padding: '1rem',
         marginBottom: '2rem',
-        border: '1px solid #ccc',
         borderRadius: '6px',
         maxWidth: '400px',
         backgroundColor: 'hsla(0,0%,100%,0.15)'
@@ -116,7 +121,7 @@ export default function TemperaturePage() {
       {/* --- Weekly chart --- */}
       {view === 'weekly' ? (
         <>
-      <h2>Daily temperature (Past 7 Days)</h2>
+      <h2>Weekly temperature (Past 7 Days)</h2>
       <LineChartComponent
         data={weeklyChartData}
         datakey="temperature"

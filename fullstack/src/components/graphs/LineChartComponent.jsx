@@ -60,7 +60,7 @@ const LineChartComponent = ({ data, datakey, viewType }) => {
         <ResponsiveContainer width="100%" height={600}>
           <LineChart
             data={filteredData}
-            margin={{ top: 10, right: 22, left: 0, bottom: 15 }}
+            margin={{ top: 10, right: 22, left: 0, bottom: 30 }}
           >
             {/* <CartesianGrid stroke="white" strokeDasharray="5 5" /> */}
             <CartesianGrid stroke="#e0e0e0" strokeDasharray="5 5" />
