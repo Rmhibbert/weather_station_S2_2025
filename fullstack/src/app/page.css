@@ -31,7 +31,7 @@
 @media (max-width: 600px) {
   .widgets {
     grid-template-columns: 1fr; 
-    padding: 5%; 
+    padding: 10%; 
     gap: 2rem;
   }
 }
