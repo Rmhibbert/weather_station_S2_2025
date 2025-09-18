@@ -123,7 +123,7 @@ export default function RainPage() {
       {/* --- Weekly chart --- */}
       {view === 'weekly' ? (
       <>
-      <h2>Daily Rainfall (Past 7 Days)</h2>
+      <h2>Weekly Rainfall (Past 7 Days)</h2>
       <LineChartComponent
         data={weeklyChartData}
         datakey="rainfall_mm"
