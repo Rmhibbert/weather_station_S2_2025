@@ -44,28 +44,38 @@ export default function PressurePage() {
   const today = new Date();
   const latest = data.reduce((prev, curr) => (curr.timestamp > prev.timestamp ? curr : prev), data[0]);
 
-  // Weekly chart
-  const last7DaysRaw = data.filter(d => (today - d.timestamp) / (1000*60*60*24) <= 7);
+  // --- Weekly chart (averaged per day) ---
+  const last7DaysRaw = data.filter(d => (today - d.timestamp) / (1000 * 60 * 60 * 24) <= 7);
+
   const weeklyAggregated = last7DaysRaw.reduce((acc, curr) => {
     const dayStr = curr.timestamp.toISOString().split('T')[0];
-    if (!acc[dayStr]) acc[dayStr] = { day: dayStr, pressure: 0 };
-    acc[dayStr].pressure += curr.pressure;
+    if (!acc[dayStr]) acc[dayStr] = { day: dayStr, sum: 0, count: 0 };
+    acc[dayStr].sum += curr.pressure;
+    acc[dayStr].count++;
     return acc;
   }, {});
-  const weeklyChartData = Object.values(weeklyAggregated).sort((a,b)=>new Date(a.day)-new Date(b.day));
 
-  // Monthly chart
+  const weeklyChartData = Object.values(weeklyAggregated)
+    .map(d => ({ day: d.day, pressure: d.sum / d.count })) // average
+    .sort((a, b) => new Date(a.day) - new Date(b.day));
+
+  // --- Monthly chart (averaged per day) ---
   const currentMonthData = data.filter(d => {
     const ts = d.timestamp;
     return ts.getUTCMonth() === today.getUTCMonth() && ts.getUTCFullYear() === today.getUTCFullYear();
   });
+
   const monthlyAggregated = currentMonthData.reduce((acc, curr) => {
     const dayStr = curr.timestamp.toISOString().split('T')[0];
-    if (!acc[dayStr]) acc[dayStr] = { day: dayStr, pressure: 0 };
-    acc[dayStr].pressure += curr.pressure;
+    if (!acc[dayStr]) acc[dayStr] = { day: dayStr, sum: 0, count: 0 };
+    acc[dayStr].sum += curr.pressure;
+    acc[dayStr].count++;
     return acc;
   }, {});
-  const monthlyChartData = Object.values(monthlyAggregated).sort((a,b)=>new Date(a.day)-new Date(b.day));
+
+  const monthlyChartData = Object.values(monthlyAggregated)
+    .map(d => ({ day: d.day, pressure: d.sum / d.count })) // average
+    .sort((a, b) => new Date(a.day) - new Date(b.day));
 
   return (
     <div className="app-container" style={{ minHeight: '100vh', flexDirection: 'column', display: 'flex' }}>

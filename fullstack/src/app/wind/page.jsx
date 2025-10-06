@@ -16,14 +16,13 @@ export default function WindPage() {
         const response = await fetch('/api/wind-data');
         const rawData = await response.json();
 
-        // Parse data and add day/hour for charts
         const parsed = rawData.map(d => {
           const ts = new Date(d.timestamp);
           return {
             ...d,
             timestamp: ts,
             wind_speed: parseFloat(d.wind_speed),
-            day: ts.toISOString().split('T')[0], // YYYY-MM-DD UTC
+            day: ts.toISOString().split('T')[0],
             hour: ts.getUTCHours().toString().padStart(2, '0') + ':00',
             wind_direction: d.wind_direction
           };
@@ -45,15 +44,8 @@ export default function WindPage() {
 
   const today = new Date();
 
-  // --- Latest reading ---
-  const latest = data.reduce((prev, curr) => (curr.timestamp > prev.timestamp ? curr : prev), data[0]);
-
-  // --- Weekly chart (last 7 days, aggregated per day) ---
-  const last7DaysRaw = data.filter(d => {
-    const diffDays = (today.getTime() - d.timestamp.getTime()) / (1000 * 60 * 60 * 24);
-    return diffDays <= 7;
-  });
-
+  // --- Weekly aggregation ---
+  const last7DaysRaw = data.filter(d => (today - d.timestamp) / (1000 * 60 * 60 * 24) <= 7);
   const weeklyAggregated = last7DaysRaw.reduce((acc, curr) => {
     const dayStr = curr.timestamp.toISOString().split('T')[0];
     if (!acc[dayStr]) acc[dayStr] = { day: dayStr, wind_speed: 0, count: 0 };
@@ -63,15 +55,13 @@ export default function WindPage() {
   }, {});
 
   const weeklyChartData = Object.values(weeklyAggregated)
-    .map(d => ({ day: d.day, wind_speed: d.wind_speed / d.count })) // average per day
+    .map(d => ({ day: d.day, wind_speed: d.wind_speed / d.count }))
     .sort((a, b) => new Date(a.day) - new Date(b.day));
 
-  // --- Monthly chart (current month only, aggregated per day) ---
+  // --- Monthly aggregation ---
   const currentMonthData = data.filter(d => {
     const ts = d.timestamp;
-    const utcMonth = ts.getUTCMonth();
-    const utcYear = ts.getUTCFullYear();
-    return utcMonth === today.getUTCMonth() && utcYear === today.getUTCFullYear();
+    return ts.getUTCMonth() === today.getUTCMonth() && ts.getUTCFullYear() === today.getUTCFullYear();
   });
 
   const monthlyAggregated = currentMonthData.reduce((acc, curr) => {
@@ -83,8 +73,20 @@ export default function WindPage() {
   }, {});
 
   const monthlyChartData = Object.values(monthlyAggregated)
-    .map(d => ({ day: d.day, wind_speed: d.wind_speed / d.count })) // average per day
+    .map(d => ({ day: d.day, wind_speed: d.wind_speed / d.count }))
     .sort((a, b) => new Date(a.day) - new Date(b.day));
+
+  // --- Latest summary (today's average if available, else latest reading) ---
+  const todayStr = today.toISOString().split('T')[0];
+  const todayData = data.filter(d => d.day === todayStr);
+
+  const latestSummary = todayData.length > 0
+    ? {
+        wind_speed: todayData.reduce((sum, d) => sum + d.wind_speed, 0) / todayData.length,
+        wind_direction: null, // no single direction for average
+        timestamp: null
+      }
+    : data.reduce((prev, curr) => (curr.timestamp > prev.timestamp ? curr : prev), data[0]);
 
   return (
 <div className="app-container" style={{ minHeight: '100vh', flexDirection: 'column', display: 'flex' }}>
@@ -105,9 +107,12 @@ export default function WindPage() {
         maxWidth: '400px',
         backgroundColor: 'hsla(0,0%,100%,0.15)'
       }}>
-        <p><strong>Latest Wind Speed:</strong> {latest.wind_speed} m/s</p>
-        <p><strong>Wind Direction:</strong> {latest.wind_direction}</p>
-        <p><strong>Time Recorded:</strong> {latest.timestamp.toLocaleString()}</p>
+        <p><strong>Latest Wind Speed:</strong> {latestSummary.wind_speed.toFixed(2)} m/s</p>
+        <p><strong>Wind Direction:</strong> {latestSummary.wind_direction ?? 'N/A'}</p>
+        {todayData.length > 0
+          ? <p><strong>Time Recorded:</strong> Today's average</p>
+          : <p><strong>Time Recorded:</strong> {latestSummary.timestamp?.toLocaleString() ?? 'N/A'}</p>
+        }
       </div>
 
       {/* Toggle Buttons */}

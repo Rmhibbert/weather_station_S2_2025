@@ -39,7 +39,6 @@ export default function HumidityPage() {
     fetchData();
   }, []);
 
-
   if (loading) return <p>Loading humidity data...</p>;
   if (data.length === 0) return <p>No humidity data available.</p>;
 
@@ -48,7 +47,7 @@ export default function HumidityPage() {
   // --- Latest reading ---
   const latest = data.reduce((prev, curr) => (curr.timestamp > prev.timestamp ? curr : prev), data[0]);
 
-  // --- Weekly chart (last 7 days, aggregated per day) ---
+  // --- Weekly chart (last 7 days, averaged per day) ---
   const last7DaysRaw = data.filter(d => {
     const diffDays = (today.getTime() - d.timestamp.getTime()) / (1000 * 60 * 60 * 24);
     return diffDays <= 7;
@@ -56,17 +55,17 @@ export default function HumidityPage() {
 
   const weeklyAggregated = last7DaysRaw.reduce((acc, curr) => {
     const dayStr = curr.timestamp.toISOString().split('T')[0];
-    if (!acc[dayStr]) acc[dayStr] = { day: dayStr, humidity: 0, count: 0 };
-    acc[dayStr].humidity += curr.humidity;
-    acc[dayStr].count += 1;
+    if (!acc[dayStr]) acc[dayStr] = { day: dayStr, sum: 0, count: 0 };
+    acc[dayStr].sum += curr.humidity;
+    acc[dayStr].count++;
     return acc;
   }, {});
 
   const weeklyChartData = Object.values(weeklyAggregated)
-    .map(d => ({ day: d.day, humidity: d.humidity / d.count })) // average per day
+    .map(d => ({ day: d.day, humidity: d.sum / d.count })) // average per day
     .sort((a, b) => new Date(a.day) - new Date(b.day));
 
-  // --- Monthly chart (current month only, aggregated per day) ---
+  // --- Monthly chart (current month only, averaged per day) ---
   const currentMonthData = data.filter(d => {
     const ts = d.timestamp;
     const utcMonth = ts.getUTCMonth();
@@ -76,14 +75,14 @@ export default function HumidityPage() {
 
   const monthlyAggregated = currentMonthData.reduce((acc, curr) => {
     const dayStr = curr.timestamp.toISOString().split('T')[0];
-    if (!acc[dayStr]) acc[dayStr] = { day: dayStr, humidity: 0, count: 0 };
-    acc[dayStr].humidity += curr.humidity;
-    acc[dayStr].count += 1;
+    if (!acc[dayStr]) acc[dayStr] = { day: dayStr, sum: 0, count: 0 };
+    acc[dayStr].sum += curr.humidity;
+    acc[dayStr].count++;
     return acc;
-  }, {})
-  
+  }, {});
+
   const monthlyChartData = Object.values(monthlyAggregated)
-    .map(d => ({ day: d.day, humidity: d.humidity / d.count })) // average per day
+    .map(d => ({ day: d.day, humidity: d.sum / d.count })) // average per day
     .sort((a, b) => new Date(a.day) - new Date(b.day));
 
   return (
@@ -130,7 +129,7 @@ export default function HumidityPage() {
       <>
 
       {/* --- Monthly chart --- */}
-      <h2>Monthly humidity Speed (This Month)</h2>
+      <h2>Monthly Humidity (This Month)</h2>
       <LineChartComponent
         data={monthlyChartData}
         datakey="humidity"

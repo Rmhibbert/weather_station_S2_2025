@@ -42,31 +42,46 @@ export default function DustPage() {
   if (data.length === 0) return <p>No dust data available.</p>;
 
   const today = new Date();
+  const todayStr = today.toISOString().split('T')[0];
 
-  const latest = data.reduce((prev, curr) => (curr.timestamp > prev.timestamp ? curr : prev), data[0]);
+  // --- Latest average for today ---
+  const todayData = data.filter(d => d.day === todayStr);
+  const latestSummary = todayData.length > 0
+    ? { dust: todayData.reduce((sum, d) => sum + d.dust, 0) / todayData.length }
+    : data.reduce((prev, curr) => (curr.timestamp > prev.timestamp ? curr : prev), data[0]);
 
-  // Weekly chart
-  const last7DaysRaw = data.filter(d => (today - d.timestamp) / (1000*60*60*24) <= 7);
+  // --- Weekly chart (last 7 days, averaged per day) ---
+  const last7DaysRaw = data.filter(d => (today - d.timestamp) / (1000 * 60 * 60 * 24) <= 7);
+
   const weeklyAggregated = last7DaysRaw.reduce((acc, curr) => {
     const dayStr = curr.timestamp.toISOString().split('T')[0];
-    if (!acc[dayStr]) acc[dayStr] = { day: dayStr, dust: 0 };
-    acc[dayStr].dust += curr.dust;
+    if (!acc[dayStr]) acc[dayStr] = { day: dayStr, sum: 0, count: 0 };
+    acc[dayStr].sum += curr.dust;
+    acc[dayStr].count++;
     return acc;
   }, {});
-  const weeklyChartData = Object.values(weeklyAggregated).sort((a,b)=>new Date(a.day)-new Date(b.day));
 
-  // Monthly chart
+  const weeklyChartData = Object.values(weeklyAggregated)
+    .map(d => ({ day: d.day, dust: d.sum / d.count }))
+    .sort((a, b) => new Date(a.day) - new Date(b.day));
+
+  // --- Monthly chart (current month only, averaged per day) ---
   const currentMonthData = data.filter(d => {
     const ts = d.timestamp;
     return ts.getUTCMonth() === today.getUTCMonth() && ts.getUTCFullYear() === today.getUTCFullYear();
   });
+
   const monthlyAggregated = currentMonthData.reduce((acc, curr) => {
     const dayStr = curr.timestamp.toISOString().split('T')[0];
-    if (!acc[dayStr]) acc[dayStr] = { day: dayStr, dust: 0 };
-    acc[dayStr].dust += curr.dust;
+    if (!acc[dayStr]) acc[dayStr] = { day: dayStr, sum: 0, count: 0 };
+    acc[dayStr].sum += curr.dust;
+    acc[dayStr].count++;
     return acc;
   }, {});
-  const monthlyChartData = Object.values(monthlyAggregated).sort((a,b)=>new Date(a.day)-new Date(b.day));
+
+  const monthlyChartData = Object.values(monthlyAggregated)
+    .map(d => ({ day: d.day, dust: d.sum / d.count }))
+    .sort((a, b) => new Date(a.day) - new Date(b.day));
 
   return (
 <div className="app-container" style={{ minHeight: '100vh', flexDirection: 'column', display: 'flex' }}>
@@ -87,8 +102,9 @@ export default function DustPage() {
         maxWidth: '400px',
         backgroundColor: 'hsla(0,0%,100%,0.15)'
       }}>
-        <p><strong>Latest Dust:</strong> {latest.dust} µg/m³</p>
-        <p><strong>Time Recorded:</strong> {latest.timestamp.toLocaleString()}</p>
+        <p><strong>Latest Dust:</strong> {latestSummary.dust.toFixed(2)} µg/m³</p>
+        {todayData.length > 0 && <p><strong>Time Recorded:</strong> Today&apos;s average</p>}
+        {todayData.length === 0 && <p><strong>Time Recorded:</strong> {latestSummary.timestamp?.toLocaleString()}</p>}
       </div>
 
       {/* Toggle Buttons */}
