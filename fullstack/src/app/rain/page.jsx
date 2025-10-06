@@ -1,11 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Footer from '../../components/footer';
+import Header from '../../components/header';
 import LineChartComponent from '../../components/graphs/LineChartComponent';
 
 export default function RainPage() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [view, setView] = useState('weekly');
 
   useEffect(() => {
     async function fetchData() {
@@ -83,17 +86,24 @@ const monthlyChartData = Object.values(monthlyAggregated)
 
 
   return (
-    <div style={{ background: 'white', color: 'black', minHeight: '100vh', padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <h1>Rainfall Data</h1>
+    <div className="app-container" style={{ minHeight: '100vh', flexDirection: 'column', display: 'flex' }}>
+      <Header />
+      <div style={{ flex: 1, padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
+      <h1 style={{ 
+        marginBottom: '1.5rem',
+        textAlign: 'center',
+        fontSize: '2rem',
+        fontWeight: '600',
+        letterSpacing: '1px',
+         }}>Rainfall Page</h1>
 
       {/* --- Summary --- */}
       <div style={{
         padding: '1rem',
         marginBottom: '2rem',
-        border: '1px solid #ccc',
         borderRadius: '6px',
         maxWidth: '400px',
-        backgroundColor: '#f9f9f9'
+        backgroundColor: 'hsla(0,0%,100%,0.15)'
       }}>
         <p>
           <strong>Latest Rainfall:</strong> {latest.rainfall_mm} mm
@@ -103,14 +113,26 @@ const monthlyChartData = Object.values(monthlyAggregated)
         </p>
       </div>
 
+      {/* Toggle Buttons */}
+      <div className="flex gap-2 mb-6">
+        <button className={`px-4 py-2 rounded-md font-semibold bg-blue-600 text-white hover:bg-blue-700 `} 
+          onClick={() => setView('weekly')}>Weekly</button>
+        <button className={`px-4 py-2 rounded-md font-semibold bg-blue-600 text-white hover:bg-blue-700`} 
+          onClick={() => setView('monthly')}>Monthly</button>
+        </div>
+
       {/* --- Weekly chart --- */}
-      <h2>Daily Rainfall (Past 7 Days)</h2>
+      {view === 'weekly' ? (
+      <>
+      <h2>Weekly Rainfall (Past 7 Days)</h2>
       <LineChartComponent
         data={weeklyChartData}
         datakey="rainfall_mm"
         viewType="daily"
       />
-
+    </>
+    ) : (
+      <>
       {/* --- Monthly chart --- */}
       <h2>Monthly Rainfall (This Month)</h2>
       <LineChartComponent
@@ -118,6 +140,10 @@ const monthlyChartData = Object.values(monthlyAggregated)
         datakey="rainfall_mm"
         viewType="daily"
       />
+      </>
+    )}
+    </div>
+    <Footer />
     </div>
   );
 }

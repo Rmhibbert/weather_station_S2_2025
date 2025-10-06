@@ -85,7 +85,7 @@ export default function co2Page() {
 
   return (
     <div style={{ padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
-      <h1 style={{ marginBottom: '1.5rem' }}>Humidity Page</h1>
+      <h1 style={{ marginBottom: '1.5rem' }}>CO2 Page</h1>
       <div style={{
         padding: '1rem',
         marginBottom: '2rem',

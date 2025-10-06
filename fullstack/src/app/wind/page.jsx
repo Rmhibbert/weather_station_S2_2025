@@ -1,11 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Footer from '../../components/footer';
+import Header from '../../components/header';
 import LineChartComponent from '../../components/graphs/LineChartComponent';
 
 export default function WindPage() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [view, setView] = useState('weekly');
 
   useEffect(() => {
     async function fetchData() {
@@ -86,17 +89,23 @@ export default function WindPage() {
     : data.reduce((prev, curr) => (curr.timestamp > prev.timestamp ? curr : prev), data[0]);
 
   return (
-    <div style={{ background: 'white', color: 'black', minHeight: '100vh', padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <h1>Wind Data</h1>
+<div className="app-container" style={{ minHeight: '100vh', flexDirection: 'column', display: 'flex' }}>
+    <Header />
+    <div style={{ flex: 1, padding: '2rem', fontFamily: 'Arial, sans-serif' }}>      <h1 style={{ 
+        marginBottom: '1.5rem',
+        textAlign: 'center',
+        fontSize: '2rem',
+        fontWeight: '600',
+        letterSpacing: '1px',
+         }}>Wind Data</h1>
 
       {/* --- Summary --- */}
       <div style={{
         padding: '1rem',
         marginBottom: '2rem',
-        border: '1px solid #ccc',
         borderRadius: '6px',
         maxWidth: '400px',
-        backgroundColor: '#f9f9f9'
+        backgroundColor: 'hsla(0,0%,100%,0.15)'
       }}>
         <p><strong>Latest Wind Speed:</strong> {latestSummary.wind_speed.toFixed(2)} m/s</p>
         <p><strong>Wind Direction:</strong> {latestSummary.wind_direction ?? 'N/A'}</p>
@@ -106,13 +115,26 @@ export default function WindPage() {
         }
       </div>
 
+      {/* Toggle Buttons */}
+      <div className="flex gap-2 mb-6">
+        <button className={`px-4 py-2 rounded-md font-semibold bg-blue-600 text-white hover:bg-blue-700 `} 
+          onClick={() => setView('weekly')}>Weekly</button>
+        <button className={`px-4 py-2 rounded-md font-semibold bg-blue-600 text-white hover:bg-blue-700`} 
+          onClick={() => setView('monthly')}>Monthly</button>
+        </div>
+
       {/* --- Weekly chart --- */}
+      {view === 'weekly' ? (
+        <>
       <h2>Daily Wind Speed (Past 7 Days)</h2>
       <LineChartComponent
         data={weeklyChartData}
         datakey="wind_speed"
         viewType="daily"
-      />
+        />
+        </>
+        ) : ( 
+        <>
 
       {/* --- Monthly chart --- */}
       <h2>Monthly Wind Speed (This Month)</h2>
@@ -121,6 +143,10 @@ export default function WindPage() {
         datakey="wind_speed"
         viewType="daily"
       />
-    </div>
+      </>
+      )}
+      </div>
+      <Footer />
+      </div>
   );
 }

@@ -124,7 +124,7 @@ export const CustomXAxisTick = ({ x, y, payload, viewType, color }) => {
           dy={10}
           textAnchor="end"
           fill={color}
-          fontSize={10}
+          fontSize={16}
           transform="rotate(-45)"
         >
           {displayDate}

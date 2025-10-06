@@ -1,11 +1,15 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Footer from '../../components/footer';
+import Header from '../../components/header';
 import LineChartComponent from '../../components/graphs/LineChartComponent';
 
 export default function TemperaturePage() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [view, setView] = useState('weekly');
+
 
   useEffect(() => {
     async function fetchData() {
@@ -80,30 +84,49 @@ export default function TemperaturePage() {
     .sort((a, b) => new Date(a.day) - new Date(b.day));
 
   return (
-    <div style={{ padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
-      <h1 style={{ marginBottom: '1.5rem' }}>Temperature Data</h1>
+    <div className="app-container" style={{ minHeight: '100vh', flexDirection: 'column', display: 'flex' }}>
+    <Header />
+    <div style={{ flex: 1, padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
+      <h1 style={{ 
+        marginBottom: '1.5rem',
+        textAlign: 'center',
+        fontSize: '2rem',
+        fontWeight: '600',
+        letterSpacing: '1px',
+         }}>Temperature Page</h1>
       <div style={{
         padding: '1rem',
         marginBottom: '2rem',
-        border: '1px solid #ccc',
         borderRadius: '6px',
         maxWidth: '400px',
-        backgroundColor: '#f9f9f9'
+        backgroundColor: 'hsla(0,0%,100%,0.15)'
       }}>
-        <p><strong>Latest Temperature:</strong> {latestSummary.temperature.toFixed(2)}°C</p>
-        {todayData.length > 0
-          ? <p><strong>Time Recorded:</strong> Today&apos;s average</p>
-          : <p><strong>Time Recorded:</strong> {latestSummary.timestamp?.toLocaleString()}</p>
-        }
+        <p><strong>Latest temperature:</strong> {latest.temperature}&deg;C</p>
+        <p><strong>Time Recorded:</strong> {latest.timestamp.toLocaleString()}</p>
       </div>
 
+      {/* Toggle Buttons */}
+        <div className="flex gap-2 mb-6">
+        <button className={`px-4 py-2 rounded-md font-semibold bg-blue-600 text-white hover:bg-blue-700 `} 
+          onClick={() => setView('weekly')}>Weekly</button>
+        <button className={`px-4 py-2 rounded-md font-semibold bg-blue-600 text-white hover:bg-blue-700`} 
+          onClick={() => setView('monthly')}>Monthly</button>
+        </div>
+
+
       {/* --- Weekly chart --- */}
-      <h2>Daily Temperature (Past 7 Days)</h2>
+      {view === 'weekly' ? (
+        <>
+      <h2>Weekly temperature (Past 7 Days)</h2>
+
       <LineChartComponent
         data={weeklyChartData}
         datakey="temperature"
         viewType="daily"
       />
+      </>
+      ) : ( 
+      <>
 
       {/* --- Monthly chart --- */}
       <h2>Monthly Temperature (This Month)</h2>
@@ -112,6 +135,11 @@ export default function TemperaturePage() {
         datakey="temperature"
         viewType="daily"
       />
+      </>
+      )}
     </div>
+    <Footer />
+    </div>
+    
   );
 }
