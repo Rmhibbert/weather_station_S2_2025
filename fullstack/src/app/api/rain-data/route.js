@@ -18,7 +18,7 @@ export const GET = async (request) => {
     }
 
     const data = await db.any(
-      'select * FROM rainfall_measurement ORDER BY timestamp ASC',
+      'select * FROM rainfall_measurement ORDER BY timestamp DESC',
     );
     return new Response(JSON.stringify(data), {
       status: 200,

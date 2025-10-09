@@ -101,8 +101,8 @@ export default function TemperaturePage() {
         maxWidth: '400px',
         backgroundColor: 'hsla(0,0%,100%,0.15)'
       }}>
-        <p><strong>Latest temperature:</strong> {latest.temperature}&deg;C</p>
-        <p><strong>Time Recorded:</strong> {latest.timestamp.toLocaleString()}</p>
+        <p><strong>Latest temperature:</strong> {latestSummary.temperature}&deg;C</p>
+        <p><strong>Time Recorded:</strong> {latestSummary.timestamp?.toLocaleString()}</p>
       </div>
 
       {/* Toggle Buttons */}
