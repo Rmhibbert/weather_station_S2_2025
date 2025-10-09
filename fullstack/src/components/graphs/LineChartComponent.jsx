@@ -93,8 +93,9 @@ const LineChartComponent = ({ data, datakey, viewType }) => {
                 borderColor: graphColor,
                 borderRadius: '8px',
                 padding: '5px',
+                color: '#000000',
               }}
-              itemStyle={{ color: graphColor }}
+              itemStyle={{ color: '#000000' }}
               // labelFormatter={() => ''}
             />
             <Line
