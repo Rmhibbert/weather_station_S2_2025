@@ -86,9 +86,9 @@ const monthlyChartData = Object.values(monthlyAggregated)
 
 
   return (
-    <div className="app-container" style={{ minHeight: '100vh', flexDirection: 'column', display: 'flex' }}>
+    <div className="app-container" style={{ minHeight: '100vh', flexDirection: 'column', display: 'flex'}}>
       <Header />
-      <div style={{ flex: 1, padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
+      <div style={{ flex: 1, width: '100%', padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
       <h1 style={{ 
         marginBottom: '1.5rem',
         textAlign: 'center',
