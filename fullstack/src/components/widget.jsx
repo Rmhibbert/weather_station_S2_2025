@@ -108,7 +108,7 @@ const Widget = ({ name, dataKey }) => {
       <div className="flex justify-between items-start p-4">
         <div >
           <p id="widget-title">{name}</p>
-          <p id="widget-value"> {data && dataName ? `${data[dataName]}${unit}` : 'Loading...'} </p>
+          <p id="widget-value"> {data && dataName ? `${Number(data[dataName]).toFixed(2)}${unit}` : 'Loading...'} </p>
         </div>
 
         <div className="absolute top-4 right-4">

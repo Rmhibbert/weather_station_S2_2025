@@ -108,7 +108,7 @@ export default function WindPage() {
         maxWidth: '400px',
         backgroundColor: 'hsla(0,0%,100%,0.15)'
       }}>
-        <p><strong>Latest Wind Speed:</strong> {latestSummary.wind_speed.toFixed(2)} m/s</p>
+        <p><strong>Latest Wind Speed:</strong> {latestSummary.wind_speed.toFixed(2)} km/h</p>
         <p><strong>Wind Direction:</strong> {latestSummary.wind_direction ?? 'N/A'}</p>
         {todayData.length > 0
           ? <p><strong>Time Recorded:</strong> Today's average</p>

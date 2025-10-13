@@ -106,7 +106,7 @@ const monthlyChartData = Object.values(monthlyAggregated)
         backgroundColor: 'hsla(0,0%,100%,0.15)'
       }}>
         <p>
-          <strong>Latest Rainfall:</strong> {latest.rainfall_mm} mm
+          <strong>Latest Rainfall:</strong> {latest.rainfall_mm.toFixed(2)} mm
         </p>
         <p>
           <strong>Time Recorded:</strong> {latest.timestamp.toLocaleString()}
