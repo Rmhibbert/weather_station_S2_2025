@@ -6,6 +6,16 @@ export default function Header() {
 
   return (
     <nav className="navbar">
+      <div className="logo-container">
+        <a href="/">
+          <img
+            src="https://worldvectorlogo.com/logos/otago-polytechnic-horizontal-blue.svg"
+            alt="Otago Polytechnic Logo"
+            className="logo"
+          />
+        </a>
+      </div>
+      
       <div className="title">
         <a href="/">
           <h1>Otago Polytechnic Weather Station</h1>
