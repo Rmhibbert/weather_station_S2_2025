@@ -86,9 +86,9 @@ const monthlyChartData = Object.values(monthlyAggregated)
 
 
   return (
-    <div className="app-container" style={{ minHeight: '100vh', flexDirection: 'column', display: 'flex' }}>
+    <div className="app-container" style={{ minHeight: '100vh', flexDirection: 'column', display: 'flex'}}>
       <Header />
-      <div style={{ flex: 1, padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
+      <div style={{ flex: 1, width: '100%', padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
       <h1 style={{ 
         marginBottom: '1.5rem',
         textAlign: 'center',
@@ -106,7 +106,7 @@ const monthlyChartData = Object.values(monthlyAggregated)
         backgroundColor: 'hsla(0,0%,100%,0.15)'
       }}>
         <p>
-          <strong>Latest Rainfall:</strong> {latest.rainfall_mm} mm
+          <strong>Latest Rainfall:</strong> {latest.rainfall_mm.toFixed(2)} mm
         </p>
         <p>
           <strong>Time Recorded:</strong> {latest.timestamp.toLocaleString()}

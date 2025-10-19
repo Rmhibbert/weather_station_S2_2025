@@ -18,8 +18,8 @@ export default function Home() {
           <Widget name="Rain" dataKey="rain" />
           <Widget name="Air Pressure" dataKey="pressure" />
           <Widget name="Wind" dataKey="wind" />
-          <Widget name="CO2" dataKey="co2" />
-          <Widget name="Gas" dataKey="gas" />
+          {/* <Widget name="CO2" dataKey="co2" />
+          <Widget name="Gas" dataKey="gas" /> */}
           <Widget name="Dust" dataKey="dust" />
           <Widget name="Humidity" dataKey="humidity" />
         </div>

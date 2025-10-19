@@ -10,6 +10,11 @@ nav.navbar {
   width: 100%;
 }
 
+.logo{
+  height: 100px;
+  width: auto;
+}
+
 .title {
   grid-column: 2;
   text-align: center;
@@ -79,10 +84,10 @@ nav.navbar {
   .title h1 {
     font-size: 25px;
   }
-}
-@media (max-width: 600px) {
-  .title h1 {
-    font-size: 18px;
+
+  .logo{
+    height: 80px;
+    width: auto;
   }
 }
 
@@ -108,5 +113,22 @@ nav.navbar {
 
   .menu-toggle {
     display: block; 
+  }
+
+  .logo{
+    height: 60px;
+    width: auto;
+  }
+}
+
+@media (max-width: 850px) {
+.logo{
+  display: none;
+}
+}
+
+@media (max-width: 600px) {
+  .title h1 {
+    font-size: 18px;
   }
 }

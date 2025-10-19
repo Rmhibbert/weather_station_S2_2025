@@ -91,7 +91,8 @@ export default function WindPage() {
   return (
 <div className="app-container" style={{ minHeight: '100vh', flexDirection: 'column', display: 'flex' }}>
     <Header />
-    <div style={{ flex: 1, padding: '2rem', fontFamily: 'Arial, sans-serif' }}>      <h1 style={{ 
+    <div style={{ flex: 1, width: '100%', padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
+    <h1 style={{ 
         marginBottom: '1.5rem',
         textAlign: 'center',
         fontSize: '2rem',
@@ -107,7 +108,7 @@ export default function WindPage() {
         maxWidth: '400px',
         backgroundColor: 'hsla(0,0%,100%,0.15)'
       }}>
-        <p><strong>Latest Wind Speed:</strong> {latestSummary.wind_speed.toFixed(2)} m/s</p>
+        <p><strong>Latest Wind Speed:</strong> {latestSummary.wind_speed.toFixed(2)} km/h</p>
         <p><strong>Wind Direction:</strong> {latestSummary.wind_direction ?? 'N/A'}</p>
         {todayData.length > 0
           ? <p><strong>Time Recorded:</strong> Today's average</p>

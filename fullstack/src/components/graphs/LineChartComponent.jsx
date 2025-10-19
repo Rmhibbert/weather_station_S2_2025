@@ -77,7 +77,7 @@ const LineChartComponent = ({ data, datakey, viewType }) => {
             <YAxis
               type="number"
               domain={domain}
-              ticks={[0, 5, 10, 15, 20, 25, 30]}
+              ticks={ticks}
               stroke={xyAxis}
               allowDecimals={false}
               tickFormatter={(value) => {
@@ -86,15 +86,18 @@ const LineChartComponent = ({ data, datakey, viewType }) => {
               tick={{ fontSize: 12 }}
             />
             <Tooltip
-
+              formatter={(value) =>
+                typeof value === 'number' ? value.toFixed(2) : value
+              }
               // cursor={{ fill: 'transparent' }}
               contentStyle={{
                 backgroundColor: '#ffffff',
                 borderColor: graphColor,
                 borderRadius: '8px',
                 padding: '5px',
+                color: '#000000',
               }}
-              itemStyle={{ color: graphColor }}
+              itemStyle={{ color: '#000000' }}
               // labelFormatter={() => ''}
             />
             <Line

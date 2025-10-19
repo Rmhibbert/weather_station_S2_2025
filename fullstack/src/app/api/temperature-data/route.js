@@ -20,7 +20,7 @@ export const GET = async (request) => {
 
     const data = await db.any(`
       SELECT * FROM temperature WHERE device_id = 'temp-humidity'
-      ORDER BY timestamp ASC
+      ORDER BY timestamp DESC
 `);
     return new Response(JSON.stringify(data), {
       status: 200,

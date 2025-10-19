@@ -86,7 +86,8 @@ export default function DustPage() {
   return (
 <div className="app-container" style={{ minHeight: '100vh', flexDirection: 'column', display: 'flex' }}>
     <Header />
-    <div style={{ flex: 1, padding: '2rem', fontFamily: 'Arial, sans-serif' }}>      <h1 style={{ 
+    <div style={{ flex: 1, width: '100%', padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
+    <h1 style={{ 
         marginBottom: '1.5rem',
         textAlign: 'center',
         fontSize: '2rem',
