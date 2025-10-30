@@ -1,21 +1,42 @@
 .app-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  min-height: 100vh;
   background: linear-gradient(to bottom, #1e3c72, #6699cc);
   background-size: 100vw 100vh;
   background-attachment: fixed;
   color: #f8f8ff;
+  min-height: 100vh;
 }
 
+/* Widgets grid */
 .widgets {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 20px;
   width: 90%;
   transition: all 0.7s ease;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); 
+  grid-template-rows: repeat(2, 1fr);
+  gap: 5rem;
+  row-gap: 7vh;
+  padding: 5%;
+}
+
+@media (max-width: 1200px) {
+  .widgets {
+    grid-template-columns: repeat(2, 1fr); 
+    grid-template-rows: repeat(3, 1fr);  }
+}
+
+@media (max-width: 1024px) {
+  .widgets {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+  }
+}
+
+@media (max-width: 600px) {
+  .widgets {
+    grid-template-columns: 1fr; 
+    padding: 10%; 
+    gap: 2rem;
+  }
 }

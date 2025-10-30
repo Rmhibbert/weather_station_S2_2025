@@ -19,7 +19,7 @@ export const GET = async (request) => {
     }
 
     const data = await db.any(
-      'select * FROM co2 ORDER BY timestamp DESC LIMIT 1',
+      'select * FROM co2 ORDER BY timestamp DESC',
     );
 
     return new Response(JSON.stringify(data), {

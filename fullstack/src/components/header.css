@@ -1,0 +1,134 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+nav.navbar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 1rem 2rem;
+  font-family: 'Poppins', sans-serif;
+  min-height: 10vh;
+  width: 100%;
+}
+
+.logo{
+  height: 100px;
+  width: auto;
+}
+
+.title {
+  grid-column: 2;
+  text-align: center;
+}
+
+.title h1 {
+  font-size: 32px;
+  font-weight: 500;
+  margin: 0;
+  color: #fff;
+}
+
+.title a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.links {
+  grid-column: 3;
+  justify-self: end;
+}
+
+.links ul {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.links li a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  position: relative;
+}
+
+.links li a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #fff;
+  transition: width 0.3s ease;
+}
+
+.links li a:hover::after {
+  width: 100%;
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #fff;
+  cursor: pointer;
+  grid-column: 3;
+  justify-self: end;
+}
+
+
+@media (max-width: 1250px) {
+  .title h1 {
+    font-size: 25px;
+  }
+
+  .logo{
+    height: 80px;
+    width: auto;
+  }
+}
+
+@media (max-width: 1100px) {
+  .links {
+    display: none;
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    background: hsla(0, 0%, 100%, 0.15);
+    padding: 1rem 2rem;
+    border-radius: 8px;
+  }
+
+  .links ul {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .links.show {
+    display: block; 
+  }
+
+  .menu-toggle {
+    display: block; 
+  }
+
+  .logo{
+    height: 60px;
+    width: auto;
+  }
+}
+
+@media (max-width: 850px) {
+.logo{
+  display: none;
+}
+}
+
+@media (max-width: 600px) {
+  .title h1 {
+    font-size: 18px;
+  }
+}

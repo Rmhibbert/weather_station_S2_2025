@@ -18,8 +18,12 @@ const LineChartComponent = ({ data, datakey, viewType }) => {
   const [isScrollEnabled, setIsScrollEnabled] = useState(
     window.innerWidth <= 1060,
   );
-  const graphColor = '#113f67';
-  const xyAxis = 'white';
+
+  // const graphColor = '#113f67';
+  const graphColor = '#fafafa';
+  // const xyAxis = 'white';
+
+  const xyAxis = '#f7f2f2';
 
   useEffect(() => {
     const handleResize = () => {
@@ -53,12 +57,14 @@ const LineChartComponent = ({ data, datakey, viewType }) => {
       }}
     >
       <div style={{ width: containerWidth }}>
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="100%" height={600}>
           <LineChart
             data={filteredData}
-            margin={{ top: 10, right: 22, left: 0, bottom: 15 }}
+            margin={{ top: 10, right: 22, left: 0, bottom: 30 }}
           >
-            <CartesianGrid stroke="white" strokeDasharray="5 5" />
+            {/* <CartesianGrid stroke="white" strokeDasharray="5 5" /> */}
+            <CartesianGrid stroke="#e0e0e0" strokeDasharray="5 5" />
+
             <XAxis
               dataKey={xAxisDataKey}
               stroke={xyAxis}
@@ -80,15 +86,19 @@ const LineChartComponent = ({ data, datakey, viewType }) => {
               tick={{ fontSize: 12 }}
             />
             <Tooltip
-              cursor={{ fill: 'transparent' }}
+              formatter={(value) =>
+                typeof value === 'number' ? value.toFixed(2) : value
+              }
+              // cursor={{ fill: 'transparent' }}
               contentStyle={{
                 backgroundColor: '#ffffff',
                 borderColor: graphColor,
                 borderRadius: '8px',
                 padding: '5px',
+                color: '#000000',
               }}
-              itemStyle={{ color: graphColor }}
-              labelFormatter={() => ''}
+              itemStyle={{ color: '#000000' }}
+              // labelFormatter={() => ''}
             />
             <Line
               type="monotone"

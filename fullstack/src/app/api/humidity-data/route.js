@@ -19,7 +19,7 @@ export const GET = async (request) => {
     }
 
     const data = await db.any(
-      'SELECT * FROM humidity ORDER BY timestamp DESC LIMIT 1',
+      'SELECT * FROM humidity ORDER BY timestamp DESC',
     );
     return new Response(JSON.stringify(data), {
       status: 200,

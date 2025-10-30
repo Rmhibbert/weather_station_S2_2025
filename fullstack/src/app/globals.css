@@ -62,6 +62,12 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-white;
+  }
+}
+
+@layer components {
+  .app-container {
+    background: linear-gradient(to bottom, #1e3c72, #6699cc);
   }
 }
