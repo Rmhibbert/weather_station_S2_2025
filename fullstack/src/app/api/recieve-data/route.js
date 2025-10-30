@@ -18,19 +18,12 @@ import {
   HumidityData,
 } from '@/app/utils/receive-data-helper';
 export const dynamic = 'force-dynamic';
-
 export const POST = async (request) => {
   try {
     const authHeader = request.headers.get('authorization');
     const data = await request.json();
     let send = [];
-    /**
-     * Since the webhook will send all data we will  the data
-     * into different tables based on there data type
-     */
-
     const decodedPayload = data.uplink_message?.decoded_payload;
-
     if (!decodedPayload) {
       return new Response(
         JSON.stringify({ message: 'Decoded payload is required' }),
@@ -44,7 +37,6 @@ export const POST = async (request) => {
         },
       );
     }
-
     const device_id = data.end_device_ids.device_id;
     const temperature = decodedPayload.temperature ?? null;
     const pressure = decodedPayload.pressure ?? null;
@@ -55,29 +47,23 @@ export const POST = async (request) => {
     const wind_direction = decodedPayload.windDir ?? null;
     let rain_gauge = decodedPayload.rain ?? null;
     const humidity = decodedPayload.humidity ?? null;
-
     if (rain_gauge === 0) {
       rain_gauge += 1;
     }
-
     const sensorData = [
       { condition: dust, fetchData: DustData },
       { condition: temperature, fetchData: TemperatureData },
       { condition: pressure, fetchData: PressureData },
       { condition: co2_level, fetchData: CO2Data },
       { condition: gas_level, fetchData: GasData },
-      { condition: wind_direction && wind_speed, fetchData: WindData },
+      { condition: wind_direction !== null && wind_speed !== null, fetchData: WindData },
       { condition: rain_gauge, fetchData: RainData },
       { condition: humidity, fetchData: HumidityData },
     ];
-
     if (!authHeader) return new Response('Authentication Required');
-
     const splitAuth = authHeader.split(' ')[1];
-
     if (splitAuth !== process.env.PASSWORD)
       return new Response('You are not authorized to post');
-
     if (!device_id) {
       return new Response(
         JSON.stringify({ message: 'Device ID is required' }),
@@ -91,12 +77,38 @@ export const POST = async (request) => {
         },
       );
     }
-
+    for (const sensor of sensorData) {
+      if (sensor.condition) {
+        try {
+          let result;
+          if (sensor.fetchData === WindData) {
+            result = await sensor.fetchData(device_id, wind_speed, wind_direction);
+          } else if (sensor.fetchData === RainData) {
+            result = await sensor.fetchData(device_id, rain_gauge);
+          } else if (sensor.fetchData === DustData) {
+            result = await sensor.fetchData(device_id, dust);
+          } else if (sensor.fetchData === TemperatureData) {
+            result = await sensor.fetchData(device_id, temperature);
+          } else if (sensor.fetchData === PressureData) {
+            result = await sensor.fetchData(device_id, pressure);
+          } else if (sensor.fetchData === CO2Data) {
+            result = await sensor.fetchData(device_id, co2_level);
+          } else if (sensor.fetchData === GasData) {
+            result = await sensor.fetchData(device_id, gas_level);
+          } else if (sensor.fetchData === HumidityData) {
+            result = await sensor.fetchData(device_id, humidity);
+          }
+          send.push(result);
+        } catch (error) {
+          console.error('Error inserting sensor data:', error);
+        }
+      }
+    }
     return new Response(JSON.stringify(send), {
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*', // Allow all origins
-        'Access-Control-Allow-Methods': 'POST', // Allow POST method
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST',
       },
       status: 200,
     });
@@ -104,8 +116,8 @@ export const POST = async (request) => {
     return new Response(JSON.stringify({ message: err.message }), {
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*', // Allow all origins
-        'Access-Control-Allow-Methods': 'POST', // Allow POST method
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST',
       },
       status: 500,
     });
