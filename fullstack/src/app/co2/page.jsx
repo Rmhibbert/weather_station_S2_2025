@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import LineChartComponent from '../../components/graphs/LineChartComponent';
 
-export default function co2Page() {
+export default function Co2Page() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 

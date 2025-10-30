@@ -111,7 +111,7 @@ export default function WindPage() {
         <p><strong>Latest Wind Speed:</strong> {latestSummary.wind_speed.toFixed(2)} km/h</p>
         <p><strong>Wind Direction:</strong> {latestSummary.wind_direction ?? 'N/A'}</p>
         {todayData.length > 0
-          ? <p><strong>Time Recorded:</strong> Today's average</p>
+          ? <p><strong>Time Recorded:</strong> Today&aposs average</p>
           : <p><strong>Time Recorded:</strong> {latestSummary.timestamp?.toLocaleString() ?? 'N/A'}</p>
         }
       </div>
